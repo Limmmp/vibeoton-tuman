@@ -30,6 +30,7 @@ import { playersGeoJSON, validatePlayer, visiblePlayers, type OtherPlayer, type 
 import { BuildingIndex } from "./building-index";
 import { load, save } from "./storage";
 import { BasemapFallback } from "./basemap-fallback";
+import { LANDMARKS } from "../models/catalog";
 
 // Чекин: игрок должен быть не дальше этого от места; первая отметка в месте даёт награду.
 const CHECKIN_RADIUS = 60;
@@ -58,6 +59,9 @@ export class Engine {
   private renderActive = true;
   private fogEffects = load<boolean>("fog-effects", true);
   private buildingIndex = new BuildingIndex();
+  private demoTapMode: "walk" | "teleport" = "walk";
+  private landmarksLoading = false;
+  private landmarkBefore: string | undefined;
   private districts = new DistrictTracker(districtsJson as DistrictData[]);
   private places = new Map<string, Place>(); // последние метки из showPlaces — для чекина
   private layers: MapLayer[] = [...MAP_LAYERS]; // видимые категории меток (setLayers)
@@ -102,6 +106,10 @@ export class Engine {
     addOverlayLayers(map, beforeId);
     const player = new Player(map);
     const engine = new Engine(map, fog, player, renderProfile, basemap);
+    engine.landmarkBefore = beforeId;
+    map.addSource("landmarks", { type: "geojson", data: { type: "FeatureCollection", features: LANDMARKS.map(item => ({ type: "Feature", properties: { id: item.id, name: item.name }, geometry: { type: "Point", coordinates: [item.lon, item.lat] } })) } });
+    map.addLayer({ id: "landmark-pins", type: "circle", source: "landmarks", minzoom: 12, paint: { "circle-radius": 8, "circle-color": "#f5b83d", "circle-stroke-width": 2, "circle-stroke-color": "#172633" } });
+    map.addLayer({ id: "landmark-labels", type: "symbol", source: "landmarks", minzoom: 14, layout: { "text-field": ["get", "name"], "text-size": 12, "text-offset": [0, 1.6] }, paint: { "text-color": "#172633", "text-halo-color": "#fff", "text-halo-width": 1.5 } });
     basemap.onChange(status => {
       engine.emit({ type: "basemapChanged", status });
       if (status.message) engine.emit({ type: "mapError", message: status.message });
@@ -143,6 +151,7 @@ export class Engine {
     this.map.setLayoutProperty("hillshade-over-fog", "visibility", this.renderProfile.hillshade ? "visible" : "none");
     this.buildingIndex.invalidate();
     this.fogLayer?.setProfile(this.renderProfile);
+    void this.ensureLandmarkLayer();
     if (!this.renderProfile.show3dBuildings) {
       setBuildingsVisible(this.map, false);
       (this.map.getSource("lit-buildings") as GeoJSONSource).setData(EMPTY);
@@ -153,6 +162,22 @@ export class Engine {
     }
     this.emit({ type: "renderQualityChanged", profile: this.renderProfile });
     return this.renderProfile;
+  }
+
+  private async ensureLandmarkLayer() {
+    if (!this.renderProfile.show3dBuildings) {
+      if (this.map.getLayer("landmark-models")) this.map.removeLayer("landmark-models");
+      return;
+    }
+    if (this.viewMode !== "3d" || this.landmarksLoading || this.map.getLayer("landmark-models")) return;
+    this.landmarksLoading = true;
+    try {
+      const { LandmarkLayer } = await import("../models/map-layer");
+      if (this.viewMode !== "3d" || !this.renderProfile.show3dBuildings) return;
+      this.map.addLayer(new LandmarkLayer(item => this.renderActive && !document.hidden && this.viewMode === "3d" && this.renderProfile.show3dBuildings && this.map.getZoom() >= 14 && this.fog.isRevealed(item) && distance(item, { lat: this.map.getCenter().lat, lon: this.map.getCenter().lng }) < 2000), this.landmarkBefore);
+    } catch (error) {
+      this.emit({ type: "mapError", message: `Не удалось открыть 3D-модели: ${(error as Error).message}` });
+    } finally { this.landmarksLoading = false; }
   }
 
   private drawQuestTargets(active: ActiveStep | null) {
@@ -219,14 +244,15 @@ export class Engine {
   state(): State {
     const p = this.player;
     return {
-      player: { ...p.pos, heading: p.heading, mode: p.mode, follow: p.follow },
+      player: { ...p.pos, heading: p.heading, mode: p.mode, follow: p.follow, simSpeed: p.simSpeed },
+      demoTapMode: this.demoTapMode,
       viewMode: this.viewMode,
       fog: { cells: this.fog.cells.size, km2: +this.fog.areaKm2().toFixed(4) },
       quest: this.quests.active,
       progress: this.progress.state,
       avatar: { ...this.avatar, equipped: { ...this.avatar.equipped } },
       renderProfile: this.renderProfile,
-      engineVersion: "buildings-solid-4",
+      engineVersion: "demo-collection-5",
       basemap: { ...this.basemap.status },
       fogEffects: this.fogEffects,
       layers: [...this.layers],
@@ -307,6 +333,8 @@ export class Engine {
     // Тап по цели квеста → questTargetTap; по кластеру → приблизить и clusterTap;
     // по метке → подпись + placeTap; по пустой карте → mapTap (в симуляции ещё и идём туда).
     map.on("click", (e) => {
+      const landmark = map.queryRenderedFeatures(e.point, { layers: ["landmark-pins"] })[0];
+      if (landmark) return this.emit({ type: "landmarkTap", id: String(landmark.properties?.id) });
       const questHit = map.queryRenderedFeatures(e.point, { layers: ["quest-targets"] })[0];
       if (questHit) return this.emit({ type: "questTargetTap", id: String(questHit.properties?.id) });
       const playerHit = map.queryRenderedFeatures(e.point, { layers: ["players"] })[0];
@@ -340,8 +368,10 @@ export class Engine {
       }
       if (this.selectedPlace) this.selectPlace(null);
       const p = { lat: e.lngLat.lat, lon: e.lngLat.lng };
-      if (player.mode === "sim") player.walkTo(p);
-      this.emit({ type: "mapTap", ...p, action: player.mode === "sim" ? "walk" : "select" });
+      if (player.mode === "sim") {
+        if (this.demoTapMode === "teleport") player.teleport(p); else player.walkTo(p);
+      }
+      this.emit({ type: "mapTap", ...p, action: player.mode === "sim" ? this.demoTapMode : "select" });
     });
     // Долгое нажатие / правый клик → mapLongPress (интерфейс решает, что делать: например, маршрут).
     map.on("contextmenu", (e) => this.emit({ type: "mapLongPress", lat: e.lngLat.lat, lon: e.lngLat.lng }));
@@ -376,6 +406,16 @@ export class Engine {
   async exec(cmd: Command): Promise<unknown> {
     const { map, fog, player } = this;
     switch (cmd.type) {
+      case "setSimSpeed":
+        if (player.mode !== "sim") throw new Error("Ускорение доступно только в симуляции. Сначала отключи GPS.");
+        player.setSimSpeed(cmd.multiplier);
+        this.emit({ type: "demoChanged", speed: player.simSpeed, tapMode: this.demoTapMode });
+        return player.simSpeed;
+      case "setDemoTapMode":
+        if (cmd.mode !== "walk" && cmd.mode !== "teleport") throw new Error("Неизвестный режим нажатия");
+        this.demoTapMode = cmd.mode;
+        this.emit({ type: "demoChanged", speed: player.simSpeed, tapMode: this.demoTapMode });
+        return;
       case "setRenderActivity":
         this.renderActive = cmd.active;
         this.applyRenderActivity();
@@ -391,6 +431,7 @@ export class Engine {
         this.viewMode = cmd.mode;
         setViewMode(map, cmd.mode, this.renderProfile);
         this.updateBuildings();
+        await this.ensureLandmarkLayer();
         return;
       case "setPlayerMode":
         return player.setMode(cmd.mode);

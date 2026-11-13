@@ -2,10 +2,17 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./style.css";
 import { Engine } from "./engine/engine";
 import { attachBridge, inReactNative, send } from "./engine/bridge";
+import { LANDMARKS } from "./models/catalog";
 
 try {
   const engine = await Engine.create("map");
   attachBridge(engine);
+  const requestedLandmark = LANDMARKS.find(item => item.id === new URLSearchParams(location.search).get("landmark"));
+  if (requestedLandmark) { engine.player.follow = false; engine.map.jumpTo({ center: [requestedLandmark.lon, requestedLandmark.lat], zoom: 17 }); }
+  if (!inReactNative() || new URLSearchParams(location.search).has("demo")) {
+    const { mountDemoControls } = await import("./dev/demo");
+    mountDemoControls(engine);
+  }
 
 // Отладочная панель — только в обычном браузере. В приложении интерфейс рисует React Native.
   if (!inReactNative() && !new URLSearchParams(location.search).has("embedded")) {

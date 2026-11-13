@@ -9,12 +9,11 @@ import { load, save, debounced } from "./storage";
 import { VLADIVOSTOK } from "./basemap";
 import type { AvatarAppearance } from "../progress/types";
 import { DEFAULT_AVATAR } from "../progress/avatar";
+import { DEFAULT_SIM_SPEED, demoPoint, movementStep, simSpeed } from "./simulation";
 
 export type PlayerMode = "sim" | "external" | "gps";
 type MoveListener = (pos: LatLon, prev: LatLon, jump: boolean) => void;
 
-const WALK = 1.5; // м/с
-const RUN_MULT = 4; // Shift
 export const SIM_SPEEDUP = 8;
 const GPS_MAX_ACCURACY = 60; // м — хуже игнорируем
 
@@ -23,6 +22,7 @@ export class Player {
   heading = 0;
   mode: PlayerMode = "sim";
   follow = true;
+  simSpeed = DEFAULT_SIM_SPEED;
   private keys = new Set<string>();
   private walkTarget: LatLon | null = null;
   private listeners: MoveListener[] = [];
@@ -73,8 +73,10 @@ export class Player {
 
   /** Идти к точке (только в симуляции). */
   walkTo(p: LatLon) {
-    if (this.mode === "sim") this.walkTarget = p;
+    if (this.mode === "sim") this.walkTarget = demoPoint(p);
   }
+
+  setSimSpeed(multiplier: number) { this.simSpeed = simSpeed(multiplier); return this.simSpeed; }
 
   private bindKeys() {
     const codes: Record<string, string> = {
@@ -97,7 +99,7 @@ export class Player {
   /** Игровой цикл. dt — секунды. */
   tick(dt: number) {
     if (this.mode !== "sim") return;
-    const step = WALK * (this.keys.has("run") ? RUN_MULT : 1) * dt * SIM_SPEEDUP;
+    const step = movementStep(dt, this.simSpeed, this.keys.has("run"));
     let dx = 0, dy = 0;
     if (this.keys.has("up")) dy += 1;
     if (this.keys.has("down")) dy -= 1;
@@ -120,12 +122,15 @@ export class Player {
   }
 
   teleport(p: LatLon) {
-    this.setPos(p, this.heading, true);
+    const point = demoPoint(p);
+    this.walkTarget = null;
+    this.keys.clear();
+    this.setPos(point, this.heading, true);
   }
 
   /** Фикс от приложения (режим external). */
   externalFix(p: LatLon & { accuracy?: number; heading?: number }) {
-    if (this.mode !== "external") this.setMode("external");
+    if (this.mode !== "external") return;
     if (p.accuracy != null && p.accuracy > GPS_MAX_ACCURACY) return;
     const h = Number.isFinite(p.heading) ? (p.heading as number) : bearing(this.pos, p);
     this.setPos(p, h, distance(this.pos, p) > 2000);

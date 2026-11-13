@@ -24,6 +24,8 @@ export type Place = {
 };
 
 export type Command =
+  | { id?: string; type: "setSimSpeed"; multiplier: number }
+  | { id?: string; type: "setDemoTapMode"; mode: "walk" | "teleport" }
   | { id?: string; type: "setRenderActivity"; active: boolean }
   | { id?: string; type: "setFogEffects"; enabled: boolean }
   | { id?: string; type: "setRenderQuality"; quality: RenderQuality }
@@ -71,7 +73,8 @@ export type Command =
 export type State = {
   engineVersion: string;
   basemap: BasemapStatus;
-  player: LatLon & { heading: number; mode: "sim" | "external" | "gps"; follow: boolean };
+  player: LatLon & { heading: number; mode: "sim" | "external" | "gps"; follow: boolean; simSpeed: number };
+  demoTapMode: "walk" | "teleport";
   viewMode: "2d" | "3d";
   fog: { cells: number; km2: number };
   quest: ActiveStep | null;
@@ -83,12 +86,14 @@ export type State = {
 };
 
 export type EngineEvent =
+  | { type: "landmarkTap"; id: string }
+  | { type: "demoChanged"; speed: number; tapMode: "walk" | "teleport" }
   | { type: "basemapChanged"; status: BasemapStatus }
   | { type: "mapError"; message: string }
   | { type: "ready"; state: State }
   | { type: "playerMoved"; lat: number; lon: number; heading: number }
   | { type: "fogChanged"; cells: number; km2: number; fresh: number }
-  | { type: "mapTap"; lat: number; lon: number; action: "walk" | "select" }
+  | { type: "mapTap"; lat: number; lon: number; action: "walk" | "teleport" | "select" }
   | { type: "mapLongPress"; lat: number; lon: number }
   | { type: "placeTap"; id: string }
   | { type: "questTargetTap"; id: string }

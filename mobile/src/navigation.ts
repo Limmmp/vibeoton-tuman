@@ -1,5 +1,5 @@
 export type Tab = 'Карта' | 'Компания' | 'Места' | 'История' | 'Профиль';
-export type Overlay = 'quests' | 'settings' | 'developer' | 'helper' | 'inbox' | 'filters' | 'districts' | 'preview' | null;
+export type Overlay = 'quests' | 'settings' | 'developer' | 'helper' | 'inbox' | 'filters' | 'districts' | 'preview' | 'demo' | 'collection' | null;
 export type Route = { tab: Tab; overlay: Overlay; selectedId: string | null; sheet: number; layer: string };
 export type Navigation = { current: Route; history: Route[] };
 export const initialNavigation: Navigation = { current: { tab: 'Карта', overlay: null, selectedId: null, sheet: 0, layer: 'Задания' }, history: [] };

@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, BackHandler, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Alert, AppState, BackHandler, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import * as Location from 'expo-location';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { useFonts } from 'expo-font';
 import { WebView } from 'react-native-webview';
-import type { ActiveStep, AvatarItem, Command, LatLon, ProgressState, QuestSummary, RewardResult, DistrictStat, RenderProfile } from '../src/engine/protocol';
+import type { ActiveStep, AvatarItem, Command, LatLon, ProgressState, QuestSummary, RewardResult, DistrictStat, RenderProfile, BasemapStatus } from '../src/engine/protocol';
 import type { Place } from '../src/data/place';
 import { distance } from '../src/engine/geo';
-import { defaultMapUrl, mapUrl } from './src/connection';
+import { defaultMapUrl, localMapUrl, mapUrl } from './src/connection';
 import { MapBridge } from './src/bridge';
 import { Button, Card, Chip, Field, Bar, colors, u } from './src/ui';
 import { ActiveQuest, QuestList, RewardStatus } from './src/QuestPanel';
@@ -26,10 +26,13 @@ import { useNavigation } from './src/useNavigation';
 import { DistrictPanel } from './src/DistrictPanel';
 import { StylePreview } from './src/StylePreview';
 import { diagnosticQuest } from './src/diagnostic';
+import { DemoPanel } from './src/DemoPanel';
+import { CollectionPanel } from './src/CollectionPanel';
+import landmarks from '../public/models/landmarks/manifest.json';
 
 const tabs = ['Карта', 'Компания', 'Места', 'История', 'Профиль'] as const;
 type Tab = typeof tabs[number];
-type Overlay = 'quests' | 'settings' | 'developer' | 'helper' | 'inbox' | 'filters' | 'districts' | 'preview' | null;
+type Overlay = 'quests' | 'settings' | 'developer' | 'helper' | 'inbox' | 'filters' | 'districts' | 'preview' | 'demo' | 'collection' | null;
 const layers = ['Задания', 'Учёба', 'Досуг', 'История', 'События'];
 const origin = { lat: 43.1155, lon: 131.8855 };
 const hostedMap = 'https://limmmp.github.io/vibeoton-tuman/';
@@ -63,9 +66,16 @@ function Application() {
 
   const [mode, setMode] = useState<'2d' | '3d'>('2d');
   const [position, setPosition] = useState<LatLon>(origin);
-  const lastPositionUpdate = useRef(0);
+  const [listPosition, setListPosition] = useState<LatLon>(origin);
   const positionRef = useRef(position);
-  positionRef.current = position;
+  const [appState, setAppState] = useState(AppState.currentState);
+  const [fogEffects, setFogEffects] = useState(true);
+  const [engineVersion, setEngineVersion] = useState<string | null>(null);
+  const [basemap, setBasemap] = useState<BasemapStatus | null>(null);
+  const [demoSpeed, setDemoSpeed] = useState(8);
+  const [demoTapMode, setDemoTapMode] = useState<'walk' | 'teleport'>('walk');
+  const [demoActive, setDemoActive] = useState(false);
+  const [collectionId, setCollectionId] = useState<string | undefined>();
   const [districts, setDistricts] = useState<DistrictStat[]>([]);
   const [renderProfile, setRenderProfile] = useState<RenderProfile | null>(null);
   const [area, setArea] = useState(0);
@@ -79,6 +89,11 @@ function Application() {
   const [busy, setBusy] = useState(0);
   const selected = catalog.find(place => place.id === navigation.current.selectedId) || null;
   const setSelected = (place: Place | null) => dispatch({ type: 'push', patch: { selectedId: place?.id ?? null } });
+  const selectPlace = useCallback((place: Place | null) => {
+    if (!place) { dispatch({ type: 'back' }); return; }
+    dispatch({ type: 'push', patch: { selectedId: place.id } });
+    void bridge.request({ type: 'flyTo', lat: place.lat, lon: place.lon, zoom: 16 }).catch(problem => setError(problem.message));
+  }, [bridge, dispatch]);
   const [search, setSearch] = useState('');
   const [placeFilters, setPlaceFilters] = useState<string[]>([]);
   const [route, setRoute] = useState<RouteInfo | null>(null);
@@ -120,6 +135,22 @@ function Application() {
     finally { if (mounted.current) setBusy(value => Math.max(0, value - 1)); }
   };
   const stopGps = () => { gpsGeneration.current++; gpsSubscription.current?.remove(); gpsSubscription.current = null; setGps(false); setGpsBusy(false); };
+  const runDemo = async (commands: Command[]): Promise<boolean> => {
+    if (!readyRef.current) { setError('Сначала подключи карту'); return false; }
+    const session = generationRef.current;
+    stopGps(); setBusy(value => value + 1); setError('');
+    try {
+      await bridge.request({ type: 'setPlayerMode', mode: 'sim' });
+      for (const command of commands) {
+        if (session !== generationRef.current) return false;
+        await bridge.request(command);
+      }
+      if (session !== generationRef.current) return false;
+      setDemoActive(true); return true;
+    } catch (problem) { if (session === generationRef.current) setError((problem as Error).message); return false; }
+    finally { if (mounted.current) setBusy(value => Math.max(0, value - 1)); }
+  };
+  const showDemoMap = () => dispatch({ type: 'push', patch: { tab: 'Карта', overlay: null, sheet: 0 } });
   const startGps = async () => {
     if (!readyRef.current) { setWantsGps(true); return; }
     const token = ++gpsGeneration.current; setGpsBusy(true);
@@ -134,7 +165,7 @@ function Application() {
         send({ type: 'gpsFix', lat: fix.coords.latitude, lon: fix.coords.longitude, accuracy: fix.coords.accuracy ?? undefined, heading: fix.coords.heading != null && fix.coords.heading >= 0 ? fix.coords.heading : undefined });
       });
       if (token !== gpsGeneration.current) { subscription.remove(); return; }
-      gpsSubscription.current = subscription; setGps(true); send({ type: 'follow', on: true });
+      gpsSubscription.current = subscription; setGps(true); setDemoActive(false); send({ type: 'follow', on: true });
     } catch (problem) { if (token === gpsGeneration.current) { send({ type: 'setPlayerMode', mode: 'sim' }); setError(`GPS недоступен: ${(problem as Error).message}`); } }
     finally { if (token === gpsGeneration.current) setGpsBusy(false); }
   };
@@ -148,7 +179,7 @@ function Application() {
     } catch { setError('Укажи полный адрес HTTP или HTTPS.'); }
   };
   const locate = (point: LatLon) => { send({ type: 'flyTo', ...point, zoom: 16 }); dispatch({ type: 'push', patch: { overlay: null, tab: 'Карта', sheet: 0 } }); };
-  const teleport = async (point: LatLon) => { stopGps(); await execute({ type: 'setPlayerMode', mode: 'sim' }); await execute({ type: 'teleport', ...point }); send({ type: 'follow', on: true }); };
+  const teleport = async (point: LatLon) => runDemo([{ type: 'setDemoTapMode', mode: 'walk' }, { type: 'teleport', ...point }, { type: 'follow', on: true }]);
   const buildRoute = async (to: LatLon, placeId?: string) => {
     if (routePending.current) return;
     routePending.current = true; setRouting(true); setRoute(null);
@@ -170,6 +201,9 @@ function Application() {
     if (!event) return;
     switch (event.type) {
       case 'ready':
+        setDemoSpeed(event.state.player.simSpeed ?? 8); setDemoTapMode(event.state.demoTapMode ?? 'walk'); setDemoActive(false);
+        setEngineVersion(event.state.engineVersion ?? null); setBasemap(event.state.basemap ?? null);
+        positionRef.current = event.state.player; setListPosition(event.state.player); setFogEffects(event.state.fogEffects ?? true);
         readyRef.current = true; setReady(true); setError(''); setPosition(event.state.player); setArea(event.state.fog.km2);
         setRenderProfile(event.state.renderProfile); void execute({ type: 'getDistricts' }); setActive(event.state.quest ?? null); setProgress(event.state.progress ?? null); setMode(event.state.viewMode);
         send({ type: 'setPlayerMode', mode: 'sim' }); send({ type: 'follow', on: true });
@@ -177,17 +211,29 @@ function Application() {
         void bridge.request<AvatarItem[]>({ type: 'listAvatarItems' }).then(value => { if (Array.isArray(value)) setItems(value); else setError('Обнови движок карты: каталог аватаров недоступен.'); }).catch(problem => setError(problem.message));
         // Start in 2D on every device; saved 3D is an explicit user preference.
         if (preferences.view === '3d' && !event.state.renderProfile?.mobile) { send({ type: 'setViewMode', mode: '3d' }); setMode('3d'); }
+        if (!event.state.engineVersion) setError('Подключён прежний движок карты. В настройках выбери «Локальная карта», чтобы проверить исправления.');
+        break;
+      case 'demoChanged': setDemoSpeed(event.speed); setDemoTapMode(event.tapMode); break;
+      case 'landmarkTap': setCollectionId(event.id); setOverlay('collection'); break;
+      case 'basemapChanged':
+        setBasemap(event.status);
+        if (event.status.ready) setError(previous => previous.startsWith('Не загружаются обе подложки') ? '' : previous);
         break;
       case 'renderQualityChanged': setRenderProfile(event.profile); break;
       case 'districtProgress': setDistricts(previous => previous.map(d => d.id === event.id ? { ...d, ...event, milestone: Math.max(d.milestone, ...[0, 25, 50, 75, 90].filter(pct => pct <= event.pct)) } : d)); break;
       case 'districtMilestone': notify(event.name + ': открыто ' + event.pct + '%'); break;
       case 'checkedIn': notify(event.first ? 'Первая отметка в месте' : 'Ты уже отмечался здесь'); break;
-      case 'playerMoved': if (Date.now() - lastPositionUpdate.current > 250) { lastPositionUpdate.current = Date.now(); setPosition(event); } break;
+      case 'playerMoved':
+        positionRef.current = event;
+        setPosition(previous => distance(previous, event) >= 5 ? event : previous);
+        setListPosition(previous => distance(previous, event) >= 15 ? event : previous);
+        break;
+      case 'mapError': setError(event.message); break;
       case 'fogChanged': setArea(event.km2); break;
       case 'activeStep': setActive(event.active); break;
       case 'questTargetTap': setTab('Карта'); setSheet(1); notify('Цель задания: ' + (active?.step.text || event.id)); break;
       case 'placeTap': { if (event.id.startsWith('quest:')) { setOverlay('quests'); break; } const place = catalog.find(item => item.id === event.id); if (place) dispatch({ type: 'push', patch: { selectedId: place.id, tab: 'Места', sheet: 1 } }); break; }
-      case 'mapLongPress': Alert.alert('Пеший маршрут', 'Построить маршрут к этой точке?', [{ text: 'Отмена', style: 'cancel' }, { text: 'Построить', onPress: () => { void buildRoute(event); setTab('Карта'); setSheet(1); } }]); break;
+      case 'mapLongPress': Alert.alert('Пеший маршрут', 'Построить маршрут к этой точке?', [{ text: 'Отмена', style: 'cancel' }, { text: 'Построить', onPress: () => { void buildRoute(event); setTab('Карта'); setSheet(1); } }, { text: 'Телепортироваться · демо', onPress: () => { void teleport(event).then(ok => { if (ok) showDemoMap(); }); } }]); break;
       case 'stepDone': notify('Шаг выполнен'); break;
       case 'questDone': setActive(null); notify(event.trusted ? 'Квест завершён' : 'Квест завершён в демо-режиме'); break;
       case 'rewardGranted': setReward(event.result); setProgress(event.result.state); setRewardOpen(true); break;
@@ -202,6 +248,10 @@ function Application() {
   useEffect(() => { if (!loaded || ready || !url) return; const timer = setTimeout(() => setError('Карта не ответила. Проверь сеть и адрес в настройках.'), 25000); return () => clearTimeout(timer); }, [loaded, ready, url, generation]);
   useEffect(() => { if (!toast) return; const timer = setTimeout(() => setToast(''), 4000); return () => clearTimeout(timer); }, [toast]);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; gpsGeneration.current++; gpsSubscription.current?.remove(); bridge.disconnect(); }; }, []);
+  useEffect(() => { const subscription = AppState.addEventListener('change', setAppState); return () => subscription.remove(); }, []);
+  useEffect(() => {
+    if (ready) send({ type: 'setRenderActivity', active: appState === 'active' && preferences.onboarded && !overlay && !rewardOpen });
+  }, [ready, generation, appState, preferences.onboarded, overlay, rewardOpen]);
   useEffect(() => { if (distance(climbOrigin.current, position) > 50) { climbOrigin.current = position; setClimbs({}); } }, [position]);
   useEffect(() => {
     const controller = new AbortController();
@@ -214,10 +264,10 @@ function Application() {
     }).catch(() => {}).finally(() => clearTimeout(timer));
     return () => { clearTimeout(timer); controller.abort(); };
   }, []);
-  const filtered = useMemo(() => filterPlaces(catalog, search, placeFilters, position, climbs), [search, placeFilters, position, climbs]);
+  const filtered = useMemo(() => filterPlaces(catalog, search, placeFilters, listPosition, climbs), [search, placeFilters, listPosition, climbs]);
   const markerPlaces = useMemo(() => layer === 'Учёба' ? filtered.filter(place => place.kind.includes('study') || place.kind.includes('creative')) : layer === 'История' ? filtered.filter(place => place.kind.includes('history') || place.kind.includes('culture')) : layer === 'Досуг' ? filtered.filter(place => place.kind.some(kind => ['leisure', 'food', 'outdoor'].includes(kind))) : [], [filtered, layer]);
-  const visiblePlaces = [...markerPlaces.slice(0, 15).filter(place => place.id !== selected?.id), ...(selected ? [selected] : [])].slice(-15);
-  const mapMarkers = [...visiblePlaces.map(place => ({ id: place.id, lat: place.lat, lon: place.lon, name: place.name, kind: place.kind[0] })), ...(layer === 'Задания' ? quests.slice().sort((a, b) => distance(position, a.start) - distance(position, b.start)).slice(0, 5).map(quest => ({ ...quest.start, id: 'quest:' + quest.id, name: quest.title, kind: 'quest' })) : [])];
+  const visiblePlaces = useMemo(() => [...markerPlaces.slice(0, 15).filter(place => place.id !== selected?.id), ...(selected ? [selected] : [])].slice(-15), [markerPlaces, selected]);
+  const mapMarkers = useMemo(() => [...visiblePlaces.map(place => ({ id: place.id, lat: place.lat, lon: place.lon, name: place.name, kind: place.kind[0] })), ...(layer === 'Задания' ? quests.slice().sort((a, b) => distance(listPosition, a.start) - distance(listPosition, b.start)).slice(0, 5).map(quest => ({ ...quest.start, id: 'quest:' + quest.id, name: quest.title, kind: 'quest' })) : [])], [visiblePlaces, layer, quests, listPosition]);
   const markerKey = mapMarkers.map(place => place.id).sort().join('|');
   useEffect(() => { if (ready) send({ type: 'showPlaces', places: mapMarkers }); }, [ready, markerKey]);
   const changeTab = (next: Tab) => { if (next === tab) return; dispatch({ type: 'push', patch: { tab: next, overlay: null, selectedId: null, sheet: next === 'Карта' || next === 'Профиль' ? 0 : 2, layer: next === 'Места' ? 'Учёба' : next === 'История' ? 'История' : layer } }); };
@@ -235,19 +285,20 @@ function Application() {
     {failure && <Card><Text style={u.text}>Задание провалено: {failure.reason}</Text><Button label="Попробовать снова" disabled={!ready || busy > 0} onPress={() => void execute({ type: 'startQuestById', questId: failure.id })} /></Card>}
   </View>;
   const panelContent = () => {
-    if (tab === 'Места') return <PlacesPanel places={filtered} selected={selected} select={place => { if (!place) { goBack(); return; } setSelected(place); if (place) send({ type: 'flyTo', lat: place.lat, lon: place.lon, zoom: 16 }); }} position={position} search={search} setSearch={setSearch} selectedFilters={placeFilters} setFilters={setPlaceFilters} route={route} checkIn={place => void checkIn(place)} buildRoute={(point, id) => void buildRoute(point, id)} routing={routing || !ready} collapse={() => setSheet(0)} />;
+    if (tab === 'Места') return <PlacesPanel places={filtered} selected={selected} select={selectPlace} position={selected ? position : listPosition} scrollEnabled={sheet !== 0} search={search} setSearch={setSearch} selectedFilters={placeFilters} setFilters={setPlaceFilters} route={route} checkIn={place => void checkIn(place)} buildRoute={(point, id) => void buildRoute(point, id)} routing={routing || !ready} collapse={() => setSheet(0)} />;
     if (tab === 'Компания') return <CompanyPanel initialInterests={preferences.interests} members={preferences.members} setMembers={members => update({ members })} buildRoute={(point, id) => { void buildRoute(point, id); changeTab('Карта'); }} climbs={climbs} weatherBad={weather.bad} />;
-    if (tab === 'Профиль') return <ProfilePanel progress={progress} items={items} area={area} execute={execute} districts={() => setOverlay('districts')} settings={() => setOverlay('settings')} developer={() => setOverlay('developer')} busy={!ready || busy > 0} />;
+    if (tab === 'Профиль') return <ProfilePanel progress={progress} items={items} area={area} execute={execute} districts={() => setOverlay('districts')} collection={() => { setCollectionId(undefined); setOverlay('collection'); }} settings={() => setOverlay('settings')} developer={() => setOverlay('developer')} busy={!ready || busy > 0} />;
     if (tab === 'История') return <View style={u.stack}><Text style={u.heading}>История города</Text><Card><Text style={u.text}>«Золотой туман» готовится</Text><Text style={u.muted}>Маршрут, озвучка и факты с источниками ещё не добавлены в каталог. Технический квест доступен в заданиях.</Text><Button label="Открыть задания" onPress={() => setOverlay('quests')} /></Card><Text style={u.muted}>Исторические места из каталога — на карте. Их данные требуют проверки.</Text>{markerPlaces.slice(0, 10).map(place => <Card key={place.id}><Text style={u.heading}>{place.name}</Text><Button label="Карточка места и источник" onPress={() => { dispatch({ type: 'push', patch: { selectedId: place.id, tab: 'Места', layer: 'История', sheet: 2, overlay: null } }); }} /></Card>)}</View>;
     return <View style={u.stack}><Text style={u.eyebrow}>ТВОЯ ЭКСПЕДИЦИЯ</Text>{active ? <ActiveQuest active={active} execute={execute} teleport={point => void teleport(point)} locate={locate} busy={busy > 0} /> : <Card><Text style={u.heading}>Адмирал: пойдём знакомиться с городом</Text><Text style={u.muted}>{gps ? 'Иди к цели задания, туман будет открываться по GPS.' : 'Симуляция: нажми на карту, чтобы идти. Награды в этом режиме не выдаются.'}</Text><Button label="Задания" primary onPress={() => setOverlay('quests')} /></Card>}{failure && <Button label="Квест провален: открыть задания" onPress={() => setOverlay('quests')} />}{route && <><RouteSummary route={route} /><Button label="Убрать маршрут" onPress={() => { send({ type: 'clearRoute' }); setRoute(null); }} /></>}<Button label="Помощник Адмирал" onPress={() => setOverlay('helper')} /></View>;
   };
   const overlayContent = () => {
+    if (overlay === 'demo') return <DemoPanel position={positionRef.current} speed={demoSpeed} tapMode={demoTapMode} busy={!ready || busy > 0} teleport={point => { void teleport(point).then(ok => { if (ok) showDemoMap(); }); }} setSpeed={value => { void runDemo([{ type: 'setSimSpeed', multiplier: value }, { type: 'setDemoTapMode', mode: 'walk' }]); }} setTapMode={value => { void runDemo([{ type: 'setDemoTapMode', mode: value }, { type: 'follow', on: true }]).then(ok => { if (ok) showDemoMap(); }); }} close={showDemoMap} />;
     if (overlay === 'districts') return <DistrictPanel districts={districts} locate={locate} refresh={() => void execute({ type: 'getDistricts' })} />;
     if (overlay === 'preview') return <StylePreview active={active} reward={reward} area={area} level={progress?.level || 1} />;
-    if (overlay === 'filters') return <View style={u.stack}><Text style={u.heading}>Слои карты</Text><Button label={mode === '2d' ? 'Включить 3D' : 'Включить 2D'} disabled={!ready} onPress={switchView} /><Button label="Где я" disabled={!ready} onPress={() => send({ type: 'follow', on: true })} /><View style={u.row}>{layers.map(value => <Chip key={value} label={value} active={layer === value} onPress={() => { setLayer(value); setOverlay(value === 'Задания' ? 'quests' : null); if (value === 'События') notify('Каталог событий пока не подключён.'); }} />)}</View><Button label="Уведомления" onPress={() => setOverlay('inbox')} /><Button label="Помощник Адмирал" onPress={() => setOverlay('helper')} /><Button label="Настройки" onPress={() => setOverlay('settings')} /><Text style={u.muted}>{weather.text}</Text></View>;
+    if (overlay === 'filters') return <View style={u.stack}><Text style={u.heading}>Слои карты</Text><Button label="Демо-перемещение" disabled={!ready} onPress={() => setOverlay('demo')} /><Button label="Коллекция достопримечательностей" onPress={() => { setCollectionId(undefined); setOverlay('collection'); }} /><Button label={mode === '2d' ? 'Включить 3D' : 'Включить 2D'} disabled={!ready} onPress={switchView} /><Button label="Где я" disabled={!ready} onPress={() => send({ type: 'follow', on: true })} /><View style={u.row}>{layers.map(value => <Chip key={value} label={value} active={layer === value} onPress={() => { setLayer(value); setOverlay(value === 'Задания' ? 'quests' : null); if (value === 'События') notify('Каталог событий пока не подключён.'); }} />)}</View><Button label="Уведомления" onPress={() => setOverlay('inbox')} /><Button label="Помощник Адмирал" onPress={() => setOverlay('helper')} /><Button label="Настройки" onPress={() => setOverlay('settings')} /><Text style={u.muted}>{weather.text}</Text></View>;
     if (overlay === 'quests') return questContent();
     if (overlay === 'developer') return <View style={u.stack}><Text style={u.eyebrow}>ПАНЕЛЬ РАЗРАБОТЧИКА</Text><Text style={u.muted}>{ready ? 'Мост подключён' : 'Нет подключения'} · {gps ? 'GPS' : 'Симуляция'} · {position.lat.toFixed(5)}, {position.lon.toFixed(5)}</Text><Button label="Короткий тест: аудио → quiz → осмотр" primary disabled={!ready || !!active || busy > 0} onPress={testQuest} />{questContent(true)}<RewardStatus result={reward} /><Button label="Обновить активный шаг" disabled={!ready} onPress={() => void execute({ type: 'getQuestState' })} /><Text style={u.heading}>Последние события</Text>{events.slice(0, 12).map((event, index) => <Text key={index} style={u.muted}>{event}</Text>)}</View>;
-    if (overlay === 'settings') return <View style={u.stack}><Field label="Адрес движка карты" value={address} onChangeText={setAddress} /><Button label="Подключить" primary onPress={() => connect()} /><Button label="Опубликованная карта" onPress={() => connect(hostedMap)} /><Text style={u.muted}>Для локального сервера нужны общая Wi-Fi сеть и адрес компьютера. При смене адреса прогресс WebView может отличаться.</Text><Button label={gpsBusy ? 'Подключение GPS…' : gps ? 'Выключить GPS' : 'Включить GPS'} disabled={!ready || gpsBusy} onPress={() => { if (gps) { stopGps(); send({ type: 'setPlayerMode', mode: 'sim' }); } else askGps(); }} /><Button label={`Переключить ${mode === '2d' ? 'в 3D' : 'в 2D'}`} disabled={!ready} onPress={switchView} /><Button label="Сбросить туман" disabled={!ready} onPress={() => Alert.alert('Сбросить туман?', 'Открытые ячейки карты будут удалены.', [{ text: 'Отмена', style: 'cancel' }, { text: 'Сбросить', style: 'destructive', onPress: () => void execute({ type: 'resetFog' }) }])} /><Button label="Сбросить награды и прогресс" disabled={!ready} onPress={() => Alert.alert('Сбросить прогресс?', 'Опыт, монеты, инвентарь и завершённые квесты будут удалены.', [{ text: 'Отмена', style: 'cancel' }, { text: 'Сбросить', style: 'destructive', onPress: () => void execute({ type: 'resetProgress' }) }])} /><Button label="Повторить онбординг" onPress={() => { update({ onboarded: false }); setOverlay(null); }} /><Text style={u.heading}>Качество карты: {renderProfile?.quality || 'авто'}</Text><View style={u.row}>{(['low', 'balanced', 'high'] as const).map(quality => <Chip key={quality} label={({ low: 'Экономно', balanced: 'Баланс', high: 'Высокое' })[quality]} active={renderProfile?.quality === quality} onPress={() => void execute({ type: 'setRenderQuality', quality })} />)}</View><Text style={u.muted}>Изменение pixel ratio полностью применяется после перезапуска карты.</Text><Text style={u.muted}>Видимость: скрыт. Социальный сервер и фоновый GPS не подключены.</Text><Text style={u.muted}>Карта: OpenFreeMap · © участники OpenStreetMap · Mapzen/Terrarium. Погода: Open-Meteo. Интернет требуется для тайлов и маршрутов.</Text><Button label="Сравнить стили и темы" onPress={() => setOverlay('preview')} /><Button label="Для разработчиков" onPress={() => setOverlay('developer')} /></View>;
+    if (overlay === 'settings') return <View style={u.stack}><Field label="Адрес движка карты" value={address} onChangeText={setAddress} /><Button label="Подключить" primary onPress={() => connect()} /><Button label="Опубликованная карта" onPress={() => connect(hostedMap)} /><Button label="Локальная карта" onPress={() => connect(localMapUrl)} /><Text style={u.muted}>Движок: {engineVersion || 'прежняя версия'} · Подложка: {basemap ? `${basemap.provider === 'vector' ? 'векторная' : 'резервная'}${basemap.ready ? '' : ' · загрузка'}` : 'нет диагностики'}</Text><Text style={u.muted}>Для локального сервера нужны общая Wi-Fi сеть и адрес компьютера. При смене адреса прогресс WebView может отличаться.</Text><Button label={gpsBusy ? 'Подключение GPS…' : gps ? 'Выключить GPS' : 'Включить GPS'} disabled={!ready || gpsBusy} onPress={() => { if (gps) { stopGps(); send({ type: 'setPlayerMode', mode: 'sim' }); } else askGps(); }} /><Button label={`Переключить ${mode === '2d' ? 'в 3D' : 'в 2D'}`} disabled={!ready} onPress={switchView} /><Button label="Сбросить туман" disabled={!ready} onPress={() => Alert.alert('Сбросить туман?', 'Открытые ячейки карты будут удалены.', [{ text: 'Отмена', style: 'cancel' }, { text: 'Сбросить', style: 'destructive', onPress: () => void execute({ type: 'resetFog' }) }])} /><Button label="Сбросить награды и прогресс" disabled={!ready} onPress={() => Alert.alert('Сбросить прогресс?', 'Опыт, монеты, инвентарь и завершённые квесты будут удалены.', [{ text: 'Отмена', style: 'cancel' }, { text: 'Сбросить', style: 'destructive', onPress: () => void execute({ type: 'resetProgress' }) }])} /><Button label="Повторить онбординг" onPress={() => { update({ onboarded: false }); setOverlay(null); }} /><Button label={`Анимация тумана: ${fogEffects ? 'включена' : 'выключена'}`} disabled={!ready} onPress={() => { void bridge.request({ type: 'setFogEffects', enabled: !fogEffects }).then(() => setFogEffects(!fogEffects)).catch(problem => setError(problem.message)); }} /><Text style={u.heading}>Качество карты: {renderProfile?.quality || 'авто'}</Text><View style={u.row}>{(['low', 'balanced', 'high'] as const).map(quality => <Chip key={quality} label={({ low: 'Экономно', balanced: 'Баланс', high: 'Высокое' })[quality]} active={renderProfile?.quality === quality} onPress={() => void execute({ type: 'setRenderQuality', quality })} />)}</View><Text style={u.muted}>Качество применяется сразу. Экономный режим отключает рельеф, отмывку и объёмные дома.</Text><Text style={u.muted}>Видимость: скрыт. Социальный сервер и фоновый GPS не подключены.</Text><Text style={u.muted}>Карта: OpenFreeMap · © участники OpenStreetMap · Mapzen/Terrarium. Погода: Open-Meteo. Интернет требуется для тайлов и маршрутов.</Text><Button label="Сравнить стили и темы" onPress={() => setOverlay('preview')} /><Button label="Для разработчиков" onPress={() => setOverlay('developer')} /></View>;
     if (overlay === 'inbox') return <View style={u.stack}><Text style={u.heading}>События этой сессии</Text>{!events.length && <Text style={u.muted}>Пока тихо. Начни первое задание.</Text>}{events.map((event, index) => <Card key={index}><Text style={u.text}>{event}</Text></Card>)}</View>;
     const checklist = preferences.role === 'Первокурсник' ? ['Найти место для учёбы', 'Познакомиться с районом', 'Собрать компанию'] : preferences.role === 'Турист' ? ['Найти смотровую', 'Открыть историческое место', 'Пройти первый квест'] : ['Исследовать свой район', 'Найти место для отдыха', 'Пройти первый квест'];
     return <View style={u.stack}><Text style={u.heading}>Адмирал · первая неделя</Text><Text style={u.muted}>Личный демо-чек-лист для роли «{preferences.role}». Отметки сохраняются на телефоне.</Text>{checklist.map(task => <Card key={task}><Chip label={`${preferences.checklist.includes(task) ? '✓ ' : '○ '}${task}`} active={preferences.checklist.includes(task)} onPress={() => update({ checklist: preferences.checklist.includes(task) ? preferences.checklist.filter(value => value !== task) : [...preferences.checklist, task] })} /><Button label="Показать подходящие места" onPress={() => { dispatch({ type: 'push', patch: { overlay: null, selectedId: null, tab: 'Места', layer: 'Учёба', sheet: 2 } }); }} /></Card>)}<Text style={u.muted}>Чат Адмирала появится после подключения серверного прокси. Сейчас доступны каталог и задания.</Text></View>;
@@ -258,10 +309,11 @@ function Application() {
     <View style={s.map}>{Platform.OS !== 'web' && !!url && <MapSurface uri={url} generation={generation} web={web} handlers={mapHandlers} />}</View>
     <View pointerEvents="box-none" style={s.foreground}>
       <View style={s.hud}><Button label="‹" disabled={!navigation.history.length && sheet === 0} onPress={goBack} /><View style={{ flex: 1, gap: 5 }}><Text style={u.text}>Ур. {progress?.level || 1} · {area.toFixed(4)} км²</Text><Bar value={progress ? (progress.xp - 100 * (progress.level - 1) ** 2) / (100 * progress.level ** 2 - 100 * (progress.level - 1) ** 2) : 0} /></View><Pressable accessibilityRole="button" accessibilityLabel="Меню и фильтры" onPress={() => setOverlay('filters')} style={{ padding: 12 }}><Icon name="menu" /></Pressable></View>
+      {demoActive && <View style={{ marginHorizontal: 10, padding: 8, backgroundColor: '#353126', borderRadius: 12 }}><Text style={u.muted}>Демо · {demoTapMode === 'teleport' ? 'нажатие телепортирует' : 'нажатие задаёт путь'} · ×{demoSpeed}</Text><Button label="Настроить перемещение" onPress={() => setOverlay('demo')} /></View>}
       {network.isConnected === false && <View style={s.error}><Text style={u.text}>Нет сети. Новые тайлы, аудио и маршруты могут быть недоступны.</Text></View>}
       {(!!error || !!storageError) && <View style={s.error}><Text style={u.text}>{error || storageError}</Text><View style={u.row}><Button label="Настройки" onPress={() => setOverlay('settings')} /><Button label="Закрыть" onPress={() => setError('')} /></View></View>}
       <Notice text={toast} onPress={() => setOverlay('inbox')} />
-      <View pointerEvents="box-none" style={{ flex: 1 }}><SwipeSheet level={sheet} onLevel={setSheet} title={tab}>{panelContent()}</SwipeSheet></View>
+      <View pointerEvents="box-none" style={{ flex: 1 }}><SwipeSheet level={sheet} onLevel={setSheet} title={tab} scroll={tab !== 'Места' || !!selected}>{panelContent()}</SwipeSheet></View>
       <SafeAreaView edges={['bottom']} style={{ backgroundColor: colors.bg }}><Button label="Куда пойдём?" onPress={() => changeTab('Места')} /><View style={s.nav}>{tabs.map((value, index) => <Pressable key={value} accessibilityRole="tab" accessibilityState={{ selected: tab === value }} onPress={() => changeTab(value)} style={s.navItem}><Icon name={['player', 'company', 'study', 'history', 'profile'][index]} size={26} /><Text style={[s.navText, tab === value && { color: colors.amber }]}>{tab === value ? value : ''}</Text></Pressable>)}</View></SafeAreaView>
     </View>
     <Modal visible={preferences.onboarded && (!!overlay || rewardOpen)} animationType="slide" onRequestClose={() => { goBack(); }}>
@@ -269,9 +321,9 @@ function Application() {
         <Text style={u.eyebrow}>{reward?.source === 'checkin' ? 'ОТМЕТКА В МЕСТЕ' : reward?.source === 'district' ? 'ВЕХА РАЙОНА' : 'ЭКСПЕДИЦИЯ ЗАВЕРШЕНА'}</Text><Text style={u.title}>{reward?.granted ? 'Город стал ближе' : 'Тест пройден'}</Text>
         <RewardStatus result={reward} /><Button label="Продолжить" primary onPress={() => setRewardOpen(false)} />
       </SafeAreaView> : <SafeAreaView style={s.root}>
-        <View style={s.modalHeader}><Button label="Назад" onPress={goBack} /><Text style={[u.heading, { flex: 1, marginHorizontal: 8, fontSize: 17 }]}>{({ districts: 'Районы', preview: 'Сравнение стилей', filters: 'Меню и слои', quests: 'Задания', developer: 'Для разработчиков', settings: 'Настройки', helper: 'Помощник', inbox: 'Уведомления' })[overlay || 'quests']}</Text><Button label="Закрыть" onPress={() => setOverlay(null)} /></View>
+        <View style={s.modalHeader}><Button label="Назад" onPress={goBack} /><Text style={[u.heading, { flex: 1, marginHorizontal: 8, fontSize: 17 }]}>{({ demo: 'Демо-перемещение', collection: 'Коллекция', districts: 'Районы', preview: 'Сравнение стилей', filters: 'Меню и слои', quests: 'Задания', developer: 'Для разработчиков', settings: 'Настройки', helper: 'Помощник', inbox: 'Уведомления' })[overlay || 'quests']}</Text><Button label="Закрыть" onPress={() => setOverlay(null)} /></View>
         {!!error && <View style={s.error}><Text style={u.text}>{error}</Text><Button label="Скрыть ошибку" onPress={() => setError('')} /></View>}
-        <ScrollView automaticallyAdjustKeyboardInsets keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding: 18, gap: 16 }}><Entrance key={overlay || 'reward'}>{overlayContent()}</Entrance></ScrollView>
+        {overlay === 'collection' ? <CollectionPanel address={url || address} model={collectionId} locate={id => { const item = landmarks.find(value => value.id === id); if (item) locate(item); }} /> : <ScrollView automaticallyAdjustKeyboardInsets keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding: 18, gap: 16 }}><Entrance key={overlay || 'reward'}>{overlayContent()}</Entrance></ScrollView>}
       </SafeAreaView>}
     </Modal>
     <Modal visible={loaded && !preferences.onboarded} animationType="fade" onRequestClose={() => {}}><SafeAreaView style={s.root}><Onboarding finish={(role, interests, useGps) => { update({ onboarded: true, role, interests }); if (useGps) { setWantsGps(true); } notify('Адмирал: первый квест ждёт в заданиях.'); }} /></SafeAreaView></Modal>
