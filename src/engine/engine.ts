@@ -16,6 +16,7 @@ import { QUEST_CATALOG, questById } from "../quests/catalog";
 import { ProgressManager } from "../progress/progress";
 import { loadProgress, saveProgress } from "../progress/storage";
 import { AVATAR_ITEMS } from "../progress/catalog";
+import { shopInfo } from "../progress/shop";
 import { appearanceFromProgress } from "../progress/avatar";
 import type { AvatarAppearance } from "../progress/types";
 import { detectRenderProfile, profileFor, saveRenderQuality, type RenderProfile, type RenderQuality } from "./performance";
@@ -412,6 +413,14 @@ export class Engine {
         return this.progress.equip(cmd.itemId);
       case "unequipAvatarSlot":
         return this.progress.unequip(cmd.slot);
+      case "listShop": {
+        const st = this.progress.state;
+        return shopInfo(st.pity, st.inventory);
+      }
+      case "gachaPull":
+        return this.progress.gachaPull(cmd.bannerId, cmd.count);
+      case "buyItem":
+        return this.progress.buyItem(cmd.itemId, cmd.currency);
       case "resetProgress":
         return this.progress.reset();
       case "getState":

@@ -50,6 +50,8 @@ export type ProgressState = {
   equipped: Partial<Record<AvatarSlot, string>>;
   completedQuests: Record<string, QuestCompletion>;
   claimed: Record<string, Claim>;
+  shards: number; // осколки за дубликаты из гачи — валюта витрины
+  pity: Record<string, number>; // крутки баннера подряд без легендарки (гарантия)
 };
 
 export type RewardResult = {

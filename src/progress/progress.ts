@@ -1,5 +1,6 @@
 import { AVATAR_SLOTS, type AvatarSlot, type ProgressEvent, type ProgressState, type Reward, type RewardResult } from "./types.ts";
 import { avatarItemById } from "./catalog.ts";
+import { SHOP_PRICE, bannerById, pull, type PullResult } from "./shop.ts";
 
 export const EMPTY_PROGRESS: ProgressState = {
   version: 1,
@@ -11,6 +12,8 @@ export const EMPTY_PROGRESS: ProgressState = {
   equipped: {},
   completedQuests: {},
   claimed: {},
+  shards: 0,
+  pity: {},
 };
 
 type ProgressOptions = {
@@ -89,6 +92,37 @@ export class ProgressManager {
     return !!this.value.claimed[key];
   }
 
+  /** Крутки баннера за монеты. count — 1 или 10 (×10 со скидкой). */
+  gachaPull(bannerId: string, count: 1 | 10, rand: () => number = Math.random): { results: PullResult[]; spent: number; state: ProgressState } {
+    const banner = bannerById(bannerId);
+    if (!banner) throw new Error(`Неизвестный набор: ${bannerId}`);
+    if (count !== 1 && count !== 10) throw new Error("Крутить можно 1 или 10 раз");
+    const price = count === 10 ? banner.price10 : banner.price1;
+    if (this.value.cash < price) throw new Error(`Не хватает монет: нужно ${price}, есть ${this.value.cash}`);
+    this.value.cash -= price;
+    const results = pull(banner, count, rand, this.value.inventory, this.value.pity);
+    this.value.shards += results.reduce((s, r) => s + r.shards, 0);
+    this.persist();
+    this.emit({ type: "inventoryChanged", inventory: { ...this.value.inventory }, equipped: { ...this.value.equipped } });
+    return { results, spent: price, state: this.state };
+  }
+
+  /** Купить вещь на витрине за монеты или осколки. Легендарки за монеты не продаются. */
+  buyItem(itemId: string, currency: "cash" | "shards"): ProgressState {
+    const item = avatarItemById(itemId);
+    if (!item) throw new Error(`Неизвестный предмет: ${itemId}`);
+    if (this.value.inventory[itemId]) throw new Error("Эта вещь уже есть");
+    const price = SHOP_PRICE[item.rarity][currency];
+    if (price == null) throw new Error("Эту вещь нельзя купить за монеты — только в наборе или за осколки");
+    const have = currency === "cash" ? this.value.cash : this.value.shards;
+    if (have < price) throw new Error(`Не хватает ${currency === "cash" ? "монет" : "осколков"}: нужно ${price}, есть ${have}`);
+    if (currency === "cash") this.value.cash -= price; else this.value.shards -= price;
+    this.value.inventory[itemId] = 1;
+    this.persist();
+    this.emit({ type: "inventoryChanged", inventory: { ...this.value.inventory }, equipped: { ...this.value.equipped } });
+    return this.state;
+  }
+
   equip(itemId: string): ProgressState {
     const item = avatarItemById(itemId);
     if (!item) throw new Error(`Неизвестный предмет: ${itemId}`);
@@ -159,6 +193,8 @@ function normalizeState(state: ProgressState): ProgressState {
     equipped: { ...(state.equipped ?? {}) },
     completedQuests: { ...(state.completedQuests ?? {}) },
     claimed: { ...(state.claimed ?? {}) }, // в сохранениях до районов поля нет
+    shards: clampInt(state.shards ?? 0, 0, Number.MAX_SAFE_INTEGER),
+    pity: { ...(state.pity ?? {}) },
   };
 }
 

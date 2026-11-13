@@ -50,6 +50,9 @@ export type Command =
   | { id?: string; type: "equipAvatarItem"; itemId: string }
   | { id?: string; type: "unequipAvatarSlot"; slot: AvatarSlot }
   | { id?: string; type: "resetProgress" }
+  | { id?: string; type: "listShop" } // ответ: баннеры с шансами и гарантией, витрина с ценами
+  | { id?: string; type: "gachaPull"; bannerId: string; count: 1 | 10 } // ответ: { results: [{ itemId, rarity, duplicate, shards }], spent, state }
+  | { id?: string; type: "buyItem"; itemId: string; currency: "cash" | "shards" } // ответ: ProgressState
   | { id?: string; type: "setLighting"; mode: "auto" | "day" | "night" } // окна и свет домов; auto — по времени Владивостока; ответ: { night }
   | { id?: string; type: "setLayers"; layers: MapLayer[] } // какие категории меток видны; ответ: MapLayer[]
   | { id?: string; type: "selectPlace"; placeId: string | null; fly?: boolean } // подпись у метки (и перелёт к ней); null — снять
