@@ -33,7 +33,9 @@ export function Notice({ text, onPress }: { text: string; onPress: () => void })
 /** Fixed-size surface: gestures move it without resizing the WebView or unmounting its contents. */
 export function SwipeSheet({ level, onLevel, title, children }: { level: number; onLevel: (level: number) => void; title: string; children: ReactNode }) {
   const { height: screenHeight } = useWindowDimensions();
-  const height = Math.max(240, screenHeight * 0.68);
+  const [availableHeight, setAvailableHeight] = React.useState<number | null>(null);
+  // Measure the space above the footer, not the full display including system controls.
+  const height = Math.max(58, Math.min(availableHeight ?? screenHeight * 0.68, screenHeight * 0.68));
   const offsets = [height - 58, height * 0.46, 0];
   const translate = useRef(new Animated.Value(offsets[level])).current;
   const current = useRef(offsets[level]);
@@ -62,8 +64,8 @@ export function SwipeSheet({ level, onLevel, title, children }: { level: number;
     },
     onPanResponderTerminate: () => { const points = latest.current.offsets; snap(points.reduce((best, point) => Math.abs(point - current.current) < Math.abs(best - current.current) ? point : best)); },
   }), [translate]);
-  return <Animated.View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height, transform: [{ translateY: translate }], backgroundColor: colors.bg, borderTopLeftRadius: 22, borderTopRightRadius: 22, borderWidth: 1, borderColor: colors.line }}>
+  return <View pointerEvents="box-none" onLayout={event => setAvailableHeight(event.nativeEvent.layout.height)} style={{ flex: 1, overflow: 'hidden' }}><Animated.View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height, transform: [{ translateY: translate }], backgroundColor: colors.bg, borderTopLeftRadius: 22, borderTopRightRadius: 22, borderWidth: 1, borderColor: colors.line, overflow: 'hidden' }}>
     <View {...pan.panHandlers} accessible accessibilityLabel={`${title}. Проведи вверх, чтобы развернуть`} accessibilityRole="adjustable" accessibilityActions={[{ name: 'increment', label: 'Развернуть' }, { name: 'decrement', label: 'Свернуть' }]} onAccessibilityAction={event => onLevel(Math.max(0, Math.min(2, level + (event.nativeEvent.actionName === 'increment' ? 1 : -1))))} style={{ height: 58, alignItems: 'center', justifyContent: 'center', gap: 6 }}><View style={{ width: 38, height: 4, borderRadius: 2, backgroundColor: colors.muted }} /><Text style={u.muted}>{title} · потяни вверх</Text></View>
     <ScrollView scrollEnabled={level !== 0} automaticallyAdjustKeyboardInsets keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding: 16, gap: 12, paddingBottom: 32 }}>{children}</ScrollView>
-  </Animated.View>;
+  </Animated.View></View>;
 }

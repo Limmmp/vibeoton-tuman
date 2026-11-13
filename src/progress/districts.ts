@@ -24,6 +24,7 @@ type Entry = DistrictData & { buf: Uint8Array; revealed: number };
 
 function decodeBase64(s: string): Uint8Array {
   if (typeof atob === "function") return Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+<<<<<<< Updated upstream
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
   const clean = s.replace(/\s/g, "").replace(/=+$/, "");
   const out = new Uint8Array(Math.floor((clean.length * 6) / 8));
@@ -39,6 +40,11 @@ function decodeBase64(s: string): Uint8Array {
     }
   }
   return out;
+=======
+  const buffer = (globalThis as typeof globalThis & { Buffer?: { from(value: string, encoding: string): Uint8Array } }).Buffer;
+  if (!buffer) throw new Error("Декодирование base64 недоступно");
+  return new Uint8Array(buffer.from(s, "base64"));
+>>>>>>> Stashed changes
 }
 
 export class DistrictTracker {
