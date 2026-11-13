@@ -74,7 +74,7 @@ export class Engine {
 
   private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player, renderProfile: RenderProfile, private basemap: BasemapFallback) {
     this.renderProfile = renderProfile;
-    this.progress = new ProgressManager({ initial: loadProgress(), save: saveProgress, emit: (event) => {
+    this.progress = new ProgressManager({ initial: loadProgress(), knownExplorationCells: fog.cells, save: saveProgress, emit: (event) => {
       if (event.type === "inventoryChanged") this.applyAvatar(appearanceFromProgress(this.progress.state));
       this.emit(event);
     } });
@@ -259,7 +259,7 @@ export class Engine {
       progress: this.progress.state,
       avatar: { ...this.avatar, equipped: { ...this.avatar.equipped } },
       renderProfile: this.renderProfile,
-      engineVersion: "tilt-performance-7",
+      engineVersion: "exploration-xp-8",
       basemap: { ...this.basemap.status },
       fogEffects: this.fogEffects,
       layers: [...this.layers],
@@ -269,6 +269,7 @@ export class Engine {
   private wire() {
     const { map, fog, player } = this;
     fog.reveal(player.pos);
+    this.progress.recordExploration(fog.cells, false);
 
     // Окна и свет по времени суток во Владивостоке; в режиме auto пересматриваем раз в 10 минут.
     applyLighting(map, this.lighting);
@@ -282,14 +283,19 @@ export class Engine {
       lastMoveEvent = performance.now();
       this.emit({ type: "playerMoved", ...player.pos, heading: player.heading });
     };
-    player.onMove((pos, prev, jump) => {
-      if (jump) fog.reveal(pos); else fog.revealPath(prev, pos);
+    let gpsExploration = false;
+    player.onMove((pos, prev, jump, gps) => {
+      gpsExploration = gps;
+      try {
+        if (jump) fog.reveal(pos); else fog.revealPath(prev, pos);
+      } finally { gpsExploration = false; }
       this.quests.updatePosition(pos);
       const remaining = 250 - (performance.now() - lastMoveEvent);
       if (jump || remaining <= 0) publishPosition();
       else if (!moveTimer) moveTimer = setTimeout(publishPosition, remaining);
     });
-    fog.onChange((fresh) => {
+    fog.onChange((fresh, keys) => {
+      this.progress.recordExploration(keys, gpsExploration);
       this.quests.updateFog(fog.cells.size);
       this.emit({ type: "fogChanged", cells: fog.cells.size, km2: +fog.areaKm2().toFixed(4), fresh });
     });

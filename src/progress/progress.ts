@@ -2,6 +2,11 @@ import { AVATAR_SLOTS, type AvatarSlot, type ProgressEvent, type ProgressState, 
 import { avatarItemById } from "./catalog.ts";
 import { SHOP_PRICE, bannerById, pull, type PullResult } from "./shop.ts";
 import { levelProgress } from "./level.ts";
+import { CELL } from "../engine/geo.ts";
+
+// Журнал хранится вместе с XP, но не пересылается в WebView-событиях и HUD.
+export type ProgressSave = ProgressState & { exploration?: { seen: string[]; cells: number } };
+const CELLS_PER_EXPLORATION_REWARD = 10000 / (CELL * CELL);
 
 export const EMPTY_PROGRESS: ProgressState = {
   version: 1,
@@ -18,20 +23,25 @@ export const EMPTY_PROGRESS: ProgressState = {
 };
 
 type ProgressOptions = {
-  initial?: ProgressState;
+  initial?: ProgressSave;
+  knownExplorationCells?: Iterable<string>;
   emit?: (event: ProgressEvent) => void;
-  save?: (state: ProgressState) => void;
+  save?: (state: ProgressSave) => void;
   now?: () => Date;
 };
 
 export class ProgressManager {
+  private exploredCells: Set<string>;
+  private explorationCells: number;
   private value: ProgressState;
   private emit: (event: ProgressEvent) => void;
-  private save: (state: ProgressState) => void;
+  private save: (state: ProgressSave) => void;
   private now: () => Date;
 
   constructor(options: ProgressOptions = {}) {
     this.value = normalizeState(options.initial ?? EMPTY_PROGRESS);
+    this.exploredCells = new Set([...(options.initial?.exploration?.seen ?? []), ...(options.knownExplorationCells ?? [])]);
+    this.explorationCells = clampInt(options.initial?.exploration?.cells ?? 0, 0, this.exploredCells.size);
     this.emit = options.emit ?? (() => {});
     this.save = options.save ?? (() => {});
     this.now = options.now ?? (() => new Date());
@@ -39,6 +49,25 @@ export class ProgressManager {
 
   get state(): ProgressState {
     return structuredClone(this.value);
+  }
+
+  /** 10 XP за 25 новых ячеек (0,01 км²), открытых настоящим GPS-фиксом. */
+  recordExploration(keys: Iterable<string>, gps: boolean): number {
+    let fresh = 0;
+    for (const key of keys) {
+      if (this.exploredCells.has(key)) continue;
+      this.exploredCells.add(key);
+      fresh++;
+    }
+    if (!fresh) return 0;
+    const before = Math.floor(this.explorationCells / CELLS_PER_EXPLORATION_REWARD);
+    if (gps) this.explorationCells += fresh;
+    const xp = (Math.floor(this.explorationCells / CELLS_PER_EXPLORATION_REWARD) - before) * 10;
+    this.value.xp += xp;
+    this.value.level = levelForXp(this.value.xp);
+    // Даже демо-ячейки помним: сброс тумана не превращает их в новые GPS-открытия.
+    this.persist(xp > 0);
+    return xp;
   }
 
   grantQuestReward(input: { questId: string; title: string; reward: Reward; trusted: boolean }): RewardResult {
@@ -144,6 +173,7 @@ export class ProgressManager {
 
   reset(): ProgressState {
     this.value = structuredClone(EMPTY_PROGRESS);
+    this.explorationCells = 0;
     this.persist();
     this.emit({ type: "inventoryChanged", inventory: {}, equipped: {} });
     return this.state;
@@ -159,9 +189,9 @@ export class ProgressManager {
     return { questId, granted, ...(reason ? { reason } : {}), reward, newItems, state: this.state };
   }
 
-  private persist() {
-    this.save(this.state);
-    this.emit({ type: "progressChanged", state: this.state });
+  private persist(notify = true) {
+    this.save({ ...this.state, exploration: { seen: [...this.exploredCells], cells: this.explorationCells } });
+    if (notify) this.emit({ type: "progressChanged", state: this.state });
   }
 }
 

@@ -50,6 +50,9 @@ try {
   await call('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 3, mobile: true });
   await call('Emulation.setTouchEmulationEnabled', { enabled: true });
   await call('Page.navigate', { url: mapUrl });
+  await waitFor('!!window.tuman');
+  // Предыдущая GPS-проверка могла сохранить позицию за городом без дорожных тайлов.
+  await evaluate(`(async()=>{await window.tuman.exec({type:'follow',on:true});await window.tuman.exec({type:'teleport',lat:43.1155,lon:131.8855});window.tuman.map.jumpTo({zoom:15,pitch:0});})()`);
   await waitFor(`!!window.tuman && window.tuman.state().basemap.ready && window.tuman.map.queryRenderedFeatures().some(feature => feature.sourceLayer === 'transportation')`);
   await evaluate(`window.tuman.exec({type:'setRenderQuality',quality:'low'})`);
   assert.equal(await evaluate('window.tuman.map.getPixelRatio()'), 1);
@@ -150,8 +153,41 @@ try {
   await call('Network.setBlockedURLs', { urls: ['*tiles.openfreemap.org/styles/liberty*'] });
   await call('Page.reload', { ignoreCache: true });
   await waitFor(`window.tuman?.state().basemap.provider === 'raster' && window.tuman.state().basemap.ready`);
-  assert.equal(await evaluate('window.tuman.state().engineVersion'), 'tilt-performance-7');
-  console.log('PASS: vector streets, readable style, live pixel ratio, low terrain, movement coalescing, hidden fog, effects toggle, tile/style failures');
+  assert.equal(await evaluate('window.tuman.state().engineVersion'), 'exploration-xp-8');
+  const storageBackup = await evaluate(`({progress:localStorage.getItem('tuman:progress'),fog:localStorage.getItem('tuman:fog'),player:localStorage.getItem('tuman:player')})`);
+  try {
+    await evaluate(`localStorage.removeItem('tuman:progress');localStorage.removeItem('tuman:fog');true`);
+    await call('Page.reload', { ignoreCache: true });
+    await waitFor('!!window.tuman');
+    const exploration = await evaluate(`(async()=>{
+      const e=window.tuman, ledger=()=>JSON.parse(localStorage.getItem('tuman:progress')).exploration;
+      await e.exec({type:'follow',on:false});
+      await e.exec({type:'setPlayerMode',mode:'external'});
+      await e.exec({type:'gpsFix',lat:43.25,lon:131.8,accuracy:10});
+      await e.exec({type:'gpsFix',lat:43.251,lon:131.8,accuracy:10});
+      const cells=ledger().cells,xp=e.state().progress.xp;
+      await e.exec({type:'gpsFix',lat:43.26,lon:131.8,accuracy:100});
+      const inaccurateIgnored=ledger().cells===cells&&e.state().progress.xp===xp;
+      await e.exec({type:'teleport',lat:43.3,lon:131.8});
+      const teleportIgnored=ledger().cells===cells&&e.state().progress.xp===xp;
+      await e.exec({type:'resetFog'});
+      await e.exec({type:'gpsFix',lat:43.251,lon:131.8,accuracy:10});
+      const repeatIgnored=ledger().cells===cells&&e.state().progress.xp===xp;
+      return {xp,expected:Math.floor(cells/25)*10,inaccurateIgnored,teleportIgnored,repeatIgnored};
+    })()`);
+    assert.ok(exploration.xp > 0);
+    assert.equal(exploration.xp, exploration.expected);
+    assert.equal(exploration.inaccurateIgnored, true);
+    assert.equal(exploration.teleportIgnored, true);
+    assert.equal(exploration.repeatIgnored, true);
+    await delay(2200); // отложенное сохранение тумана до перезагрузки
+    await call('Page.reload', { ignoreCache: true });
+    await waitFor('!!window.tuman');
+    assert.equal(await evaluate('window.tuman.state().progress.xp'), exploration.xp);
+  } finally {
+    await evaluate(`(()=>{const saved=${JSON.stringify(storageBackup)};for(const key of ['progress','fog','player']){if(saved[key]===null)localStorage.removeItem('tuman:'+key);else localStorage.setItem('tuman:'+key,saved[key]);}return true})()`);
+  }
+  console.log('PASS: vector streets, 2D tilt, live pixel ratio, low terrain, movement coalescing, hidden fog, tile/style failures, GPS exploration XP, persistence, no inaccurate-fix/teleport/replay rewards');
 } finally {
   const closed = new Promise(resolve => ws.addEventListener('close', resolve));
   ws.close();

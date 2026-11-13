@@ -13,7 +13,7 @@ import avatarConfig from "../../public/avatar/config.json";
 import { DEFAULT_SIM_SPEED, demoPoint, movementStep, simSpeed } from "./simulation";
 
 export type PlayerMode = "sim" | "external" | "gps";
-type MoveListener = (pos: LatLon, prev: LatLon, jump: boolean) => void;
+type MoveListener = (pos: LatLon, prev: LatLon, jump: boolean, gps: boolean) => void;
 
 export const SIM_SPEEDUP = 8;
 const GPS_MAX_ACCURACY = 60; // м — хуже игнорируем
@@ -151,10 +151,10 @@ export class Player {
     if (this.mode !== "external") return;
     if (p.accuracy != null && p.accuracy > GPS_MAX_ACCURACY) return;
     const h = Number.isFinite(p.heading) ? (p.heading as number) : bearing(this.pos, p);
-    this.setPos(p, h, distance(this.pos, p) > 2000);
+    this.setPos(p, h, distance(this.pos, p) > 2000, true);
   }
 
-  private setPos(p: LatLon, heading?: number, jump = false) {
+  private setPos(p: LatLon, heading?: number, jump = false, gps = false) {
     const prev = this.pos;
     this.pos = { lat: p.lat, lon: p.lon };
     if (heading != null) this.heading = heading;
@@ -165,7 +165,7 @@ export class Player {
       this.movingTimer = setTimeout(() => this.showAvatarFrame(false), 250);
     }
     this.persist();
-    this.listeners.forEach((fn) => fn(this.pos, prev, jump));
+    this.listeners.forEach((fn) => fn(this.pos, prev, jump, gps));
   }
 
   setRenderingActive(active: boolean) {
@@ -194,7 +194,7 @@ export class Player {
           (g) => {
             const { latitude: lat, longitude: lon, accuracy, heading } = g.coords;
             if (accuracy > GPS_MAX_ACCURACY && !first) return;
-            this.setPos({ lat, lon }, Number.isFinite(heading) ? (heading as number) : bearing(this.pos, { lat, lon }), first);
+            this.setPos({ lat, lon }, Number.isFinite(heading) ? (heading as number) : bearing(this.pos, { lat, lon }), first, accuracy <= GPS_MAX_ACCURACY);
             if (first) { first = false; resolve(); }
           },
           (err) => first && reject(new Error(err.code === 1 ? "Доступ к геолокации запрещён" : "Не удалось получить позицию")),
