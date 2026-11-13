@@ -120,7 +120,7 @@ export function addTerrainLayers(map: MLMap): string | undefined {
 export function setViewMode(map: MLMap, mode: ViewMode, profile?: RenderProfile) {
   if (mode === "3d") {
     map.setTerrain({ source: "dem-terrain", exaggeration: TERRAIN_EXAGGERATION });
-    map.setLayoutProperty("building-3d", "visibility", "visible");
+    map.setLayoutProperty("building-3d", "visibility", profile?.show3dBuildings === false ? "none" : "visible");
     map.easeTo({ pitch: profile?.pitch3d ?? PITCH_3D, duration: profile?.mobile ? 350 : 900 });
   } else {
     map.setTerrain(null);

@@ -93,6 +93,7 @@ Location.watchPositionAsync(
 
 | Команда | Что делает | Ответ |
 | --- | --- | --- |
+| `setRenderQuality { quality: "low" \| "balanced" \| "high" }` | меняет туман, дома и 3D-наклон; pixel ratio меняется после перезапуска WebView | `RenderProfile` |
 | `setViewMode { mode: "2d" \| "3d" }` | переключает рельеф и наклон | — |
 | `setPlayerMode { mode }` | `sim` / `external` / `gps` | итоговый режим |
 | `gpsFix { lat, lon, accuracy?, heading? }` | позиция игрока из приложения | — |
@@ -122,7 +123,9 @@ Location.watchPositionAsync(
 | `resetProgress` | сбрасывает локальный профиль; только для отладки | `ProgressState` |
 | `getState` | позиция, режимы, туман, квест и профиль | `State` |
 
-**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `progressChanged`, `rewardGranted`, `inventoryChanged`, `result`.
+**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `progressChanged`, `rewardGranted`, `inventoryChanged`, `renderQualityChanged`, `result`.
+
+`mapTap.action` равен `walk` только в симуляции. При включённом GPS/`external` тап не двигает аватар и приходит как `select`: приложение может выбрать точку или построить маршрут. После отключения GPS нужно отправить `setPlayerMode { mode: "sim" }`, тогда тапы снова запускают демопрогулку.
 
 Квестовый движок не рисует интерфейс React Native. Приложение получает `activeStep`, показывает текст, аудио и варианты ответа, затем отправляет команду подтверждения. Шаги `goto`, `hold`, `tail`, `collect`, `explore` и `visit` отслеживает движок. Для `listen` и `look` сначала нужен геотриггер у точки; готовность приходит в `activeStep.runtime`.
 
@@ -146,16 +149,16 @@ React Native управляет редактором и вызывает `equipA
 
 ## Мобильный профиль производительности
 
-Движок автоматически включает мобильный профиль при узком экране, coarse pointer или памяти устройства до 4 ГБ. Он не меняет геометрию домов и дорог, но снижает стоимость рендера:
+Движок автоматически включает `low` при узком экране, coarse pointer или памяти устройства до 4 ГБ. Это профиль по умолчанию для Samsung Galaxy A24. Он не меняет геометрию домов и дорог:
 
-- pixel ratio MapLibre ограничен до 1,5;
-- canvas тумана ограничен 1280 px вместо 2048 px;
-- туман перерисовывается примерно 4,5 раза в секунду вместо 8;
-- лимит открытых 3D-домов снижен с 8000 до 3000;
-- 3D-наклон снижен с 60° до 50°;
+- pixel ratio MapLibre ограничен до 1;
+- canvas тумана ограничен 960 px;
+- туман перерисовывается примерно 3 раза в секунду;
+- 3D-дома отключены, но рельеф остаётся;
+- 3D-наклон снижен до 40°;
 - отключён fade тайлов и сокращены анимации камеры.
 
-Активные параметры доступны в `getState().renderProfile`. Это позволяет сравнивать FPS на телефонах и позднее добавить ручные профили качества.
+`balanced` включает до 3000 домов, canvas тумана 1280 px и pitch 50°. `high` включает полный профиль. Активные параметры доступны в `getState().renderProfile`. Качество можно переключить через `setRenderQuality`; для применения нового pixel ratio нужно перезапустить WebView, остальные параметры применяются сразу.
 
 Минимальный сценарий приложения:
 
