@@ -1,5 +1,5 @@
 import { distance, lerp, type LatLon } from "../engine/geo.ts";
-import type { ActiveStep, Quest, QuestRunnerEvent, QuestSnapshot, QuestStep, StepRuntime, TailStep } from "./types.ts";
+import type { ActiveStep, Quest, QuestRunnerEvent, QuestSnapshot, QuestStep, QuestTarget, StepProgress, StepRuntime, TailStep } from "./types.ts";
 
 type RunnerOptions = {
   emit?: (event: QuestRunnerEvent) => void;
@@ -22,13 +22,19 @@ export class QuestRunner {
   get active(): ActiveStep | null {
     const state = this.snapshot;
     if (!state) return null;
+    const step = state.quest.steps[state.stepIndex];
+    const targets = targetsFor(step, state.runtime);
+    const nearest = this.position && targets.filter((target) => !target.done).sort((a, b) => distance(this.position!, a) - distance(this.position!, b))[0];
     return {
       questId: state.quest.id,
       questTitle: state.quest.title,
       stepIndex: state.stepIndex,
       stepCount: state.quest.steps.length,
-      step: state.quest.steps[state.stepIndex],
+      step,
       runtime: cloneRuntime(state.runtime),
+      targets,
+      ...(nearest ? { distanceMeters: Math.round(distance(this.position!, nearest)) } : {}),
+      ...(progressFor(step, state.runtime, this.fogCells) ? { progress: progressFor(step, state.runtime, this.fogCells) } : {}),
     };
   }
 
@@ -159,6 +165,7 @@ export class QuestRunner {
     const traveled = (state.runtime.tailDistance ?? 0) + step.speed * seconds;
     state.runtime.tailDistance = traveled;
     const target = pointAlong(path, traveled);
+    state.runtime.tailTarget = target;
     const d = distance(this.position!, target);
     if (d > step.loseDistance) return this.fail("Цель потеряна");
     state.runtime.tooCloseSeconds = d < step.minDistance ? (state.runtime.tooCloseSeconds ?? 0) + seconds : Math.max(0, (state.runtime.tooCloseSeconds ?? 0) - seconds / 2);
@@ -227,6 +234,44 @@ export class QuestRunner {
 
 function cloneRuntime(runtime: StepRuntime): StepRuntime {
   return { ...runtime, ...(runtime.collected ? { collected: [...runtime.collected] } : {}) };
+}
+
+function targetsFor(step: QuestStep, runtime: StepRuntime): QuestTarget[] {
+  switch (step.type) {
+    case "goto":
+    case "hold":
+    case "listen":
+    case "look":
+      return [{ ...step.poi, kind: "target" }];
+    case "visit":
+      return [{ ...step.place, kind: "target" }];
+    case "collect": {
+      const done = new Set(runtime.collected ?? []);
+      return step.pois.map((poi) => ({ ...poi, kind: "collect", done: done.has(poi.id) }));
+    }
+    case "tail": {
+      const p = runtime.tailTarget ?? step.from;
+      return [{ id: `${step.id}-tail`, name: "Цель", ...p, kind: "tail" }];
+    }
+    case "explore":
+    case "quiz":
+      return [];
+  }
+}
+
+function progressFor(step: QuestStep, runtime: StepRuntime, fogCells: number): StepProgress | undefined {
+  switch (step.type) {
+    case "hold":
+      return { current: Math.min(step.seconds, Math.floor(runtime.holdSeconds ?? 0)), total: step.seconds, unit: "seconds" };
+    case "collect":
+      return { current: runtime.collected?.length ?? 0, total: step.pois.length, unit: "items" };
+    case "explore":
+      return { current: Math.min(step.cells, Math.max(0, fogCells - (runtime.baseFogCells ?? fogCells))), total: step.cells, unit: "cells" };
+    case "tail":
+      return { current: Math.min(pathLength(step.path?.length ? step.path : [step.from, step.to]), Math.floor(runtime.tailDistance ?? 0)), total: Math.ceil(pathLength(step.path?.length ? step.path : [step.from, step.to])), unit: "meters" };
+    default:
+      return;
+  }
 }
 
 function pathLength(path: LatLon[]) {

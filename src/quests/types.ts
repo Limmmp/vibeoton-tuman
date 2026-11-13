@@ -93,6 +93,10 @@ export type Quest = {
   steps: QuestStep[];
 };
 
+export type QuestSummary = Pick<Quest, "id" | "title" | "giver" | "intro" | "reward" | "start" | "source"> & {
+  stepCount: number;
+};
+
 export type StepRuntime = {
   elapsed: number;
   holdSeconds?: number;
@@ -103,6 +107,18 @@ export type StepRuntime = {
   tailDistance?: number;
   tailStarted?: boolean;
   tooCloseSeconds?: number;
+  tailTarget?: LatLon;
+};
+
+export type QuestTarget = QuestPoint & {
+  kind: "target" | "collect" | "tail";
+  done?: boolean;
+};
+
+export type StepProgress = {
+  current: number;
+  total: number;
+  unit: "seconds" | "items" | "cells" | "meters";
 };
 
 export type QuestSnapshot = {
@@ -118,6 +134,9 @@ export type ActiveStep = {
   stepCount: number;
   step: QuestStep;
   runtime: StepRuntime;
+  targets: QuestTarget[];
+  distanceMeters?: number;
+  progress?: StepProgress;
 };
 
 export type QuestRunnerEvent =

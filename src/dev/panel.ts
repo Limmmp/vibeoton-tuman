@@ -5,6 +5,8 @@ import type { Engine } from "../engine/engine";
 import { formatDistance } from "../engine/geo";
 import type { Place } from "../data/place";
 import placesJson from "../../data/places.json";
+import { ENGINE_DEMO_QUEST } from "../quests/catalog";
+import type { ActiveStep } from "../quests/types";
 import "./panel.css";
 
 const places = placesJson as Place[];
@@ -26,6 +28,11 @@ export function mountDevPanel(engine: Engine) {
     <div class="dev-row">
       <button data-act="places">Места</button>
     </div>
+    <div class="dev-row">
+      <button data-act="quest">Тест-квест</button>
+      <button data-act="quest-stop">Стоп</button>
+    </div>
+    <div class="dev-quest" hidden></div>
     <div class="dev-place" hidden></div>
     <div class="dev-stats">
       <div>Открыто: <b data-out="area">—</b></div>
@@ -55,9 +62,34 @@ export function mountDevPanel(engine: Engine) {
   };
   updateArea();
   const placeBox = $(".dev-place");
+  const questBox = $(".dev-quest");
+  const renderQuest = (active: ActiveStep | null) => {
+    if (!active) {
+      questBox.hidden = true;
+      questBox.replaceChildren();
+      return;
+    }
+    questBox.hidden = false;
+    const units = { seconds: "с", items: "точек", cells: "ячеек", meters: "м" } as const;
+    const progress = active.progress ? ` · ${active.progress.current}/${active.progress.total} ${units[active.progress.unit]}` : "";
+    questBox.innerHTML = `<b>${active.questTitle}</b><br>Шаг ${active.stepIndex + 1}/${active.stepCount}: ${active.step.text || active.step.type}${active.distanceMeters != null ? ` · ${active.distanceMeters} м` : ""}${progress}`;
+    const actions = document.createElement("div");
+    actions.className = "dev-row dev-quest-actions";
+    if (active.step.type === "listen" && active.runtime.audioReady) actions.append(actionButton("Аудио готово", "quest-listen"));
+    if (active.step.type === "look" && active.runtime.confirmationReady) actions.append(actionButton("Подтвердить", "quest-look"));
+    if (active.step.type === "quiz") active.step.answers.forEach((answer, i) => actions.append(actionButton(answer, `quest-answer-${i}`)));
+    if (actions.childElementCount) questBox.append(actions);
+  };
+  renderQuest(engine.state().quest);
   engine.on((e) => {
     if (e.type === "fogChanged") updateArea();
     if (e.type === "mapLongPress") buildRoute(e.lat, e.lon);
+    if (e.type === "activeStep") renderQuest(e.active);
+    if (e.type === "questDone" || e.type === "questFailed" || e.type === "questStopped") renderQuest(null);
+    if (e.type === "questTargetTap") {
+      const target = engine.state().quest?.targets.find((item) => item.id === e.id);
+      if (target) void engine.exec({ type: "walkTo", lat: target.lat, lon: target.lon });
+    }
     if (e.type === "placeTap") {
       const p = places.find((x) => x.id === e.id);
       if (!p) return;
@@ -93,6 +125,24 @@ export function mountDevPanel(engine: Engine) {
           break;
         case "reset":
           await engine.exec({ type: "resetFog" });
+          break;
+        case "quest":
+          await engine.exec({ type: "teleport", ...ENGINE_DEMO_QUEST.start });
+          await engine.exec({ type: "startQuestById", questId: ENGINE_DEMO_QUEST.id });
+          break;
+        case "quest-stop":
+          await engine.exec({ type: "stopQuest" });
+          break;
+        case "quest-listen":
+          await engine.exec({ type: "completeListen" });
+          break;
+        case "quest-look":
+          await engine.exec({ type: "confirmLook" });
+          break;
+        case "quest-answer-0":
+        case "quest-answer-1":
+        case "quest-answer-2":
+          await engine.exec({ type: "answerQuiz", answer: Number(btn.dataset.act.at(-1)) });
           break;
         case "places": {
           const shown = btn.dataset.on === "1";
@@ -135,6 +185,13 @@ export function mountDevPanel(engine: Engine) {
       showError(e);
     }
   }
+}
+
+function actionButton(text: string, action: string) {
+  const button = document.createElement("button");
+  button.textContent = text;
+  button.dataset.act = action;
+  return button;
 }
 
 function drawProfile(cv: HTMLCanvasElement, profile: { d: number; h: number }[]) {

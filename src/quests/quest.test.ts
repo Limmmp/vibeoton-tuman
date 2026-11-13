@@ -70,6 +70,18 @@ test("goto, hold и collect завершаются от координат и в
   assert.equal(events.at(-1)?.type, "questDone");
 });
 
+test("activeStep отдаёт цели, расстояние и прогресс для карты и приложения", () => {
+  const { value } = runner();
+  value.start(quest([{ type: "collect", pois: ["a", "b"], radius: 20 }]), { position: move(A, 270, 50) });
+  assert.equal(value.active?.targets.length, 2);
+  assert.ok((value.active?.distanceMeters ?? 0) >= 45);
+  assert.deepEqual(value.active?.progress, { current: 0, total: 2, unit: "items" });
+
+  value.updatePosition(A);
+  assert.equal(value.active?.targets.find((target) => target.id === "a")?.done, true);
+  assert.deepEqual(value.active?.progress, { current: 1, total: 2, unit: "items" });
+});
+
 test("explore считает только новые ячейки после начала шага", () => {
   const { value } = runner();
   value.start(quest([{ type: "explore", cells: 3 }]), { fogCells: 100 });

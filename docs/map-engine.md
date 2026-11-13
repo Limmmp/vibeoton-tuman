@@ -106,7 +106,9 @@ Location.watchPositionAsync(
 | `elevation { lat, lon }` | высота точки | `{ h }` |
 | `revealAt { lat, lon, radius? }` | открывает туман (для отладки и наград) | число новых ячеек |
 | `resetFog` | сбрасывает туман | — |
-| `startQuest { quest }` | валидирует и запускает квест | активный шаг |
+| `listQuests` | список встроенных квестов без полных шагов | `QuestSummary[]` |
+| `startQuestById { questId }` | запускает квест из встроенного каталога | активный шаг |
+| `startQuest { quest }` | валидирует и запускает внешний квест | активный шаг |
 | `stopQuest` | останавливает активный квест | — |
 | `answerQuiz { answer }` | отвечает на `quiz`, индекс 0–2 | `{ correct }` |
 | `completeListen` | сообщает, что аудио дослушано | — |
@@ -114,11 +116,31 @@ Location.watchPositionAsync(
 | `getQuestState` | возвращает активный шаг | `ActiveStep | null` |
 | `getState` | позиция, режимы, статистика тумана и активный квест | `State` |
 
-**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `result`.
+**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `result`.
 
-Квестовый движок не рисует интерфейс. React Native получает `activeStep`, показывает текст, аудио и варианты ответа, затем отправляет команду подтверждения. Шаги `goto`, `hold`, `tail`, `collect`, `explore` и `visit` отслеживает движок. Для `listen` и `look` сначала нужен геотриггер у точки; готовность приходит в `activeStep.runtime`.
+Квестовый движок не рисует интерфейс React Native. Приложение получает `activeStep`, показывает текст, аудио и варианты ответа, затем отправляет команду подтверждения. Шаги `goto`, `hold`, `tail`, `collect`, `explore` и `visit` отслеживает движок. Для `listen` и `look` сначала нужен геотриггер у точки; готовность приходит в `activeStep.runtime`.
+
+`activeStep.targets` содержит вычисленные цели текущего шага. Движок сам показывает их янтарными, зелёными или коралловыми метками. `distanceMeters` — расстояние до ближайшей незавершённой цели. `progress` содержит `current`, `total` и единицу измерения. Нажатие по метке даёт `questTargetTap`; приложение решает, строить ли маршрут или открывать подсказку.
+
+Встроенный технический квест `engine-demo-center` лежит в [`src/quests/catalog.ts`](../src/quests/catalog.ts). Он использует реальные координаты мест из OSM, но не содержит исторических утверждений. В браузерной отладочной панели кнопка «Тест-квест» переносит игрока к старту. Нажатие по целевой метке запускает движение в режиме `sim`.
 
 Активный квест сохраняется в `localStorage` WebView и восстанавливается при запуске. Типы квеста экспортируются из [`src/engine/protocol.ts`](../src/engine/protocol.ts); исходная логика лежит в `src/quests/`.
+
+Минимальный сценарий приложения:
+
+```ts
+send({ id: "quests", type: "listQuests" });
+send({ id: "start", type: "startQuestById", questId: "engine-demo-center" });
+
+// activeStep.step.type === "quiz"
+send({ id: "answer", type: "answerQuiz", answer: 1 });
+
+// activeStep.step.type === "listen" && activeStep.runtime.audioReady
+send({ id: "audio", type: "completeListen" });
+
+// activeStep.step.type === "look" && activeStep.runtime.confirmationReady
+send({ id: "look", type: "confirmLook" });
+```
 
 Для отладки из консоли браузера доступен `window.tuman.exec({...})`.
 

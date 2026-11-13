@@ -8,9 +8,11 @@ import { Player } from "./player";
 import { routeWithElevation } from "./route";
 import { elevationAt } from "./dem";
 import type { Command, EngineEvent, Place, State } from "./protocol";
+import type { ActiveStep } from "../quests/types";
 import { QuestRunner } from "../quests/runner";
 import { resolveQuest } from "../quests/schema";
 import { loadQuestSnapshot, saveQuestSnapshot } from "../quests/storage";
+import { QUEST_CATALOG, questById } from "../quests/catalog";
 
 type Handler = (e: EngineEvent) => void;
 
@@ -32,7 +34,11 @@ export class Engine {
 
   private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player) {
     this.quests = new QuestRunner({
-      emit: (event) => this.emit(event),
+      emit: (event) => {
+        if (event.type === "activeStep") this.drawQuestTargets(event.active);
+        else if (event.type === "questDone" || event.type === "questFailed" || event.type === "questStopped") this.drawQuestTargets(null);
+        this.emit(event);
+      },
       save: saveQuestSnapshot,
     });
   }
@@ -66,6 +72,19 @@ export class Engine {
 
   private emit(e: EngineEvent) {
     this.handlers.forEach((fn) => fn(e));
+  }
+
+  private drawQuestTargets(active: ActiveStep | null) {
+    const source = this.map.getSource("quest-targets") as GeoJSONSource | undefined;
+    if (!source) return;
+    source.setData({
+      type: "FeatureCollection",
+      features: (active?.targets ?? []).filter((target) => !target.done).map((target) => ({
+        type: "Feature",
+        properties: { id: target.id, name: target.name, kind: target.kind },
+        geometry: { type: "Point", coordinates: [target.lon, target.lat] },
+      })),
+    });
   }
 
   state(): State {
@@ -126,6 +145,8 @@ export class Engine {
 
     // Тап по метке → placeTap; по пустой карте → mapTap (в симуляции ещё и идём туда).
     map.on("click", (e) => {
+      const questHit = map.queryRenderedFeatures(e.point, { layers: ["quest-targets"] })[0];
+      if (questHit) return this.emit({ type: "questTargetTap", id: String(questHit.properties?.id) });
       const hit = map.queryRenderedFeatures(e.point, { layers: ["places"] })[0];
       if (hit) return this.emit({ type: "placeTap", id: String(hit.properties?.id) });
       const p = { lat: e.lngLat.lat, lon: e.lngLat.lng };
@@ -204,6 +225,13 @@ export class Engine {
         fog.reset();
         fog.reveal(player.pos);
         return;
+      case "listQuests":
+        return QUEST_CATALOG.map(({ id, title, giver, intro, reward, start, source, steps }) => ({ id, title, giver, intro, reward, start, source, stepCount: steps.length }));
+      case "startQuestById": {
+        const quest = questById(cmd.questId);
+        if (!quest) throw new Error(`Квест не найден: ${cmd.questId}`);
+        return this.quests.start(quest, { position: player.pos, fogCells: fog.cells.size });
+      }
       case "startQuest":
         return this.quests.start(resolveQuest(cmd.quest, undefined, cmd.quest.source), { position: player.pos, fogCells: fog.cells.size });
       case "stopQuest":
@@ -247,5 +275,14 @@ function addOverlayLayers(map: MLMap, beforeId?: string) {
   map.addLayer({
     id: "places", type: "circle", source: "places",
     paint: { "circle-radius": 8, "circle-color": ["get", "color"], "circle-stroke-color": "#F4F6F8", "circle-stroke-width": 2 },
+  });
+  map.addSource("quest-targets", { type: "geojson", data: EMPTY });
+  map.addLayer({
+    id: "quest-targets", type: "circle", source: "quest-targets",
+    paint: {
+      "circle-radius": ["match", ["get", "kind"], "tail", 10, "collect", 9, 11],
+      "circle-color": ["match", ["get", "kind"], "tail", "#FF7A6B", "collect", "#5BC07A", "#F5B83D"],
+      "circle-stroke-color": "#F4F6F8", "circle-stroke-width": 3,
+    },
   });
 }

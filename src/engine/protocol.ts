@@ -32,6 +32,8 @@ export type Command =
   | { id?: string; type: "elevation"; lat: number; lon: number } // ответ: { h: number | null }
   | { id?: string; type: "revealAt"; lat: number; lon: number; radius?: number }
   | { id?: string; type: "resetFog" }
+  | { id?: string; type: "listQuests" } // ответ: QuestSummary[]
+  | { id?: string; type: "startQuestById"; questId: string }
   | { id?: string; type: "startQuest"; quest: Quest }
   | { id?: string; type: "stopQuest" }
   | { id?: string; type: "answerQuiz"; answer: number }
@@ -54,6 +56,7 @@ export type EngineEvent =
   | { type: "mapTap"; lat: number; lon: number }
   | { type: "mapLongPress"; lat: number; lon: number }
   | { type: "placeTap"; id: string }
+  | { type: "questTargetTap"; id: string }
   | { type: "activeStep"; active: ActiveStep }
   | { type: "stepDone"; questId: string; stepId: string; stepIndex: number }
   | { type: "questDone"; questId: string; reward: Quest["reward"] }
@@ -61,4 +64,4 @@ export type EngineEvent =
   | { type: "questStopped"; questId: string }
   | { type: "result"; id: string; ok: boolean; data?: unknown; error?: string };
 
-export type { ActiveStep, Quest } from "../quests/types";
+export type { ActiveStep, Quest, QuestSummary } from "../quests/types";
