@@ -1,10 +1,12 @@
 // Протокол между приложением (React Native) и движком карты в WebView.
-// Этот файл — контракт: его можно скопировать в RN-проект как есть.
+// Этот файл и ../quests/types.ts образуют контракт; в RN-проект нужно копировать оба.
 //
 // RN → карта:   webviewRef.current.postMessage(JSON.stringify(command))
 // карта → RN:   onMessage={(e) => handle(JSON.parse(e.nativeEvent.data))}
 //
 // Команда с полем id получает ответ { type: "result", id, ok, data | error }.
+
+import type { ActiveStep, Quest } from "../quests/types";
 
 export type LatLon = { lat: number; lon: number };
 
@@ -30,12 +32,19 @@ export type Command =
   | { id?: string; type: "elevation"; lat: number; lon: number } // ответ: { h: number | null }
   | { id?: string; type: "revealAt"; lat: number; lon: number; radius?: number }
   | { id?: string; type: "resetFog" }
+  | { id?: string; type: "startQuest"; quest: Quest }
+  | { id?: string; type: "stopQuest" }
+  | { id?: string; type: "answerQuiz"; answer: number }
+  | { id?: string; type: "completeListen" }
+  | { id?: string; type: "confirmLook" }
+  | { id?: string; type: "getQuestState" } // ответ: ActiveStep | null
   | { id?: string; type: "getState" }; // ответ: State
 
 export type State = {
   player: LatLon & { heading: number; mode: "sim" | "external" | "gps"; follow: boolean };
   viewMode: "2d" | "3d";
   fog: { cells: number; km2: number };
+  quest: ActiveStep | null;
 };
 
 export type EngineEvent =
@@ -45,4 +54,11 @@ export type EngineEvent =
   | { type: "mapTap"; lat: number; lon: number }
   | { type: "mapLongPress"; lat: number; lon: number }
   | { type: "placeTap"; id: string }
+  | { type: "activeStep"; active: ActiveStep }
+  | { type: "stepDone"; questId: string; stepId: string; stepIndex: number }
+  | { type: "questDone"; questId: string; reward: Quest["reward"] }
+  | { type: "questFailed"; questId: string; reason: string }
+  | { type: "questStopped"; questId: string }
   | { type: "result"; id: string; ok: boolean; data?: unknown; error?: string };
+
+export type { ActiveStep, Quest } from "../quests/types";

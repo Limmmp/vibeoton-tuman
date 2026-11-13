@@ -87,7 +87,7 @@ Location.watchPositionAsync(
 
 ## Протокол
 
-Полный контракт с типами — в [`src/engine/protocol.ts`](../src/engine/protocol.ts). Его можно копировать в RN-проект как есть.
+Контракт команд и событий — в [`src/engine/protocol.ts`](../src/engine/protocol.ts), типы квестов — в [`src/quests/types.ts`](../src/quests/types.ts). В RN-проект нужно копировать оба файла.
 
 **Команды (приложение → карта).** Если у команды есть `id`, карта отвечает событием `result` с тем же `id`.
 
@@ -106,9 +106,19 @@ Location.watchPositionAsync(
 | `elevation { lat, lon }` | высота точки | `{ h }` |
 | `revealAt { lat, lon, radius? }` | открывает туман (для отладки и наград) | число новых ячеек |
 | `resetFog` | сбрасывает туман | — |
-| `getState` | позиция, режимы, статистика тумана | `State` |
+| `startQuest { quest }` | валидирует и запускает квест | активный шаг |
+| `stopQuest` | останавливает активный квест | — |
+| `answerQuiz { answer }` | отвечает на `quiz`, индекс 0–2 | `{ correct }` |
+| `completeListen` | сообщает, что аудио дослушано | — |
+| `confirmLook` | подтверждает выполнение `look` | — |
+| `getQuestState` | возвращает активный шаг | `ActiveStep | null` |
+| `getState` | позиция, режимы, статистика тумана и активный квест | `State` |
 
-**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `result`.
+**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `result`.
+
+Квестовый движок не рисует интерфейс. React Native получает `activeStep`, показывает текст, аудио и варианты ответа, затем отправляет команду подтверждения. Шаги `goto`, `hold`, `tail`, `collect`, `explore` и `visit` отслеживает движок. Для `listen` и `look` сначала нужен геотриггер у точки; готовность приходит в `activeStep.runtime`.
+
+Активный квест сохраняется в `localStorage` WebView и восстанавливается при запуске. Типы квеста экспортируются из [`src/engine/protocol.ts`](../src/engine/protocol.ts); исходная логика лежит в `src/quests/`.
 
 Для отладки из консоли браузера доступен `window.tuman.exec({...})`.
 
