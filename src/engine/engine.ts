@@ -106,9 +106,10 @@ export class Engine {
     const fog = new FogOfWar();
     // Туман — поверх подписей подложки: названия улиц не должны просвечивать там, где ты не был.
     // Отмывка сопок, маршрут и метки — поверх тумана.
+    // Отмывка сопок — под туманом: рельеф виден только там, где игрок уже был.
     void beforeId;
-    const fogLayer = new FogLayer(map, fog, undefined, renderProfile);
     addHillshadeOverFog(map, undefined, renderProfile);
+    const fogLayer = new FogLayer(map, fog, undefined, renderProfile);
     addOverlayLayers(map, undefined);
     const player = new Player(map);
     const engine = new Engine(map, fog, player, renderProfile, basemap);

@@ -53,8 +53,8 @@ export async function createBaseMap(container: HTMLElement | string, center = VL
 }
 
 /**
- * Отмывка склонов поверх тумана: сопки читаются даже там, где ты ещё не был.
- * Рельеф — не секрет, а главная особенность города; секретом остаются улицы и места.
+ * Отмывка склонов. Кладётся под туман (engine.ts): рельеф проявляется вместе с улицами,
+ * когда игрок открывает место. Под туманом не видно ничего.
  */
 export function addHillshadeOverFog(map: MLMap, beforeId?: string, profile?: RenderProfile) {
   map.addLayer(
