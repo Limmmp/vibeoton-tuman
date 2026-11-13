@@ -6,6 +6,7 @@ import { createBaseMap, addTerrainLayers, addHillshadeOverFog, setViewMode, type
 import { FogOfWar, FogLayer } from "./fog";
 import { Player } from "./player";
 import { routeOptions, routeWithElevation, type RouteOptions, type RouteResult } from "./route";
+import { addPinImages, PIN_KINDS } from "./pins";
 import { elevationAt } from "./dem";
 import type { Command, EngineEvent, Place, State } from "./protocol";
 import type { ActiveStep } from "../quests/types";
@@ -640,7 +641,7 @@ function placesGeoJSON(places: Place[]): GeoJSON.FeatureCollection {
     type: "FeatureCollection",
     features: places.map((p) => ({
       type: "Feature",
-      properties: { id: p.id, name: p.name ?? "", color: KIND_COLORS[p.kind ?? ""] ?? "#F5B83D" },
+      properties: { id: p.id, name: p.name ?? "", color: KIND_COLORS[p.kind ?? ""] ?? "#F5B83D", icon: PIN_KINDS.includes(p.kind ?? "") ? `pin-${p.kind}` : "pin-default" },
       geometry: { type: "Point", coordinates: [p.lon, p.lat] },
     })),
   };
@@ -669,9 +670,11 @@ function addOverlayLayers(map: MLMap, beforeId?: string) {
     layout: { "text-field": ["get", "point_count_abbreviated"], "text-font": ["Noto Sans Regular"], "text-size": 13, "text-allow-overlap": true },
     paint: { "text-color": "#F4F6F8" },
   });
+  // Метки — значки в стиле иконок приложения (pins.ts), остриём к точке.
+  addPinImages(map);
   map.addLayer({
-    id: "places", type: "circle", source: "places", filter: ["!", ["has", "point_count"]],
-    paint: { "circle-radius": 8, "circle-color": ["get", "color"], "circle-stroke-color": "#F4F6F8", "circle-stroke-width": 2 },
+    id: "places", type: "symbol", source: "places", filter: ["!", ["has", "point_count"]],
+    layout: { "icon-image": ["get", "icon"], "icon-anchor": "bottom", "icon-allow-overlap": true, "icon-ignore-placement": true, "icon-size": ["interpolate", ["linear"], ["zoom"], 14, 0.8, 17, 1] },
   });
   // Другие игроки: значок фиксированного экранного размера, кластеры при отдалении.
   // Кольцо кластера — по самому близкому игроку внутри: группа (янтарь) → друзья (бирюза) → публичные (серый).
