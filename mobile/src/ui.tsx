@@ -37,8 +37,8 @@ export function Chip({ label, active, onPress }: { label: string; active?: boole
     <Text style={[u.chipText, active && { color: colors.amber }]}>{label}</Text>
   </Pressable>;
 }
-export function Field({ label, value, onChangeText, numeric = false }: { label: string; value: string; onChangeText: (text: string) => void; numeric?: boolean }) {
-  return <View style={{ gap: 6 }}><Text style={u.label}>{label}</Text><TextInput accessibilityLabel={label} value={value} onChangeText={onChangeText} keyboardType={numeric ? 'numeric' : 'default'} autoCapitalize="none" placeholderTextColor={colors.faint} selectionColor={colors.amber} style={u.input} /></View>;
+export function Field({ label, value, onChangeText, numeric = false, secure = false, placeholder }: { label: string; value: string; onChangeText: (text: string) => void; numeric?: boolean; secure?: boolean; placeholder?: string }) {
+  return <View style={{ gap: 6 }}><Text style={u.label}>{label}</Text><TextInput accessibilityLabel={label} value={value} onChangeText={onChangeText} keyboardType={numeric ? 'numeric' : 'default'} secureTextEntry={secure} autoCapitalize="none" autoCorrect={!secure} placeholder={placeholder} placeholderTextColor={colors.faint} selectionColor={colors.amber} style={u.input} /></View>;
 }
 export function Card({ children }: { children: ReactNode }) { return <View style={u.card}>{children}</View>; }
 export function Bar({ value }: { value: number }) {

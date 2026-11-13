@@ -23,6 +23,11 @@ import { SwipeSheet, Entrance, Notice } from './src/motion';
 import { MapSurface, type MapHandlers } from './src/MapSurface';
 import { useNavigation } from './src/useNavigation';
 import { DistrictPanel } from './src/DistrictPanel';
+import { SessionProvider, useSession } from './src/session';
+import { AuthScreen } from './src/AuthScreen';
+import { FriendsPanel } from './src/FriendsPanel';
+import { MeetingsPanel } from './src/MeetingsPanel';
+import { Glyph } from './src/glyphs';
 import { StylePreview } from './src/StylePreview';
 import { diagnosticQuest } from './src/diagnostic';
 import { DemoPanel } from './src/DemoPanel';
@@ -32,6 +37,7 @@ import { levelProgress } from '../src/progress/level';
 
 const tabs = ['Карта', 'Компания', 'Места', 'Профиль'] as const;
 const tabLabels: Record<string, string> = { Карта: 'Карта', Компания: 'Куда пойдём', Места: 'Места', Профиль: 'Профиль' };
+const tabIcons: Record<string, string> = { Карта: 'map', Компания: 'people', Места: 'pin', Профиль: 'user' };
 type Tab = typeof tabs[number];
 type Overlay = 'quests' | 'settings' | 'developer' | 'helper' | 'inbox' | 'filters' | 'districts' | 'preview' | 'demo' | 'collection' | null;
 const layers = ['Задания', 'Учёба', 'Досуг', 'История', 'События'];
@@ -49,6 +55,8 @@ function Application() {
     web.current.postMessage(raw);
   })).current;
   const { preferences, loaded, update, storageError } = usePreferences();
+  const session = useSession();
+  const [quickMatch, setQuickMatch] = useState(false);
   const initialized = useRef(false);
   const mounted = useRef(true);
   const [address, setAddress] = useState(defaultMapUrl);
@@ -307,8 +315,13 @@ function Application() {
   </View>;
   const panelContent = () => {
     if (tab === 'Места') return <PlacesPanel places={filtered} selected={selected} select={selectPlace} position={selected ? position : listPosition} scrollEnabled={sheet !== 0} search={search} setSearch={setSearch} selectedFilters={placeFilters} setFilters={setPlaceFilters} route={route} choice={routeChoice} choose={which => void chooseRoute(which)} checkIn={place => void checkIn(place)} buildRoute={(point, id) => void buildRoute(point, id)} routing={routing || !ready} collapse={() => setSheet(0)} />;
-    if (tab === 'Компания') return <CompanyPanel initialInterests={preferences.interests} members={preferences.members} setMembers={members => update({ members })} buildRoute={(point, id) => { void buildRoute(point, id); changeTab('Карта'); }} climbs={climbs} weatherBad={weather.bad} />;
-    if (tab === 'Профиль') return <ProfilePanel progress={progress} items={items} area={area} execute={execute} districts={() => setOverlay('districts')} collection={() => { setCollectionId(undefined); setOverlay('collection'); }} settings={() => setOverlay('settings')} developer={() => setOverlay('developer')} busy={!ready || busy > 0} />;
+    const company = <CompanyPanel initialInterests={preferences.interests} members={preferences.members} setMembers={members => update({ members })} buildRoute={(point, id) => { void buildRoute(point, id); changeTab('Карта'); }} climbs={climbs} weatherBad={weather.bad} />;
+    if (tab === 'Компания') {
+      const toMap = (point: LatLon, id?: string) => { void buildRoute(point, id); changeTab('Карта'); };
+      if (session.me && !quickMatch) return <MeetingsPanel buildRoute={toMap} quickMatch={() => setQuickMatch(true)} />;
+      return <View style={{ gap: 16 }}>{session.me ? <Button kind="quiet" label="‹ Встречи с друзьями" onPress={() => setQuickMatch(false)} style={{ alignSelf: 'flex-start' }} /> : <Card><Text style={u.heading}>Зовите друзей</Text><Text style={u.muted}>С аккаунтом можно собирать пачку, делить бюджет и голосовать за место.</Text><Button label="Войти" onPress={session.askAuth} /></Card>}{company}</View>;
+    }
+    if (tab === 'Профиль') return <View style={{ gap: 28 }}>{session.me ? <FriendsPanel /> : <Card><Text style={u.heading}>Аккаунт</Text><Text style={u.muted}>Войдите, чтобы добавить друзей и собирать встречи.</Text><Button primary label="Войти или создать аккаунт" onPress={session.askAuth} /></Card>}<ProfilePanel progress={progress} items={items} area={area} execute={execute} districts={() => setOverlay('districts')} collection={() => { setCollectionId(undefined); setOverlay('collection'); }} settings={() => setOverlay('settings')} developer={() => setOverlay('developer')} busy={!ready || busy > 0} /></View>;
     if (tab === 'История') return <View style={u.stack}><Text style={u.heading}>История города</Text><Card><Text style={u.text}>«Золотой туман» готовится</Text><Text style={u.muted}>Маршрут, озвучка и факты с источниками ещё не добавлены в каталог. Технический квест доступен в заданиях.</Text><Button label="Открыть задания" onPress={() => setOverlay('quests')} /></Card><Text style={u.muted}>Исторические места из каталога — на карте. Их данные требуют проверки.</Text>{markerPlaces.slice(0, 10).map(place => <Card key={place.id}><Text style={u.heading}>{place.name}</Text><Button label="Карточка места и источник" onPress={() => { dispatch({ type: 'push', patch: { selectedId: place.id, tab: 'Места', layer: 'История', sheet: 2, overlay: null } }); }} /></Card>)}</View>;
     return <View style={u.stack}><Text style={u.eyebrow}>ТВОЯ ЭКСПЕДИЦИЯ</Text>{active ? <ActiveQuest active={active} execute={execute} teleport={point => void teleport(point)} locate={locate} busy={busy > 0} /> : <Card><Text style={u.heading}>Адмирал: пойдём знакомиться с городом</Text><Text style={u.muted}>{gps ? 'Иди к цели задания, туман будет открываться по GPS.' : 'Симуляция: нажми на карту, чтобы идти. Награды в этом режиме не выдаются.'}</Text><Button label="Задания" primary onPress={() => setOverlay('quests')} /></Card>}{failure && <Button label="Квест провален: открыть задания" onPress={() => setOverlay('quests')} />}{route && <><RouteSummary route={route} choice={routeChoice} choose={which => void chooseRoute(which)} /><Button label="Убрать маршрут" onPress={() => { send({ type: 'clearRoute' }); setRoute(null); }} /></>}<Button label="Помощник Адмирал" onPress={() => setOverlay('helper')} /></View>;
   };
@@ -344,7 +357,7 @@ function Application() {
       <Notice text={toast} onPress={() => setOverlay('inbox')} />
       </View>
       <View pointerEvents="box-none" style={{ flex: 1 }}><SwipeSheet level={sheet} onLevel={setSheet} title={tabLabels[tab] ?? tab} scroll={tab !== 'Места' || !!selected}>{panelContent()}</SwipeSheet></View>
-      <SafeAreaView edges={['bottom']} style={s.navWrap}><View style={s.nav}>{tabs.map(value => { const on = tab === value; return <Pressable key={value} accessibilityRole="tab" accessibilityLabel={tabLabels[value]} accessibilityState={{ selected: on }} onPress={() => changeTab(value)} style={({ pressed }) => [s.navItem, pressed && { opacity: 0.6 }]}><View style={[s.navDot, on && { backgroundColor: colors.amber }]} /><Text numberOfLines={1} style={[s.navText, on && s.navTextOn]}>{tabLabels[value]}</Text></Pressable>; })}</View></SafeAreaView>
+      <SafeAreaView edges={['bottom']} style={s.navWrap}><View style={s.nav}>{tabs.map(value => { const on = tab === value; return <Pressable key={value} accessibilityRole="tab" accessibilityLabel={tabLabels[value]} accessibilityState={{ selected: on }} onPress={() => changeTab(value)} style={({ pressed }) => [s.navItem, pressed && { opacity: 0.6 }]}><Glyph name={tabIcons[value]} size={22} color={on ? colors.amber : colors.faint} stroke={on ? 2 : 1.75} /><Text numberOfLines={1} style={[s.navText, on && s.navTextOn]}>{tabLabels[value]}</Text></Pressable>; })}</View></SafeAreaView>
     </View>
     <Modal visible={preferences.onboarded && (!!overlay || rewardOpen)} animationType="slide" onRequestClose={() => { goBack(); }}>
       {rewardOpen ? <SafeAreaView style={[s.root, { justifyContent: 'center', padding: 24, gap: 20 }]}>
@@ -356,6 +369,7 @@ function Application() {
         {overlay === 'collection' ? <CollectionPanel address={url || address} model={collectionId} locate={id => { const item = landmarks.find(value => value.id === id); if (item) locate(item); }} /> : <ScrollView automaticallyAdjustKeyboardInsets keyboardShouldPersistTaps="handled" contentContainerStyle={{ padding: 18, gap: 16 }}><Entrance key={overlay || 'reward'}>{overlayContent()}</Entrance></ScrollView>}
       </SafeAreaView>}
     </Modal>
+    <Modal visible={loaded && preferences.onboarded && !session.loading && !session.me && !session.skipped} animationType="slide" onRequestClose={session.skip}><SafeAreaView style={s.root}><AuthScreen /></SafeAreaView></Modal>
     <Modal visible={loaded && !preferences.onboarded} animationType="fade" onRequestClose={() => {}}><SafeAreaView style={s.root}><Onboarding finish={(role, interests, useGps) => { update({ onboarded: true, role, interests }); if (useGps) { setWantsGps(true); } notify('Адмирал: первый квест ждёт в заданиях.'); }} /></SafeAreaView></Modal>
   </SafeAreaView>;
 }
@@ -368,7 +382,7 @@ export default function App() {
     Manrope_800ExtraBold: require('@expo-google-fonts/manrope/800ExtraBold/Manrope_800ExtraBold.ttf'),
     RussoOne_400Regular: require('@expo-google-fonts/russo-one/400Regular/RussoOne_400Regular.ttf'),
   });
-  return <SafeAreaProvider>{fontsLoaded || fontError ? <Application /> : <SafeAreaView style={s.root}><Text style={{ color: colors.text, padding: 24 }}>Туман Владивостока</Text></SafeAreaView>}</SafeAreaProvider>;
+  return <SafeAreaProvider>{fontsLoaded || fontError ? <SessionProvider><Application /></SessionProvider> : <SafeAreaView style={s.root}><Text style={{ color: colors.text, padding: 24 }}>Туман Владивостока</Text></SafeAreaView>}</SafeAreaProvider>;
 }
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
@@ -389,7 +403,7 @@ const s = StyleSheet.create({
   grip: { width: 36, height: 5, backgroundColor: 'rgba(255,255,255,0.22)', borderRadius: 3 },
   navWrap: { backgroundColor: colors.bg, borderTopWidth: StyleSheet.hairlineWidth, borderColor: colors.line },
   nav: { flexDirection: 'row' },
-  navItem: { flex: 1, minHeight: 56, paddingTop: 8, paddingBottom: 6, gap: 5, alignItems: 'center', justifyContent: 'center' },
+  navItem: { flex: 1, minHeight: 58, paddingTop: 8, paddingBottom: 6, gap: 3, alignItems: 'center', justifyContent: 'center' },
   navDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: 'transparent' },
   navText: { fontSize: 12, color: colors.faint, fontFamily: 'Manrope_600SemiBold', letterSpacing: 0.1 },
   navTextOn: { color: colors.text },
