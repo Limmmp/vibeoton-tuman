@@ -50,6 +50,7 @@ export type Command =
   | { id?: string; type: "equipAvatarItem"; itemId: string }
   | { id?: string; type: "unequipAvatarSlot"; slot: AvatarSlot }
   | { id?: string; type: "resetProgress" }
+  | { id?: string; type: "setLighting"; mode: "auto" | "day" | "night" } // окна и свет домов; auto — по времени Владивостока; ответ: { night }
   | { id?: string; type: "setLayers"; layers: MapLayer[] } // какие категории меток видны; ответ: MapLayer[]
   | { id?: string; type: "selectPlace"; placeId: string | null; fly?: boolean } // подпись у метки (и перелёт к ней); null — снять
   | { id?: string; type: "checkIn"; placeId: string } // ответ: { ok, distance, first?, reward? } — место должно быть в showPlaces, игрок ближе 60 м

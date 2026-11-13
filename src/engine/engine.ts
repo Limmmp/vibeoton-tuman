@@ -24,6 +24,7 @@ import type { DistrictData } from "../data/districts";
 import districtsJson from "../../data/districts.json";
 import { distance } from "./geo";
 import { MAP_LAYERS, normalizeLayers, visiblePlaces, type MapLayer } from "./layers";
+import { applyLighting, setBuildingsVisible, type LightingMode } from "./buildings";
 
 // Чекин: игрок должен быть не дальше этого от места; первая отметка в месте даёт награду.
 const CHECKIN_RADIUS = 60;
@@ -53,6 +54,7 @@ export class Engine {
   private places = new Map<string, Place>(); // последние метки из showPlaces — для чекина
   private layers: MapLayer[] = [...MAP_LAYERS]; // видимые категории меток (setLayers)
   private selectedPlace: string | null = null;
+  private lighting: LightingMode = "auto"; // окна и свет: по времени Владивостока или принудительно
 
   private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player, renderProfile: RenderProfile) {
     this.renderProfile = renderProfile;
@@ -120,7 +122,7 @@ export class Engine {
     this.renderProfile = { ...profileFor(quality, this.renderProfile.mobile, window.devicePixelRatio || 1), pixelRatio };
     this.fogLayer?.setProfile(this.renderProfile);
     if (!this.renderProfile.show3dBuildings) {
-      this.map.setLayoutProperty("building-3d", "visibility", "none");
+      setBuildingsVisible(this.map, false);
       (this.map.getSource("lit-buildings") as GeoJSONSource).setData(EMPTY);
     }
     if (this.viewMode === "3d") {
@@ -197,6 +199,10 @@ export class Engine {
   private wire() {
     const { map, fog, player } = this;
     fog.reveal(player.pos);
+
+    // Окна и свет по времени суток во Владивостоке; в режиме auto пересматриваем раз в 10 минут.
+    applyLighting(map, this.lighting);
+    setInterval(() => this.lighting === "auto" && applyLighting(map, "auto"), 10 * 60000);
 
     player.onMove((pos, prev, jump) => {
       if (jump) fog.reveal(pos); else fog.revealPath(prev, pos);
@@ -335,6 +341,9 @@ export class Engine {
         this.places = new Map(cmd.places.map((p) => [p.id, p]));
         this.refreshPlaces();
         return;
+      case "setLighting":
+        this.lighting = cmd.mode;
+        return { night: applyLighting(map, cmd.mode) };
       case "setLayers":
         this.layers = normalizeLayers(cmd.layers);
         this.refreshPlaces();

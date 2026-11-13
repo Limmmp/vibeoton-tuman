@@ -1,5 +1,6 @@
 // Базовая карта: тёмный стиль OpenFreeMap, рельеф, отмывка склонов, 3D-дома, небо с дымкой.
 
+import { addBuildingLayers, setBuildingsVisible } from "./buildings";
 import maplibregl, { type Map as MLMap, type StyleSpecification } from "maplibre-gl";
 import { TERRARIUM_URL } from "./dem";
 import type { RenderProfile } from "./performance";
@@ -80,25 +81,8 @@ export function addTerrainLayers(map: MLMap): string | undefined {
   // (addHillshadeOverFog), чтобы сопки было видно и в открытых местах, и под туманом.
   map.addSource("dem-hillshade", demSource);
 
-  // Объёмные дома — только открытой области: движок кладёт их в этот GeoJSON-источник (engine.ts).
-  // Плоские дома из стиля остаются под туманом. id домов в тайлах не уникальны, поэтому feature-state не годится.
-  map.addSource("lit-buildings", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
-  map.addLayer(
-    {
-      id: "building-3d",
-      type: "fill-extrusion",
-      source: "lit-buildings",
-      minzoom: 14,
-      layout: { visibility: "none" },
-      paint: {
-        "fill-extrusion-color": "#2b3543",
-        "fill-extrusion-height": ["coalesce", ["get", "h"], 8],
-        "fill-extrusion-base": ["coalesce", ["get", "b"], 0],
-        "fill-extrusion-opacity": 0.9,
-      },
-    },
-    firstSymbol,
-  );
+  // Объёмные дома — только открытой области: стены с окнами и крыши (buildings.ts).
+  addBuildingLayers(map, firstSymbol);
 
   // Небо и дымка у горизонта — «туман» в прямом смысле. Видно только при наклоне.
   try {
@@ -120,11 +104,11 @@ export function addTerrainLayers(map: MLMap): string | undefined {
 export function setViewMode(map: MLMap, mode: ViewMode, profile?: RenderProfile) {
   if (mode === "3d") {
     map.setTerrain({ source: "dem-terrain", exaggeration: TERRAIN_EXAGGERATION });
-    map.setLayoutProperty("building-3d", "visibility", profile?.show3dBuildings === false ? "none" : "visible");
+    setBuildingsVisible(map, profile?.show3dBuildings !== false);
     map.easeTo({ pitch: profile?.pitch3d ?? PITCH_3D, duration: profile?.mobile ? 350 : 900 });
   } else {
     map.setTerrain(null);
-    map.setLayoutProperty("building-3d", "visibility", "none");
+    setBuildingsVisible(map, false);
     map.easeTo({ pitch: 0, bearing: 0, duration: profile?.mobile ? 300 : 700 });
   }
 }
