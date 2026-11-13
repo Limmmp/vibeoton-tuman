@@ -84,8 +84,13 @@ export class FogLayer {
   private canvas = document.createElement("canvas");
   private mask = document.createElement("canvas");
   private pattern = makePattern();
+  private billows = makeBillows();
+  private cut = document.createElement("canvas"); // размытая маска открытых ячеек — готова к вычитанию
+  private win: Win = CITY_BBOX;
   private lastDraw = 0;
   private timer: ReturnType<typeof setTimeout> | undefined;
+  private breathTimer: ReturnType<typeof setInterval> | undefined;
+  private t0 = performance.now();
 
   constructor(private map: MLMap, private fog: FogOfWar, beforeId: string | undefined, private profile: RenderProfile) {
     this.canvas.width = this.canvas.height = 2;
@@ -96,10 +101,42 @@ export class FogLayer {
     map.addLayer({ id: "fog-outer", type: "fill", source: "fog-outer", paint: { "fill-color": color, "fill-opacity": FOG_ALPHA, "fill-antialias": false } }, beforeId);
     map.addLayer({ id: "fog", type: "raster", source: "fog-canvas", paint: { "raster-fade-duration": 0, "raster-resampling": "linear" } }, beforeId);
 
+    // Облачка на границе тумана: мягкие пятна-билборды на туманной стороне, приподнятые над землёй.
+    map.addImage("fog-puff", makePuff());
+    map.addSource("fog-puffs", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    map.addLayer({
+      id: "fog-puffs", type: "symbol", source: "fog-puffs", minzoom: 14,
+      layout: {
+        "icon-image": "fog-puff",
+        "icon-size": ["interpolate", ["linear"], ["zoom"], 14, 0.55, 17, 1.1, 19, 1.6],
+        "icon-allow-overlap": true, "icon-ignore-placement": true,
+        "icon-pitch-alignment": "viewport", "icon-rotation-alignment": "viewport",
+        "icon-offset": [0, -14],
+      },
+      paint: { "icon-opacity": ["interpolate", ["linear"], ["zoom"], 14, 0.35, 16, 0.75] },
+    }, beforeId);
+
     map.on("moveend", () => this.schedule());
     map.on("resize", () => this.schedule());
     fog.onChange(() => this.schedule());
     this.schedule();
+    this.startBreathing();
+  }
+
+  /** «Дыхание»: шум тумана медленно плывёт. Только на medium/high; на low туман статичный. */
+  private startBreathing() {
+    clearInterval(this.breathTimer);
+    this.breathTimer = undefined;
+    const on = this.profile.quality !== "low";
+    if (this.map.getLayer("fog-puffs")) this.map.setLayoutProperty("fog-puffs", "visibility", on ? "visible" : "none");
+    if (!on) return;
+    this.breathTimer = setInterval(() => {
+      if (document.hidden) return;
+      this.composite();
+      // Облачка чуть колышутся.
+      const t = (performance.now() - this.t0) / 1000;
+      this.map.setPaintProperty("fog-puffs", "icon-translate", [Math.sin(t * 0.6) * 3, Math.cos(t * 0.45) * 2]);
+    }, Math.max(110, this.profile.fogIntervalMs));
   }
 
   setProfile(profile: RenderProfile) {
@@ -108,6 +145,7 @@ export class FogLayer {
     this.timer = undefined;
     this.lastDraw = 0;
     this.schedule();
+    this.startBreathing();
   }
 
   /** Частота зависит от профиля качества. */
@@ -185,27 +223,76 @@ export class FogLayer {
     }
     g.fill();
 
-    // --- сам туман: шумовая заливка минус размытая маска ---
+    // --- размытая маска: считается только здесь, «дыхание» её переиспользует ---
+    const cut = this.cut;
+    cut.width = W; cut.height = H;
+    const cg = cut.getContext("2d")!;
+    cg.filter = `blur(${Math.max(1.5, r * 0.9)}px)`;
+    cg.drawImage(mask, 0, 0);
+    cg.filter = "none";
+    this.win = win;
+    this.composite();
+    (this.map.getSource("fog-outer") as GeoJSONSource | undefined)?.setData(outerPolygon(win));
+    if (this.profile.quality !== "low") this.updatePuffs(win, rowMin, rowMax);
+  }
+
+  /** Туман = шум (со сдвигом во времени) + крупные клубы − размытая маска. Дёшево: без пересчёта маски. */
+  private composite() {
+    const W = this.cut.width, H = this.cut.height;
+    if (W < 2 || H < 2) return;
     const cv = this.canvas;
-    cv.width = W; cv.height = H;
+    if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
     const ctx = cv.getContext("2d")!;
-    ctx.fillStyle = ctx.createPattern(this.pattern, "repeat")!;
+    const t = (performance.now() - this.t0) / 1000;
+    const breathing = this.profile.quality !== "low";
+    const pat = ctx.createPattern(this.pattern, "repeat")!;
+    if (breathing) pat.setTransform(new DOMMatrix().translate((t * 6) % 256, (Math.sin(t * 0.3) * 12) % 256));
+    ctx.globalCompositeOperation = "source-over";
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = pat;
     ctx.fillRect(0, 0, W, H);
+    if (breathing) {
+      // Крупные мягкие клубы медленно плывут в другую сторону — туман «дышит» неравномерно.
+      const bp = ctx.createPattern(this.billows, "repeat")!;
+      bp.setTransform(new DOMMatrix().translate((-t * 9) % 512, (t * 4) % 512));
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = bp;
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalAlpha = 1;
+    }
     ctx.globalCompositeOperation = "destination-out";
-    ctx.filter = `blur(${Math.max(1.5, r * 0.9)}px)`;
-    ctx.drawImage(mask, 0, 0);
-    ctx.filter = "none";
+    ctx.drawImage(this.cut, 0, 0);
     ctx.globalCompositeOperation = "source-over";
 
-    // --- обновить источники ---
     const src = this.map.getSource("fog-canvas") as CanvasSource | undefined;
     if (!src) return;
-    src.setCoordinates(toCoords(win));
+    src.setCoordinates(toCoords(this.win));
     // Неанимированный canvas-источник перезаливает текстуру только при play(): включаем на один кадр.
     src.play();
     this.map.once("render", () => src.pause());
     this.map.triggerRepaint();
-    (this.map.getSource("fog-outer") as GeoJSONSource | undefined)?.setData(outerPolygon(win));
+  }
+
+  /** Облачка: центры закрытых ячеек, соседних с открытыми, в окне вида; не больше MAX_PUFFS. */
+  private updatePuffs(win: Win, rowMin: number, rowMax: number) {
+    const cells = this.fog.cells;
+    const pts: [number, number][] = [];
+    const seen = new Set<string>();
+    for (const k of cells) {
+      const i = k.indexOf(":");
+      const row = +k.slice(0, i), col = +k.slice(i + 1);
+      if (row < rowMin || row > rowMax) continue;
+      for (const [dr, dc] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const nk = `${row + dr}:${col + dc}`;
+        if (cells.has(nk) || seen.has(nk)) continue;
+        seen.add(nk);
+        const c = cellCenter(row + dr, col + dc);
+        if (c.lon >= win.w && c.lon <= win.e && c.lat >= win.s && c.lat <= win.n) pts.push([c.lon, c.lat]);
+      }
+    }
+    const step = Math.max(1, Math.ceil(pts.length / MAX_PUFFS));
+    const features = pts.filter((_, i) => i % step === 0).map((c) => ({ type: "Feature" as const, properties: {}, geometry: { type: "Point" as const, coordinates: c } }));
+    (this.map.getSource("fog-puffs") as GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features });
   }
 }
 
@@ -226,6 +313,47 @@ function outerPolygon(b: Win): GeoJSON.Feature<GeoJSON.Polygon> {
       ],
     },
   };
+}
+
+const MAX_PUFFS = 150;
+
+/** Мягкое пятно тумана для облачков (белое, прозрачные края). */
+function makePuff(): ImageData {
+  const s = 64;
+  const c = document.createElement("canvas");
+  c.width = c.height = s;
+  const g = c.getContext("2d")!;
+  for (const [x, y, r, a] of [[32, 36, 26, 0.55], [22, 30, 16, 0.4], [42, 28, 18, 0.4]] as const) {
+    const grad = g.createRadialGradient(x, y, 0, x, y, r);
+    grad.addColorStop(0, `rgba(${FOG_RGB.join(",")},${a})`);
+    grad.addColorStop(1, `rgba(${FOG_RGB.join(",")},0)`);
+    g.fillStyle = grad;
+    g.fillRect(0, 0, s, s);
+  }
+  return g.getImageData(0, 0, s, s);
+}
+
+/** Крупные мягкие клубы (бесшовная текстура 512 px) — вторая, медленная составляющая «дыхания». */
+function makeBillows(): HTMLCanvasElement {
+  const s = 512;
+  const c = document.createElement("canvas");
+  c.width = c.height = s;
+  const g = c.getContext("2d")!;
+  let seed = 11;
+  const rand = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+  for (let i = 0; i < 40; i++) {
+    const x = rand() * s, y = rand() * s, r = 40 + rand() * 90;
+    const light = rand() < 0.5;
+    // Рисуем с переносом через края, чтобы текстура была бесшовной.
+    for (const dx of [-s, 0, s]) for (const dy of [-s, 0, s]) {
+      const grad = g.createRadialGradient(x + dx, y + dy, 0, x + dx, y + dy, r);
+      grad.addColorStop(0, light ? "rgba(225,232,240,0.35)" : "rgba(120,132,148,0.3)");
+      grad.addColorStop(1, "rgba(0,0,0,0)");
+      g.fillStyle = grad;
+      g.fillRect(x + dx - r, y + dy - r, r * 2, r * 2);
+    }
+  }
+  return c;
 }
 
 /** Шумовая текстура, чтобы туман был «дымным», а не плоской заливкой. */
