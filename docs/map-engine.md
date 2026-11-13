@@ -121,9 +121,11 @@ Location.watchPositionAsync(
 | `equipAvatarItem { itemId }` | экипирует полученный предмет в его слот | `ProgressState` |
 | `unequipAvatarSlot { slot }` | снимает предмет из слота | `ProgressState` |
 | `resetProgress` | сбрасывает локальный профиль; только для отладки | `ProgressState` |
+| `getDistricts` | районы: открыто уличных ячеек, всего, процент, последняя веха | `DistrictStat[]` |
+| `checkIn { placeId }` | отметиться в месте из `showPlaces`; игрок должен быть ближе 60 м; первая отметка даёт награду и открывает туман вокруг места | `{ ok, distance, first?, reward? }` |
 | `getState` | позиция, режимы, туман, квест и профиль | `State` |
 
-**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `progressChanged`, `rewardGranted`, `inventoryChanged`, `renderQualityChanged`, `result`.
+**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `progressChanged`, `rewardGranted`, `districtProgress`, `districtMilestone`, `checkedIn`, `inventoryChanged`, `renderQualityChanged`, `result`.
 
 `mapTap.action` равен `walk` только в симуляции. При включённом GPS/`external` тап не двигает аватар и приходит как `select`: приложение может выбрать точку или построить маршрут. После отключения GPS нужно отправить `setPlayerMode { mode: "sim" }`, тогда тапы снова запускают демопрогулку.
 
@@ -140,6 +142,12 @@ Location.watchPositionAsync(
 Встроенный квест может выдать `xp`, `cash`, `rep` и косметические `items`. Награда выдаётся один раз на `questId`. Повторное прохождение возвращает `rewardGranted` с `granted: false` и `reason: "already-completed"`. Внешний `startQuest` проходит механику, но не выдаёт награду: событие содержит `reason: "untrusted-quest"`. Это не позволяет приложению подставить квест с произвольной валютой.
 
 Профиль хранится локально в WebView. `completedQuests` содержит историю завершений и полученные награды. `inventory` хранит количество предметов, `equipped` — выбранный предмет по слоту. Сейчас в каталоге есть тестовая `admiral-cap`, которую выдаёт `engine-demo-center`.
+
+## Районы и чекин
+
+**Районы.** Город разбит на 36 микрорайонов: ячейка относится к ближайшему центру не дальше 1,8 км. Процент района — доля открытых **уличных** ячеек: пешеходные дороги из OSM, растеризованные в сетку тумана. Данные лежат в `data/districts.json`, собираются командой `npm run data:districts`. Когда целый процент района меняется, приходит событие `districtProgress`. На вехах 25 / 50 / 75 / 90 % приходит `districtMilestone`, а награда (опыт и монеты) — в `rewardGranted` с `source: "district"`. Каждая веха выдаётся один раз.
+
+**Чекин.** `checkIn { placeId }` работает для мест, переданных в `showPlaces`. Если игрок дальше 60 м, ответ — `{ ok: false, distance, radius }`. Первая отметка в месте даёт +30 опыта и +10 монет (`rewardGranted`, `source: "checkin"`), повторные — без награды (`first: false`). Награды не за квест хранятся в `ProgressState.claimed` и не попадают в `completedQuests`.
 
 ## Аватар игрока
 

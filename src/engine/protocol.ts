@@ -49,6 +49,8 @@ export type Command =
   | { id?: string; type: "equipAvatarItem"; itemId: string }
   | { id?: string; type: "unequipAvatarSlot"; slot: AvatarSlot }
   | { id?: string; type: "resetProgress" }
+  | { id?: string; type: "checkIn"; placeId: string } // ответ: { ok, distance, first?, reward? } — место должно быть в showPlaces, игрок ближе 60 м
+  | { id?: string; type: "getDistricts" } // ответ: DistrictStat[]
   | { id?: string; type: "getState" }; // ответ: State
 
 export type State = {
@@ -75,9 +77,13 @@ export type EngineEvent =
   | { type: "questFailed"; questId: string; reason: string }
   | { type: "questStopped"; questId: string }
   | { type: "renderQualityChanged"; profile: RenderProfile }
+  | { type: "districtProgress"; id: string; name: string; pct: number; revealed: number; total: number } // процент района изменился (целый)
+  | { type: "districtMilestone"; id: string; name: string; pct: number } // пройдена веха 25/50/75/90 %, награда придёт в rewardGranted
+  | { type: "checkedIn"; placeId: string; first: boolean }
   | ProgressEvent
   | { type: "result"; id: string; ok: boolean; data?: unknown; error?: string };
 
 export type { ActiveStep, Quest, QuestSummary } from "../quests/types";
 export type { AvatarAppearance, AvatarItem, AvatarSlot, ProgressState, Reward, RewardResult } from "../progress/types";
 export type { RenderProfile, RenderQuality } from "./performance";
+export type { DistrictStat } from "../progress/districts";
