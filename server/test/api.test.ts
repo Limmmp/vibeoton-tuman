@@ -120,7 +120,8 @@ test("соцсети без ключей отвечают 503, демо-вход
 });
 
 test("Яндекс: токен проверяется у провайдера, повторный вход — тот же аккаунт", async () => {
-  const fake = (async () => new Response(JSON.stringify({ id: "42", display_name: "Лена", default_email: "lena@ya.ru" }), { status: 200 })) as typeof fetch;
+  process.env.YANDEX_CLIENT_ID = "our-app";
+  const fake = (async () => new Response(JSON.stringify({ id: "42", client_id: "our-app", display_name: "Лена", default_email: "lena@ya.ru" }), { status: 200 })) as typeof fetch;
   const { call } = setup({ fetch: fake });
   const first = await call("POST", "/auth/yandex", { token: "t" });
   assert.equal(first.status, 201);
@@ -138,4 +139,21 @@ test("Telegram: верная подпись проходит, подделка �
   assert.deepEqual(verifyTelegram({ ...fields, hash }, bot, 1_800_000_100), { provider: "telegram", id: "777", name: "Дима" });
   assert.throws(() => verifyTelegram({ ...fields, first_name: "Хакер", hash }, bot, 1_800_000_100), /Подпись/);
   assert.throws(() => verifyTelegram({ ...fields, hash }, bot, 1_800_200_000), /устарели/);
+});
+
+test("Яндекс: токен чужого приложения не принимается", async () => {
+  process.env.YANDEX_CLIENT_ID = "our-app";
+  const fake = (async () => new Response(JSON.stringify({ id: "42", client_id: "someone-else", display_name: "Лена" }), { status: 200 })) as typeof fetch;
+  const { call } = setup({ fetch: fake });
+  assert.equal((await call("POST", "/auth/yandex", { token: "t" })).status, 401);
+});
+
+test("вход через соцсеть не захватывает аккаунт с той же почтой", async () => {
+  process.env.YANDEX_CLIENT_ID = "our-app";
+  const fake = (async () => new Response(JSON.stringify({ id: "99", client_id: "our-app", display_name: "Злодей", default_email: "victim@mail.ru" }), { status: 200 })) as typeof fetch;
+  const { call } = setup({ fetch: fake });
+  const victim = await call("POST", "/auth/email/register", { email: "victim@mail.ru", password: "victim-pass", name: "Жертва" });
+  const social = await call("POST", "/auth/yandex", { token: "t" });
+  assert.notEqual(social.body.user.id, victim.body.user.id);
+  assert.equal(social.body.user.email, null);
 });

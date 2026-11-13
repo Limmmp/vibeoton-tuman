@@ -16,13 +16,13 @@
 | POST | `/auth/email/register` | `{ email, password (≥ 8), name }` | `201 Session`, `409 email_taken` |
 | POST | `/auth/email/login` | `{ email, password }` | `Session`, `401 bad_credentials` |
 | POST | `/auth/vk` | `{ token }` — access token VK ID | `Session` (201 — новый аккаунт) |
-| POST | `/auth/yandex` | `{ token }` — OAuth-токен Яндекс ID | `Session` |
+| POST | `/auth/yandex` | `{ token }` — OAuth-токен Яндекс ID, выданный приложению `YANDEX_CLIENT_ID` | `Session` |
 | POST | `/auth/google` | `{ idToken }` | `Session` |
 | POST | `/auth/telegram` | данные виджета Telegram Login как есть (`id, first_name, …, auth_date, hash`) | `Session` |
 | POST | `/auth/dev` | `{ name }` — только при `DEV_LOGIN=1`, для защиты | `201 Session`, сразу в друзьях Петя, Маша, Аня (`SEED_DEMO=1`) |
 | POST | `/auth/logout` | — | `{ ok }` |
 
-`Session = { token, expiresAt, user: Me }`. Сессия живёт 90 дней. Соцсеть без настроенного ключа отвечает `503 provider_not_configured` — кнопку в приложении стоит прятать по `/health`. Если почта из соцсети совпадает с зарегистрированной, вход привязывается к тому же аккаунту.
+`Session = { token, expiresAt, user: Me }`. Сессия живёт 90 дней. Соцсеть без настроенного ключа отвечает `503 provider_not_configured` — кнопку в приложении стоит прятать по `/health`. Аккаунты по совпадению почты не склеиваются (почта при регистрации не подтверждается) — вход через соцсеть даёт свой аккаунт.
 
 ## Профиль
 
@@ -85,7 +85,7 @@
 
 ## Настройки сервера
 
-`deploy/.env` (пример — `deploy/.env.example`): `DOMAIN`, `DEV_LOGIN`, `SEED_DEMO`, `VK_CLIENT_ID`, `TELEGRAM_BOT_TOKEN`, `GOOGLE_CLIENT_IDS`. Секреты в репозиторий не коммитить. Данные — Docker-том `tuman-data` (`/data/tuman.sqlite`).
+`deploy/.env` (пример — `deploy/.env.example`): `DOMAIN`, `DEV_LOGIN`, `SEED_DEMO`, `VK_CLIENT_ID`, `TELEGRAM_BOT_TOKEN`, `GOOGLE_CLIENT_IDS`, `YANDEX_CLIENT_ID`. Секреты в репозиторий не коммитить. Данные — Docker-том `tuman-data` (`/data/tuman.sqlite`).
 
 Обновить сервер после пуша:
 

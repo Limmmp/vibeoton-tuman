@@ -46,7 +46,7 @@ const env = (key: string) => process.env[key]?.trim() || "";
 
 export function configuredProviders(): Provider[] {
   return (["vk", "telegram", "google", "yandex"] as const).filter((p) =>
-    p === "vk" ? !!env("VK_CLIENT_ID") : p === "telegram" ? !!env("TELEGRAM_BOT_TOKEN") : p === "google" ? !!env("GOOGLE_CLIENT_IDS") : true);
+    p === "vk" ? !!env("VK_CLIENT_ID") : p === "telegram" ? !!env("TELEGRAM_BOT_TOKEN") : p === "google" ? !!env("GOOGLE_CLIENT_IDS") : !!env("YANDEX_CLIENT_ID"));
 }
 
 function notConfigured(provider: Provider): never {
@@ -81,9 +81,12 @@ export async function externalProfile(provider: Provider, body: Record<string, u
     return { provider, id: j.sub, name: j.name || j.email?.split("@")[0] || "Житель", email: j.email_verified === "true" ? j.email : undefined };
   }
   if (provider === "yandex") {
+    // Токен должен быть выдан именно нашему приложению: иначе подошёл бы токен любого чужого сервиса.
+    const clientId = env("YANDEX_CLIENT_ID");
+    if (!clientId) notConfigured("yandex");
     const r = await f("https://login.yandex.ru/info?format=json", { headers: { Authorization: `OAuth ${token}` } });
-    const j = await r.json() as { id?: string; display_name?: string; real_name?: string; default_email?: string };
-    if (!r.ok || !j.id) throw new AuthError(401, "bad_token", "Яндекс не подтвердил вход");
+    const j = await r.json() as { id?: string; client_id?: string; display_name?: string; real_name?: string; default_email?: string };
+    if (!r.ok || !j.id || j.client_id !== clientId) throw new AuthError(401, "bad_token", "Яндекс не подтвердил вход");
     return { provider, id: j.id, name: j.display_name || j.real_name || "Житель", email: j.default_email };
   }
   // VK ID: обмен access_token на профиль, https://id.vk.com/about/business/go/docs

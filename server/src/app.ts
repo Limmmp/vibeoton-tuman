@@ -210,8 +210,13 @@ export function createApp({ db, places = [], devLogin = false, seedDemo = false,
     const profile: ExternalProfile = await externalProfile(provider as Provider, await body(c), f);
     const linked = q("SELECT user_id FROM identities WHERE provider = ? AND provider_id = ?").get(profile.provider, profile.id) as Row | undefined;
     let userId = linked?.user_id as string | undefined;
-    if (!userId && profile.email) userId = (q("SELECT id FROM users WHERE email = ?").get(profile.email.toLowerCase()) as Row | undefined)?.id as string | undefined;
-    if (!userId) userId = createUser(profile.name, { email: profile.email?.toLowerCase() });
+    // Аккаунты по почте не склеиваем: почта при регистрации не подтверждается, это путь к захвату чужого
+    // аккаунта. Привязка соцсети к существующему аккаунту — отдельной функцией из профиля (после входа).
+    if (!userId) {
+      const email = profile.email?.toLowerCase();
+      const free = email && !q("SELECT 1 FROM users WHERE email = ?").get(email);
+      userId = createUser(profile.name, { email: free ? email : undefined });
+    }
     q("INSERT OR IGNORE INTO identities (provider, provider_id, user_id) VALUES (?, ?, ?)").run(profile.provider, profile.id, userId);
     return c.json(session(userId), linked ? 200 : 201);
   });
