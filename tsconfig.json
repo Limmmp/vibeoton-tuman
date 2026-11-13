@@ -10,7 +10,8 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "noEmit": true,
-    "types": ["vite/client", "geojson"]
+    "allowImportingTsExtensions": true,
+    "types": ["vite/client", "geojson", "node"]
   },
   "include": ["src"]
 }

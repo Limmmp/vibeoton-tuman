@@ -11,12 +11,14 @@
     "data:fetch": "node scripts/fetch-osm-places.ts",
     "data:build": "node scripts/build-places.ts",
     "data:check": "node scripts/check-data.ts",
-    "data:audit": "node scripts/audit-places.ts"
+    "data:audit": "node scripts/audit-places.ts",
+    "test": "node --test \"src/**/*.test.ts\""
   },
   "dependencies": {
     "maplibre-gl": "^5.24.1"
   },
   "devDependencies": {
+    "@types/node": "^24.19.2",
     "typescript": "^5.9.3",
     "vite": "^7.3.8"
   }
