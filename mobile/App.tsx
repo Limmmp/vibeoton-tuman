@@ -6,7 +6,7 @@ import * as Location from 'expo-location';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { useFonts } from 'expo-font';
 import { WebView } from 'react-native-webview';
-import type { ActiveStep, AvatarItem, Command, LatLon, ProgressState, QuestSummary, RewardResult, DistrictStat, RenderProfile, BasemapStatus } from '../src/engine/protocol';
+import type { ActiveStep, AvatarItem, Command, LatLon, ProgressState, QuestSummary, RewardResult, DistrictStat, RenderProfile, BasemapStatus, RouteChoice } from '../src/engine/protocol';
 import type { Place } from '../src/data/place';
 import { distance } from '../src/engine/geo';
 import { defaultMapUrl, localMapUrl, mapUrl } from './src/connection';
@@ -101,6 +101,7 @@ function Application() {
   const [search, setSearch] = useState('');
   const [placeFilters, setPlaceFilters] = useState<string[]>([]);
   const [route, setRoute] = useState<RouteInfo | null>(null);
+  const [routeChoice, setRouteChoice] = useState<RouteChoice | null>(null);
   const [routing, setRouting] = useState(false);
   const routePending = useRef(false);
   const [climbs, setClimbs] = useState<Record<string, number>>({});
@@ -178,7 +179,7 @@ function Application() {
     try {
       const next = mapUrl(nextAddress); stopGps(); readyRef.current = false; setReady(false);
       bridge.disconnect('Карта переподключается'); setActive(null); setProgress(null); setQuests([]); setItems([]); setReward(null); setFailure(null);
-      setRoute(null); setClimbs({}); setDistricts([]); setError(''); setUrl(next); setAddress(nextAddress); update({ mapAddress: nextAddress });
+      setRoute(null); setRouteChoice(null); setClimbs({}); setDistricts([]); setError(''); setUrl(next); setAddress(nextAddress); update({ mapAddress: nextAddress });
       generationRef.current++; setGeneration(generationRef.current);
     } catch { setError('Укажи полный адрес HTTP или HTTPS.'); }
   };
@@ -186,11 +187,21 @@ function Application() {
   const teleport = async (point: LatLon) => runDemo([{ type: 'setDemoTapMode', mode: 'walk' }, { type: 'teleport', ...point }, { type: 'follow', on: true }]);
   const buildRoute = async (to: LatLon, placeId?: string) => {
     if (routePending.current) return;
-    routePending.current = true; setRouting(true); setRoute(null);
+    routePending.current = true; setRouting(true); setRoute(null); setRouteChoice(null);
     const routeStart = positionRef.current;
-    const result = await execute({ type: 'route', to }) as RouteInfo | undefined;
+    // Новая карта отвечает RouteChoice (короткий и пологий), опубликованная старая — одним RouteInfo.
+    const answer = await execute({ type: 'route', to, options: true }) as RouteChoice | RouteInfo | undefined;
+    const choice = answer && 'short' in answer ? answer : null;
+    const result = choice ? (choice.chosen === 'gentle' && choice.gentle ? choice.gentle : choice.short) : answer as RouteInfo | undefined;
+    setRouteChoice(choice);
     if (result && Number.isFinite(result.distance) && Number.isFinite(result.climb)) { setRoute(result); if (placeId && distance(routeStart, positionRef.current) <= 50) setClimbs(previous => ({ ...previous, [placeId]: result.climb })); }
     routePending.current = false; setRouting(false);
+  };
+  const chooseRoute = async (which: 'short' | 'gentle') => {
+    const choice = await execute({ type: 'chooseRoute', which }) as RouteChoice | undefined;
+    if (!choice) return;
+    setRouteChoice(choice);
+    setRoute(choice.chosen === 'gentle' && choice.gentle ? choice.gentle : choice.short);
   };
   const checkIn = async (place: Place) => {
     if (!gps) { setError('Для отметки включи GPS. В симуляции доступен тест квеста.'); return; }
@@ -295,11 +306,11 @@ function Application() {
     {failure && <Card><Text style={u.text}>Задание провалено: {failure.reason}</Text><Button label="Попробовать снова" disabled={!ready || busy > 0} onPress={() => void execute({ type: 'startQuestById', questId: failure.id })} /></Card>}
   </View>;
   const panelContent = () => {
-    if (tab === 'Места') return <PlacesPanel places={filtered} selected={selected} select={selectPlace} position={selected ? position : listPosition} scrollEnabled={sheet !== 0} search={search} setSearch={setSearch} selectedFilters={placeFilters} setFilters={setPlaceFilters} route={route} checkIn={place => void checkIn(place)} buildRoute={(point, id) => void buildRoute(point, id)} routing={routing || !ready} collapse={() => setSheet(0)} />;
+    if (tab === 'Места') return <PlacesPanel places={filtered} selected={selected} select={selectPlace} position={selected ? position : listPosition} scrollEnabled={sheet !== 0} search={search} setSearch={setSearch} selectedFilters={placeFilters} setFilters={setPlaceFilters} route={route} choice={routeChoice} choose={which => void chooseRoute(which)} checkIn={place => void checkIn(place)} buildRoute={(point, id) => void buildRoute(point, id)} routing={routing || !ready} collapse={() => setSheet(0)} />;
     if (tab === 'Компания') return <CompanyPanel initialInterests={preferences.interests} members={preferences.members} setMembers={members => update({ members })} buildRoute={(point, id) => { void buildRoute(point, id); changeTab('Карта'); }} climbs={climbs} weatherBad={weather.bad} />;
     if (tab === 'Профиль') return <ProfilePanel progress={progress} items={items} area={area} execute={execute} districts={() => setOverlay('districts')} collection={() => { setCollectionId(undefined); setOverlay('collection'); }} settings={() => setOverlay('settings')} developer={() => setOverlay('developer')} busy={!ready || busy > 0} />;
     if (tab === 'История') return <View style={u.stack}><Text style={u.heading}>История города</Text><Card><Text style={u.text}>«Золотой туман» готовится</Text><Text style={u.muted}>Маршрут, озвучка и факты с источниками ещё не добавлены в каталог. Технический квест доступен в заданиях.</Text><Button label="Открыть задания" onPress={() => setOverlay('quests')} /></Card><Text style={u.muted}>Исторические места из каталога — на карте. Их данные требуют проверки.</Text>{markerPlaces.slice(0, 10).map(place => <Card key={place.id}><Text style={u.heading}>{place.name}</Text><Button label="Карточка места и источник" onPress={() => { dispatch({ type: 'push', patch: { selectedId: place.id, tab: 'Места', layer: 'История', sheet: 2, overlay: null } }); }} /></Card>)}</View>;
-    return <View style={u.stack}><Text style={u.eyebrow}>ТВОЯ ЭКСПЕДИЦИЯ</Text>{active ? <ActiveQuest active={active} execute={execute} teleport={point => void teleport(point)} locate={locate} busy={busy > 0} /> : <Card><Text style={u.heading}>Адмирал: пойдём знакомиться с городом</Text><Text style={u.muted}>{gps ? 'Иди к цели задания, туман будет открываться по GPS.' : 'Симуляция: нажми на карту, чтобы идти. Награды в этом режиме не выдаются.'}</Text><Button label="Задания" primary onPress={() => setOverlay('quests')} /></Card>}{failure && <Button label="Квест провален: открыть задания" onPress={() => setOverlay('quests')} />}{route && <><RouteSummary route={route} /><Button label="Убрать маршрут" onPress={() => { send({ type: 'clearRoute' }); setRoute(null); }} /></>}<Button label="Помощник Адмирал" onPress={() => setOverlay('helper')} /></View>;
+    return <View style={u.stack}><Text style={u.eyebrow}>ТВОЯ ЭКСПЕДИЦИЯ</Text>{active ? <ActiveQuest active={active} execute={execute} teleport={point => void teleport(point)} locate={locate} busy={busy > 0} /> : <Card><Text style={u.heading}>Адмирал: пойдём знакомиться с городом</Text><Text style={u.muted}>{gps ? 'Иди к цели задания, туман будет открываться по GPS.' : 'Симуляция: нажми на карту, чтобы идти. Награды в этом режиме не выдаются.'}</Text><Button label="Задания" primary onPress={() => setOverlay('quests')} /></Card>}{failure && <Button label="Квест провален: открыть задания" onPress={() => setOverlay('quests')} />}{route && <><RouteSummary route={route} choice={routeChoice} choose={which => void chooseRoute(which)} /><Button label="Убрать маршрут" onPress={() => { send({ type: 'clearRoute' }); setRoute(null); }} /></>}<Button label="Помощник Адмирал" onPress={() => setOverlay('helper')} /></View>;
   };
   const overlayContent = () => {
     if (overlay === 'demo') return <DemoPanel position={positionRef.current} speed={demoSpeed} tapMode={demoTapMode} busy={!ready || busy > 0} teleport={point => { void teleport(point).then(ok => { if (ok) showDemoMap(); }); }} setSpeed={value => { void runDemo([{ type: 'setSimSpeed', multiplier: value }, { type: 'setDemoTapMode', mode: 'walk' }]); }} setTapMode={value => { void runDemo([{ type: 'setDemoTapMode', mode: value }, { type: 'follow', on: true }]).then(ok => { if (ok) showDemoMap(); }); }} close={showDemoMap} />;

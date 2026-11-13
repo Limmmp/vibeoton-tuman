@@ -1,27 +1,38 @@
 import React, { memo, useState } from 'react';
 import { FlatList, Image, Linking, Text, View } from 'react-native';
 import type { Place } from '../../src/data/place';
-import type { LatLon } from '../../src/engine/protocol';
+import type { LatLon, RouteChoice } from '../../src/engine/protocol';
 import { distance } from '../../src/engine/geo';
 import { Button, Card, Chip, Field, u } from './ui';
 import { filters, priceLabel } from './catalog';
 
 const tagLabels: Record<string, string> = { wifi: 'Wi-Fi', sockets: 'Розетки', quiet: 'Тихо', 'noise-ok': 'Можно шуметь', 'laptop-ok': 'Можно с ноутбуком', indoor: 'В помещении', outdoor: 'На улице', view: 'Красивый вид', sea: 'У моря', coffee: 'Кофе', food: 'Еда', 'board-games': 'Настолки', music: 'Музыка', art: 'Искусство', workshop: 'Мастер-классы', sport: 'Спорт', cinema: 'Кино', wheelchair: 'Доступно для колясок' };
 
-export type RouteInfo = { distance: number; climb: number; descent: number; minutes: number; profile: { d: number; h: number }[] };
-export const RouteSummary = memo(function RouteSummary({ route }: { route: RouteInfo }) {
+export type RouteInfo = { distance: number; climb: number; descent: number; minutes: number; steep?: number; maxGrade?: number; profile: { d: number; h: number }[] };
+export type RouteChoiceProps = { choice?: RouteChoice | null; choose?: (which: 'short' | 'gentle') => void };
+
+/** Короткий против пологого: на сопках крутизна важнее лишних трёх минут. */
+function RouteOptions({ choice, choose }: Required<RouteChoiceProps>) {
+  if (!choice?.gentle) return null;
+  const option = (which: 'short' | 'gentle', label: string, r: RouteInfo) => <Chip key={which} active={choice.chosen === which} onPress={() => choose(which)} label={`${label} · ${Math.ceil(r.minutes)} мин · круто ${r.steep ?? 0} м`} />;
+  const saved = (choice.short.steep ?? 0) - (choice.gentle.steep ?? 0);
+  return <View style={u.stack}><View style={u.row}>{option('short', 'Короткий', choice.short)}{option('gentle', 'Пологий', choice.gentle)}</View><Text style={u.muted}>Пологий обходит {saved} м крутых участков: самое крутое место {choice.gentle.maxGrade}% вместо {choice.short.maxGrade}%.</Text></View>;
+}
+
+export const RouteSummary = memo(function RouteSummary({ route, choice = null, choose }: { route: RouteInfo } & RouteChoiceProps) {
   const profile = route.profile ?? [];
   const low = Math.min(...profile.map(point => point.h));
   const high = Math.max(...profile.map(point => point.h));
   const sampled = profile.filter((_, index) => index % Math.max(1, Math.ceil(profile.length / 45)) === 0);
-  return <Card><Text style={u.heading}>{(route.distance / 1000).toFixed(2)} км · {Math.ceil(route.minutes)} мин</Text><Text style={u.muted}>Подъём {Math.round(route.climb)} м · спуск {Math.round(route.descent)} м</Text>{!!sampled.length && <View accessibilityLabel="Профиль высот маршрута" style={{ height: 48, flexDirection: 'row', alignItems: 'flex-end', gap: 2 }}>{sampled.map((point, index) => <View key={index} style={{ flex: 1, backgroundColor: '#3FB8AF', height: 5 + 43 * (point.h - low) / Math.max(1, high - low) }} />)}</View>}<Text style={u.muted}>Высоты приблизительные. На мостах возможен ложный подъём.</Text></Card>;
+  const steepText = route.steep != null ? ` · круче 12%: ${route.steep} м` : '';
+  return <Card><Text style={u.heading}>{(route.distance / 1000).toFixed(2)} км · {Math.ceil(route.minutes)} мин</Text><Text style={u.muted}>Подъём {Math.round(route.climb)} м · спуск {Math.round(route.descent)} м{steepText}</Text>{choose && <RouteOptions choice={choice} choose={choose} />}{!!sampled.length && <View accessibilityLabel="Профиль высот маршрута" style={{ height: 48, flexDirection: 'row', alignItems: 'flex-end', gap: 2 }}>{sampled.map((point, index) => <View key={index} style={{ flex: 1, backgroundColor: '#3FB8AF', height: 5 + 43 * (point.h - low) / Math.max(1, high - low) }} />)}</View>}<Text style={u.muted}>Высоты приблизительные, по открытым данным рельефа.</Text></Card>;
 });
 
 const PlaceCard = memo(function PlaceCard({ place, meters, select }: { place: Place; meters: number; select: (place: Place | null) => void }) {
   return <Card><Text style={u.heading}>{place.name}</Text><Text style={u.text}>{priceLabel(place)} · {meters} м</Text><Text style={u.muted}>{place.address || 'Адрес не указан'} · {place.verified ? 'Проверено' : 'Не проверено'}</Text><Button label="Подробнее" onPress={() => select(place)} /></Card>;
 });
 
-export function PlacesPanel({ places, selected, select, position, search, setSearch, selectedFilters, setFilters, route, checkIn, buildRoute, routing, collapse, scrollEnabled = true }: { places: Place[]; selected: Place | null; select: (place: Place | null) => void; position: LatLon; search: string; setSearch: (text: string) => void; selectedFilters: string[]; setFilters: (value: string[]) => void; route: RouteInfo | null; checkIn: (place: Place) => void; buildRoute: (point: LatLon, id?: string) => void; routing: boolean; collapse: () => void; scrollEnabled?: boolean }) {
+export function PlacesPanel({ places, selected, select, position, search, setSearch, selectedFilters, setFilters, route, checkIn, buildRoute, routing, collapse, scrollEnabled = true, choice, choose }: RouteChoiceProps & { places: Place[]; selected: Place | null; select: (place: Place | null) => void; position: LatLon; search: string; setSearch: (text: string) => void; selectedFilters: string[]; setFilters: (value: string[]) => void; route: RouteInfo | null; checkIn: (place: Place) => void; buildRoute: (point: LatLon, id?: string) => void; routing: boolean; collapse: () => void; scrollEnabled?: boolean }) {
   const [filtersOpen, setFiltersOpen] = useState(false);
   if (selected) return <View style={u.stack}><Button label="Назад" onPress={() => select(null)} /><Card>
     {selected.photo ? <Image source={{ uri: selected.photo }} style={{ height: 150, borderRadius: 12 }} /> : <View style={{ height: 70, justifyContent: 'center' }}><Text style={u.eyebrow}>МЕСТО НА КАРТЕ · ФОТО ПОКА НЕТ</Text></View>}
@@ -29,7 +40,7 @@ export function PlacesPanel({ places, selected, select, position, search, setSea
     <Button label={routing ? 'Строим маршрут…' : 'Маршрут'} disabled={routing} primary onPress={() => buildRoute(selected, selected.id)} />
     <Button label="Я здесь" disabled={routing} onPress={() => checkIn(selected)} /><Text style={u.muted}>Отметка доступна с GPS в радиусе 60 м. Первый чекин даёт награду; посещение в шаге visit засчитывается автоматически.</Text>
     <Button label="Источник данных" onPress={() => { if (/^https?:\/\//.test(selected.source)) void Linking.openURL(selected.source).catch(() => {}); }} />{selected.osm && <Text style={u.muted}>© участники OpenStreetMap · ODbL</Text>}
-  </Card>{route && <RouteSummary route={route} />}</View>;
+  </Card>{route && <RouteSummary route={route} choice={choice} choose={choose} />}</View>;
   return <FlatList style={{ flex: 1 }} data={places} keyExtractor={place => place.id} scrollEnabled={scrollEnabled} keyboardShouldPersistTaps="handled" automaticallyAdjustKeyboardInsets initialNumToRender={6} maxToRenderPerBatch={6} windowSize={5} contentContainerStyle={{ padding: 16, gap: 12, paddingBottom: 32 }}
     renderItem={({ item }) => <PlaceCard place={item} meters={Math.round(distance(position, item))} select={select} />}
     ListHeaderComponent={<View style={u.stack}><Text style={u.heading}>Места для твоего дня</Text><Field label="Название или адрес" value={search} onChangeText={setSearch} /><Button label="☰ Фильтры" onPress={() => setFiltersOpen(!filtersOpen)} />{filtersOpen && <View style={u.row}>{filters.map(filter => <Chip key={filter} label={filter} active={selectedFilters.includes(filter)} onPress={() => setFilters(selectedFilters.includes(filter) ? selectedFilters.filter(value => value !== filter) : [...selectedFilters, filter])} />)}</View>}
