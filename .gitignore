@@ -6,3 +6,9 @@ Thumbs.db
 # ранний черновик плана, заменён docs/design-doc.md
 PLAN.md
 dist/
+.expo/
+mobile/gitignore
+mobile/.env.local
+mobile/dist-*/
+mobile/expo-config-check.json
+!mobile/.env.example
