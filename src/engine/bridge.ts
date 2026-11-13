@@ -10,16 +10,25 @@ type RNWindow = Window & { ReactNativeWebView?: { postMessage(s: string): void }
 
 export const inReactNative = () => !!(window as RNWindow).ReactNativeWebView;
 
+// Мост через родительский фрейм — только для локальной отладки. В сборке его нет:
+// иначе любой сайт мог бы встроить карту во фрейм и читать позицию игрока или слать команды.
+const FRAME_BRIDGE = import.meta.env.DEV;
+
 export function send(e: EngineEvent) {
   const rn = (window as RNWindow).ReactNativeWebView;
   if (rn) rn.postMessage(JSON.stringify(e));
-  else if (window.parent !== window) window.parent.postMessage(e, "*");
+  else if (FRAME_BRIDGE && window.parent !== window) window.parent.postMessage(e, location.origin);
 }
 
 export function attachBridge(engine: Engine) {
   engine.on(send);
 
   const onMessage = async (ev: MessageEvent) => {
+    // Принимаем команды только от нативного моста RN (у его сообщений нет source)
+    // или, в отладке, от родительского фрейма того же origin.
+    const fromNative = inReactNative() && ev.source == null;
+    const fromDevFrame = FRAME_BRIDGE && ev.source === window.parent && ev.origin === location.origin;
+    if (!fromNative && !fromDevFrame) return;
     let cmd: Command;
     try {
       cmd = typeof ev.data === "string" ? JSON.parse(ev.data) : ev.data;
