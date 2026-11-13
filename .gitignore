@@ -13,3 +13,5 @@ mobile/dist-*/
 mobile/expo-config-check.json
 !mobile/.env.example
 data/raw/streets/
+!deploy/.env.example
+server/data/
