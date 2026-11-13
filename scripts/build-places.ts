@@ -123,6 +123,26 @@ for (const el of raw.elements) {
   fresh++;
 }
 
+// Ручные правки поверх OSM: data/manual/overrides.json — { "<id>": { hours, price, priceLevel, tags, source, notes, … } }.
+// Найденное поиском или проверенное человеком хранится тут и переживает любую пересборку.
+// Поле exclude: true убирает место из каталога.
+let overrides: Record<string, Partial<Place> & { exclude?: boolean }> = {};
+try {
+  overrides = JSON.parse(await readFile("data/manual/overrides.json", "utf8"));
+} catch {
+  /* правок пока нет */
+}
+let applied = 0;
+for (const [id, patch] of Object.entries(overrides)) {
+  if (id.startsWith("_")) continue; // служебные ключи (комментарии)
+  const p = out.get(id);
+  if (!p) { console.warn(`overrides: нет места ${id}`); continue; }
+  if (patch.exclude) { out.delete(id); applied++; continue; }
+  out.set(id, { ...p, ...patch, manual: true });
+  applied++;
+}
+if (applied) console.log(`Ручных правок применено: ${applied}`);
+
 const order = ["study", "creative", "culture", "history", "leisure", "food", "outdoor"];
 const list = [...out.values()].sort((a, b) => order.indexOf(a.kind[0]) - order.indexOf(b.kind[0]) || a.name.localeCompare(b.name, "ru"));
 await writeFile("data/places.json", JSON.stringify(list, null, 2) + "\n");

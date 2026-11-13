@@ -60,13 +60,14 @@
       "quiet",
       "indoor"
     ],
-    "hours": null,
+    "hours": "Mo-Th 10:00-19:00; Sa-Su 11:00-19:00",
     "photo": null,
-    "source": "https://www.openstreetmap.org/node/4108930522",
+    "source": "https://pgpb.ru/",
     "osm": "node/4108930522",
     "checkedAt": null,
     "verified": false,
-    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+    "notes": "Часы с официального сайта pgpb.ru (пт — выходной; в последний вторник месяца возможен санитарный день). Бесплатный вход — допущение, проверить.",
+    "manual": true
   },
   {
     "id": "osm-n5035973112",
@@ -434,13 +435,14 @@
       "quiet",
       "indoor"
     ],
-    "hours": null,
+    "hours": "Tu-Fr 11:00-19:00; Sa-Su 10:00-18:00",
     "photo": null,
-    "source": "https://www.openstreetmap.org/node/2368079728",
+    "source": "https://vladlib.ru/",
     "osm": "node/2368079728",
     "checkedAt": null,
     "verified": false,
-    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+    "notes": "Часы ВЦБС Владивостока с vladlib.ru (пн — выходной, последняя пятница месяца — санитарный день). Что это часы именно ЦБ им. Чехова — проверить.",
+    "manual": true
   },
   {
     "id": "osm-n4092249240",
@@ -755,29 +757,6 @@
     "checkedAt": null,
     "verified": false,
     "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
-  },
-  {
-    "id": "osm-w159487550",
-    "name": "Мед.центр \"ОКЕАН\"",
-    "lat": 43.264405,
-    "lon": 132.020462,
-    "kind": [
-      "creative",
-      "leisure"
-    ],
-    "price": null,
-    "priceLevel": "unknown",
-    "tags": [
-      "indoor"
-    ],
-    "hours": null,
-    "photo": null,
-    "source": "https://www.openstreetmap.org/way/159487550",
-    "osm": "way/159487550",
-    "checkedAt": null,
-    "verified": false,
-    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
-    "address": "Садгородская улица, 21"
   },
   {
     "id": "osm-n2977184698",
@@ -1318,19 +1297,20 @@
       "culture",
       "history"
     ],
-    "price": null,
-    "priceLevel": "unknown",
+    "price": 400,
+    "priceLevel": "mid",
     "tags": [
       "indoor"
     ],
     "hours": "Mo-Su 10:00-19:00",
     "photo": null,
-    "source": "https://www.openstreetmap.org/node/1042556860",
+    "source": "https://otello.ru/hotels/vladivostok/place/muzei_istorii_dalnego_vostoka_imeni_arseneva",
     "osm": "node/1042556860",
     "checkedAt": null,
     "verified": false,
-    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
-    "website": "https://arseniev.org/"
+    "notes": "Цена взрослого билета 400 ₽ — из отзыва посетителя (июль 2026) на otello.ru, официального прайса не нашли; другие отзывы называют до 1000 ₽ за все экспозиции. Проверить на arseniev.org.",
+    "website": "https://arseniev.org/",
+    "manual": true
   },
   {
     "id": "osm-w175860923",
@@ -1655,18 +1635,20 @@
       "culture",
       "history"
     ],
-    "price": null,
-    "priceLevel": "unknown",
+    "price": 200,
+    "priceLevel": "low",
     "tags": [
-      "indoor"
+      "indoor",
+      "sea"
     ],
     "hours": null,
     "photo": null,
-    "source": "https://www.openstreetmap.org/way/30281940",
+    "source": "https://www.sputnik8.com/ru/vladivostok/activities/45103-more-v-gorode-vladivostok",
     "osm": "way/30281940",
     "checkedAt": null,
     "verified": false,
-    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+    "notes": "Цена 200 ₽ — из описания экскурсии на sputnik8.com, дата актуальности не указана. Часы не нашли. Проверить у Военно-исторического музея ТОФ.",
+    "manual": true
   },
   {
     "id": "osm-w26686828",
