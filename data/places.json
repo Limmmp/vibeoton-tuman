@@ -383,7 +383,8 @@
     "priceLevel": "free",
     "tags": [
       "quiet",
-      "indoor"
+      "indoor",
+      "sea"
     ],
     "hours": "Mo-Fr 09:00-17:30; Sa 10:00-17:30",
     "photo": null,
@@ -407,7 +408,8 @@
     "priceLevel": "free",
     "tags": [
       "quiet",
-      "indoor"
+      "indoor",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -674,7 +676,8 @@
     "price": null,
     "priceLevel": "unknown",
     "tags": [
-      "indoor"
+      "indoor",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -877,7 +880,8 @@
     "price": null,
     "priceLevel": "unknown",
     "tags": [
-      "indoor"
+      "indoor",
+      "workshop"
     ],
     "hours": null,
     "photo": null,
@@ -1017,7 +1021,8 @@
     "priceLevel": "unknown",
     "tags": [
       "indoor",
-      "art"
+      "art",
+      "workshop"
     ],
     "hours": "We-Su 10:00-19:00; PH off",
     "photo": null,
@@ -1040,7 +1045,8 @@
     "price": null,
     "priceLevel": "unknown",
     "tags": [
-      "indoor"
+      "indoor",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -1223,7 +1229,8 @@
     "price": null,
     "priceLevel": "unknown",
     "tags": [
-      "indoor"
+      "indoor",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -1360,7 +1367,8 @@
     "price": null,
     "priceLevel": "unknown",
     "tags": [
-      "indoor"
+      "indoor",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -1430,7 +1438,9 @@
     "priceLevel": "unknown",
     "tags": [
       "indoor",
-      "art"
+      "art",
+      "sea",
+      "workshop"
     ],
     "hours": "Tu-Su 11:00-19:00",
     "photo": null,
@@ -1454,7 +1464,9 @@
     "priceLevel": "unknown",
     "tags": [
       "indoor",
-      "art"
+      "art",
+      "sea",
+      "workshop"
     ],
     "hours": "Tu-Su 11:00-19:00",
     "photo": null,
@@ -1477,7 +1489,8 @@
     "priceLevel": "unknown",
     "tags": [
       "indoor",
-      "music"
+      "music",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -1499,7 +1512,8 @@
     "priceLevel": "unknown",
     "tags": [
       "indoor",
-      "music"
+      "music",
+      "sea"
     ],
     "hours": "We-Su 11:00-19:00",
     "photo": null,
@@ -1523,7 +1537,8 @@
     "priceLevel": "unknown",
     "tags": [
       "indoor",
-      "music"
+      "music",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -1547,7 +1562,8 @@
     "priceLevel": "unknown",
     "tags": [
       "indoor",
-      "music"
+      "music",
+      "sea"
     ],
     "hours": "Tu-Fr 11:00-18:00; Sa-Su 10:00-18:00",
     "photo": null,
@@ -1570,7 +1586,8 @@
     "priceLevel": "unknown",
     "tags": [
       "indoor",
-      "music"
+      "music",
+      "sea"
     ],
     "hours": "We-Fr 09:00-17:00; Sa 12:00-14:00; Su 10:00-14:00",
     "photo": null,
@@ -1594,7 +1611,8 @@
     "priceLevel": "unknown",
     "tags": [
       "indoor",
-      "art"
+      "art",
+      "sea"
     ],
     "hours": "10:00-19:00",
     "photo": null,
@@ -1730,7 +1748,8 @@
     "price": null,
     "priceLevel": "unknown",
     "tags": [
-      "indoor"
+      "indoor",
+      "board-games"
     ],
     "hours": "Mo-Su 12:00-21:00",
     "photo": null,
@@ -1774,7 +1793,8 @@
     "price": null,
     "priceLevel": "unknown",
     "tags": [
-      "indoor"
+      "indoor",
+      "board-games"
     ],
     "hours": "Mo-Su 09:00-21:00",
     "photo": null,
@@ -1933,7 +1953,8 @@
     "price": null,
     "priceLevel": "unknown",
     "tags": [
-      "indoor"
+      "indoor",
+      "board-games"
     ],
     "hours": "24/7",
     "photo": null,
@@ -1958,7 +1979,9 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "food",
+      "outdoor"
     ],
     "hours": "12:00-22:00",
     "photo": null,
@@ -2033,7 +2056,9 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "food",
+      "sport"
     ],
     "hours": "12:00-22:00",
     "photo": null,
@@ -2106,7 +2131,8 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "food"
     ],
     "hours": "Mo-Su 09:00-24:00",
     "photo": null,
@@ -2156,7 +2182,8 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "outdoor"
     ],
     "hours": "Mo-Su 08:00-21:00",
     "photo": null,
@@ -2182,7 +2209,8 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "food"
     ],
     "hours": "Mo-Su 07:00-22:00",
     "photo": null,
@@ -2207,7 +2235,8 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "sea"
     ],
     "hours": "24/7",
     "photo": null,
@@ -2256,7 +2285,8 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "food"
     ],
     "hours": "Mo-Su 09:00-22:00",
     "photo": null,
@@ -2281,7 +2311,8 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "food"
     ],
     "hours": null,
     "photo": null,
@@ -2305,7 +2336,8 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "food"
     ],
     "hours": "Mo-Su 08:00-21:00",
     "photo": null,
@@ -2329,7 +2361,8 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "food"
     ],
     "hours": "Mo-Fr 10:00-23:00; Sa-Su 12:00-23:00",
     "photo": null,
@@ -2498,7 +2531,8 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "food"
     ],
     "hours": "Mo-Su 8:30-22:00",
     "photo": null,
@@ -2622,7 +2656,8 @@
     "tags": [
       "indoor",
       "coffee",
-      "wifi"
+      "wifi",
+      "outdoor"
     ],
     "hours": "Mo-Su 09:00-23:00",
     "photo": null,
@@ -2987,7 +3022,8 @@
     "priceLevel": "free",
     "tags": [
       "outdoor",
-      "view"
+      "view",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -3009,7 +3045,8 @@
     "priceLevel": "free",
     "tags": [
       "outdoor",
-      "view"
+      "view",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -3031,7 +3068,8 @@
     "priceLevel": "free",
     "tags": [
       "outdoor",
-      "view"
+      "view",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -3295,7 +3333,8 @@
     "price": 0,
     "priceLevel": "free",
     "tags": [
-      "outdoor"
+      "outdoor",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -3339,7 +3378,8 @@
     "priceLevel": "free",
     "tags": [
       "outdoor",
-      "view"
+      "view",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -3361,7 +3401,8 @@
     "priceLevel": "free",
     "tags": [
       "outdoor",
-      "view"
+      "view",
+      "sea"
     ],
     "hours": null,
     "photo": null,
@@ -3383,7 +3424,8 @@
     "price": 0,
     "priceLevel": "free",
     "tags": [
-      "outdoor"
+      "outdoor",
+      "sea"
     ],
     "hours": null,
     "photo": null,

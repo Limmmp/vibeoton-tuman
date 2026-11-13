@@ -51,6 +51,17 @@ function fromOsm(el: OsmEl): Place | null {
   const tags = new Set<Tag>(rule.tags);
   if (/^(wlan|yes|wifi)$/.test(t.internet_access ?? "")) tags.add("wifi");
   if (t.wheelchair === "yes") tags.add("wheelchair");
+  // Теги-интересы из других тегов OSM и из названия — только то, что прямо следует из данных.
+  const nm = name.toLowerCase();
+  if (/набережн|мыс |мыса|бухт|залив|маяк|пляж|морск|море\b|берег/.test(nm) || t.natural === "beach") tags.add("sea");
+  if (/смотров|видов|вид на|орлин/.test(nm)) tags.add("view");
+  if (/настол|антикафе|квест|игротек/.test(nm) || t.leisure === "escape_game") tags.add("board-games");
+  if (/кофе|coffee|кофейн/.test(nm) || (t.cuisine ?? "").includes("coffee")) tags.add("coffee");
+  if (t.amenity === "cafe" && t.cuisine && !/coffee_shop|coffee/.test(t.cuisine)) tags.add("food");
+  if (t.sport || /спорт|стадион|скейт/.test(nm)) tags.add("sport");
+  if (/музык|филармон|джаз|концерт/.test(nm) || t.amenity === "theatre") tags.add("music");
+  if (/мастерск|творчеств|арт/.test(nm)) tags.add("workshop");
+  if (t.outdoor_seating === "yes") tags.add("outdoor");
 
   let price = rule.price ?? null;
   let priceLevel: PriceLevel = rule.priceLevel ?? "unknown";
