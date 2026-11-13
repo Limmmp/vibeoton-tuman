@@ -62,6 +62,7 @@ export class Engine {
   private demoTapMode: "walk" | "teleport" = "walk";
   private landmarksLoading = false;
   private landmarkBefore: string | undefined;
+  private landmarkReady = new Set<string>();
   private districts = new DistrictTracker(districtsJson as DistrictData[]);
   private places = new Map<string, Place>(); // последние метки из showPlaces — для чекина
   private layers: MapLayer[] = [...MAP_LAYERS]; // видимые категории меток (setLayers)
@@ -118,6 +119,7 @@ export class Engine {
     fogLayer.setEffects(engine.fogEffects);
     map.jumpTo({ center: [player.pos.lon, player.pos.lat] });
     engine.wire();
+    void engine.ensureLandmarkLayer();
     const savedQuest = loadQuestSnapshot();
     if (savedQuest) {
       try {
@@ -167,14 +169,19 @@ export class Engine {
   private async ensureLandmarkLayer() {
     if (!this.renderProfile.show3dBuildings) {
       if (this.map.getLayer("landmark-models")) this.map.removeLayer("landmark-models");
+      this.landmarkReady.clear();
       return;
     }
-    if (this.viewMode !== "3d" || this.landmarksLoading || this.map.getLayer("landmark-models")) return;
+    if (this.landmarksLoading || this.map.getLayer("landmark-models")) return;
     this.landmarksLoading = true;
     try {
       const { LandmarkLayer } = await import("../models/map-layer");
-      if (this.viewMode !== "3d" || !this.renderProfile.show3dBuildings) return;
-      this.map.addLayer(new LandmarkLayer(item => this.renderActive && !document.hidden && this.viewMode === "3d" && this.renderProfile.show3dBuildings && this.map.getZoom() >= 14 && this.fog.isRevealed(item) && distance(item, { lat: this.map.getCenter().lat, lon: this.map.getCenter().lng }) < 2000), this.landmarkBefore);
+      if (!this.renderProfile.show3dBuildings) return;
+      const layer = new LandmarkLayer(item => this.renderActive && !document.hidden && this.renderProfile.show3dBuildings && this.map.getZoom() >= 14 && this.fog.isRevealed(item) && distance(item, { lat: this.map.getCenter().lat, lon: this.map.getCenter().lng }) < 2000, () => {
+        this.landmarkReady = new Set(layer.readyIds());
+        this.buildingIndex.invalidate(); this.updateBuildings();
+      });
+      this.map.addLayer(layer, this.landmarkBefore);
     } catch (error) {
       this.emit({ type: "mapError", message: `Не удалось открыть 3D-модели: ${(error as Error).message}` });
     } finally { this.landmarksLoading = false; }
@@ -252,7 +259,7 @@ export class Engine {
       progress: this.progress.state,
       avatar: { ...this.avatar, equipped: { ...this.avatar.equipped } },
       renderProfile: this.renderProfile,
-      engineVersion: "demo-collection-5",
+      engineVersion: "landmarks-avatar-6",
       basemap: { ...this.basemap.status },
       fogEffects: this.fogEffects,
       layers: [...this.layers],
@@ -317,7 +324,8 @@ export class Engine {
         }
         const bounds = map.getBounds();
         const win = { w: bounds.getWest(), e: bounds.getEast(), s: bounds.getSouth(), n: bounds.getNorth() };
-        const out = this.buildingIndex.select(fog.index.inWindow(win), win, this.renderProfile.buildingLimit);
+        const replacements = LANDMARKS.filter(item => this.landmarkReady.has(item.id) && fog.isRevealed(item) && map.getZoom() >= 14);
+        const out = this.buildingIndex.select(fog.index.inWindow(win), win, this.renderProfile.buildingLimit, replacements);
         if (out) (map.getSource("lit-buildings") as GeoJSONSource).setData({ type: "FeatureCollection", features: out });
       }, 300);
     };

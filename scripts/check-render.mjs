@@ -140,7 +140,7 @@ try {
   await call('Network.setBlockedURLs', { urls: ['*tiles.openfreemap.org/styles/liberty*'] });
   await call('Page.reload', { ignoreCache: true });
   await waitFor(`window.tuman?.state().basemap.provider === 'raster' && window.tuman.state().basemap.ready`);
-  assert.equal(await evaluate('window.tuman.state().engineVersion'), 'demo-collection-5');
+  assert.equal(await evaluate('window.tuman.state().engineVersion'), 'landmarks-avatar-6');
   console.log('PASS: vector streets, readable style, live pixel ratio, low terrain, movement coalescing, hidden fog, effects toggle, tile/style failures');
 } finally {
   const closed = new Promise(resolve => ws.addEventListener('close', resolve));

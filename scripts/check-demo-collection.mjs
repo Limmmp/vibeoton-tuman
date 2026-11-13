@@ -9,13 +9,13 @@ const ws = new WebSocket(target.webSocketDebuggerUrl);
 await new Promise(resolve => ws.addEventListener('open', resolve));
 let sequence = 0;
 const pending = new Map(), exceptions = [];
-let glbFixture;
+let glbFixture, glbStatus = 200;
 ws.addEventListener('message', ({ data }) => {
   const event = JSON.parse(data);
   if (event.id) { pending.get(event.id)?.(event); pending.delete(event.id); }
   else if (event.method === 'Runtime.exceptionThrown') exceptions.push(event.params.exceptionDetails);
   else if (event.method === 'Fetch.requestPaused') void call('Fetch.fulfillRequest', {
-    requestId: event.params.requestId, responseCode: 200,
+    requestId: event.params.requestId, responseCode: glbStatus,
     responseHeaders: [{ name: 'Content-Type', value: 'model/gltf-binary' }, { name: 'Access-Control-Allow-Origin', value: '*' }], body: glbFixture,
   });
 });
@@ -65,7 +65,7 @@ try {
   await call('Runtime.enable'); await call('Page.enable');
   await call('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
   await call('Emulation.setTouchEmulationEnabled', { enabled: true });
-  await call('Page.navigate', { url: new URL('?embedded=1&v=demo-collection-5', base).href });
+  await call('Page.navigate', { url: new URL('?embedded=1&v=landmarks-avatar-6', base).href });
   await wait('!!window.tuman && window.tuman.state().basemap.ready');
   const movement = await evaluate(`(async () => {
     const e=window.tuman,p=e.player,origin={lat:43.1155,lon:131.8855},target={lat:43.1155,lon:131.95};
@@ -88,32 +88,50 @@ try {
   await wait('!!document.querySelector(".demo-tools")');
   await evaluate(`document.querySelector('.demo-tools').open=true;document.querySelector('[data-speed="32"]').click();true`);
   await wait('window.tuman.player.simSpeed===32');
-  await evaluate(`(async()=>{const e=window.tuman;await e.exec({type:'setPlayerMode',mode:'sim'});await e.exec({type:'teleport',lat:43.113375,lon:131.891218});await e.exec({type:'follow',on:true});await e.exec({type:'setRenderQuality',quality:'balanced'});await e.exec({type:'setViewMode',mode:'3d'});e.map.jumpTo({zoom:17,pitch:50});})()`);
+  await evaluate(`(async()=>{const e=window.tuman;await e.exec({type:'setPlayerMode',mode:'sim'});await e.exec({type:'teleport',lat:43.113375,lon:131.891218});await e.exec({type:'follow',on:true});await e.exec({type:'setRenderQuality',quality:'balanced'});await e.exec({type:'setViewMode',mode:'2d'});e.map.jumpTo({zoom:17,pitch:0});})()`);
   await wait(`window.tuman.map.getLayer('landmark-models')?.implementation.entries.size > 0`);
+  assert.equal(await evaluate(`window.tuman.map.getLayer('landmark-models').implementation.entries.get('s56').placeholder`), false);
+  const avatar = await evaluate(`(()=>{const img=document.querySelector('.tuman-avatar__image'),cursor=document.querySelector('.tuman-avatar__cursor');const a=img.getBoundingClientRect(),c=cursor.getBoundingClientRect();const p=window.tuman.map.project([window.tuman.player.pos.lon,window.tuman.player.pos.lat]);return {isImage:img.tagName==='IMG',loaded:img.complete&&img.naturalWidth>0,above:a.bottom<c.top,aligned:Math.abs(c.x+c.width/2-p.x)<2&&Math.abs(c.y+c.height/2-p.y)<2}})()`);
+  assert.deepEqual(avatar, {isImage:true,loaded:true,above:true,aligned:true});
   await evaluate(`document.querySelector('.demo-tools').open=false;true`);
+  await wait(`window.tuman.map.areTilesLoaded()`);
+  await screenshot('map-model-2d');
+  await evaluate(`window.tuman.exec({type:'setViewMode',mode:'3d'})`);
+  await delay(700);
+  assert.equal(await evaluate(`document.querySelector('.tuman-avatar__image').tagName`), 'IMG');
   await screenshot('map-model');
+  await evaluate(`(async()=>{const e=window.tuman;await e.exec({type:'teleport',lat:43.073056,lon:131.843056});await e.exec({type:'follow',on:true});e.map.jumpTo({zoom:18,pitch:50});})()`);
+  await wait(`window.tuman.map.getLayer('landmark-models')?.implementation.entries.get('lighthouse')?.placeholder === false && window.tuman.map.areTilesLoaded()`);
+  await delay(600);
+  assert.equal(await evaluate(`(async()=>{const data=await window.tuman.map.getSource('lit-buildings').getData();return data.features.some(f=>{const p=f.geometry.coordinates[0][0];return Math.hypot((p[0]-131.843056)*111320*Math.cos(43.073056*Math.PI/180),(p[1]-43.073056)*111320)<22})})()`), false, 'Procedural lighthouse geometry overlaps GLB');
+  await screenshot('lighthouse-3d');
+  await evaluate(`(async()=>{await window.tuman.exec({type:'setViewMode',mode:'2d'});await window.tuman.exec({type:'setRenderQuality',quality:'high'});})()`);
+  assert.equal(await evaluate(`!!window.tuman.map.getLayer('landmark-models')`), true);
   await evaluate(`window.tuman.exec({type:'setRenderQuality',quality:'low'})`);
   assert.equal(await evaluate(`!!window.tuman.map.getLayer('landmark-models')`), false);
 
-  const collection = new URL('collection.html?embedded=1&v=demo-collection-5', base).href;
+  const collection = new URL('collection.html?embedded=1&v=landmarks-avatar-6', base).href;
   await call('Page.navigate', { url: collection });
-  await wait(`document.querySelector('#status')?.textContent === 'Заглушка'`);
+  await wait(`document.querySelector('#status')?.textContent === 'GLB-модель'`);
   assert.equal(await evaluate(`document.querySelectorAll('#cards button').length`), 4);
   for (const id of ['s56', 'lighthouse', 'bridge', 'funicular']) {
     await evaluate(`document.querySelector('[data-id="${id}"]').click();true`);
-    await wait(`document.querySelector('#status')?.textContent === 'Заглушка'`);
+    await wait(`document.querySelector('#status')?.textContent === 'GLB-модель'`);
   }
   assert.equal(await evaluate(`document.querySelectorAll('#canvas canvas').length`), 1);
   await evaluate(`document.querySelector('#preview').scrollIntoView({behavior:'instant'});true`);
   await screenshot('collection');
   await evaluate(`window.__collectionMessage=null;window.ReactNativeWebView={postMessage:raw=>{window.__collectionMessage=JSON.parse(raw)}};document.querySelector('#on-map').click();true`);
   assert.deepEqual(await evaluate('window.__collectionMessage'), {type:'collectionLocate',id:'funicular'});
-  glbFixture = triangleGlb();
+  glbStatus = 404; glbFixture = '';
   await call('Fetch.enable', { patterns: [{ urlPattern: '*models/landmarks/*.glb*' }] });
+  await call('Page.reload', { ignoreCache: true });
+  await wait(`document.querySelector('#status')?.textContent === 'Заглушка'`);
+  glbStatus = 200; glbFixture = triangleGlb();
   await call('Page.reload', { ignoreCache: true });
   await wait(`document.querySelector('#status')?.textContent === 'GLB-модель'`);
   assert.deepEqual(exceptions, [], 'Browser threw an exception');
-  console.log('PASS: speed x32, GPS guard, teleport stops path, no fog corridor, map 3D placeholder, low disposal, four collection previews, real GLB loader');
+  console.log('PASS: demo movement, GLB on balanced/2D and high/2D, no procedural lighthouse duplicate, 2D avatar above position cursor, low disposal, four GLBs, missing-file fallback');
 } finally {
   const closed = new Promise(resolve => ws.addEventListener('close', resolve)); ws.close(); await closed;
   await fetch(`${devtools}/json/close/${target.id}`);

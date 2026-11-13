@@ -3,6 +3,7 @@ import manifest from "../../public/models/landmarks/manifest.json";
 export type Landmark = {
   id: string; name: string; model: string; kind: string; lat: number; lon: number;
   mapSizeMeters: number; rotationDegrees: number; altitudeMeters: number; source: string; verified: boolean; notes: string;
+  buildingClearanceMeters: number;
 };
 export const LANDMARKS: Landmark[] = manifest;
 export function modelUrl(item: Landmark): string {

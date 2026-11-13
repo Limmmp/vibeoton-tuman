@@ -1,5 +1,6 @@
 import { cellOf } from "./geo.ts";
 import type { FogWindow } from "./fog-index.ts";
+import { overlapsLandmark, type LandmarkPlacement } from "../models/placement.ts";
 
 type Building = { key: string; feature: GeoJSON.Feature<GeoJSON.Polygon>; lon: number; lat: number };
 
@@ -32,13 +33,14 @@ export class BuildingIndex {
     }
   }
 
-  select(revealed: Iterable<[number, number]>, win: FogWindow, limit: number): GeoJSON.Feature[] | null {
+  select(revealed: Iterable<[number, number]>, win: FogWindow, limit: number, replacements: LandmarkPlacement[] = []): GeoJSON.Feature[] | null {
     const out: GeoJSON.Feature[] = [];
     const keys: string[] = [];
     outer: for (const [row, col] of revealed) {
       for (const item of this.cells.get(`${row}:${col}`) ?? []) {
         if (out.length >= limit) break outer;
         if (item.lon < win.w || item.lon > win.e || item.lat < win.s || item.lat > win.n) continue;
+        if (replacements.some(landmark => overlapsLandmark(item.feature.geometry.coordinates, landmark))) continue;
         keys.push(item.key);
         out.push(item.feature);
       }

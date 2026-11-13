@@ -15,6 +15,14 @@ const cells = [a, b].map(feature => {
   return [row, col] as [number, number];
 });
 
+test("модель заменяет только ближнюю процедурную геометрию и не теряет соседние дома", () => {
+  const index = new BuildingIndex(); index.replace([a, b]);
+  const replacements = [{ id: "test", lon: 131.885, lat: 43.115, buildingClearanceMeters: 15 }];
+  assert.equal(index.select(cells, win, 10, replacements)?.length, 1);
+  assert.equal(index.select(cells, win, 10, replacements), null);
+  assert.equal(index.select(cells, win, 10)?.length, 2);
+});
+
 test("buildings deduplicate tiles, obey reveal and exact limit, skip unchanged data", () => {
   const index = new BuildingIndex();
   index.replace([a, a, b]);

@@ -3,9 +3,9 @@ import { MercatorCoordinate, type Map as MLMap, type CustomLayerInterface, type 
 import { LANDMARKS, type Landmark } from "./catalog";
 import { disposeModel, loadLandmark } from "./assets";
 
-type Entry = { item: Landmark; scene: Scene; object: Object3D };
+type Entry = { item: Landmark; scene: Scene; object: Object3D; placeholder: boolean };
 
-/** At most four static models, loaded only near a revealed landmark in 3D. No animation loop. */
+/** At most four static models, available in 2D and 3D on balanced/high. No animation loop. */
 export class LandmarkLayer implements CustomLayerInterface {
   id = "landmark-models";
   type = "custom" as const;
@@ -17,8 +17,11 @@ export class LandmarkLayer implements CustomLayerInterface {
   private requested = new Set<string>();
   private disposed = false;
   private visible: (item: Landmark) => boolean;
+  private changed: () => void;
 
-  constructor(visible: (item: Landmark) => boolean) { this.visible = visible; }
+  constructor(visible: (item: Landmark) => boolean, changed: () => void) { this.visible = visible; this.changed = changed; }
+
+  readyIds(): string[] { return [...this.entries.keys()]; }
 
   onAdd(map: MLMap, gl: WebGLRenderingContext | WebGL2RenderingContext) {
     this.map = map;
@@ -36,7 +39,8 @@ export class LandmarkLayer implements CustomLayerInterface {
           if (this.disposed) { disposeModel(loaded.object); return; }
           const scene = new Scene(); scene.add(new AmbientLight(0xffffff, 2));
           const light = new DirectionalLight(0xffffff, 2); light.position.set(0, 2, 1); scene.add(light);
-          scene.add(loaded.object); this.entries.set(item.id, { item, scene, object: loaded.object });
+          scene.add(loaded.object); this.entries.set(item.id, { item, scene, object: loaded.object, placeholder: loaded.placeholder });
+          this.changed();
           this.map.triggerRepaint();
         });
       }
