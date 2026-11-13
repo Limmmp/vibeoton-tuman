@@ -1,5 +1,8 @@
 import { resolveQuest } from "./schema";
 import type { Quest } from "./types";
+import { STORY_QUESTS, QUEST_REQUIRES } from "./story";
+
+export { QUEST_REQUIRES };
 
 // Технический квест для проверки движка и WebView-контракта.
 // Точки взяты из data/places.json. Исторических утверждений здесь нет:
@@ -77,7 +80,7 @@ export const ENGINE_DEMO_QUEST: Quest = resolveQuest({
   ],
 }, undefined, "demo");
 
-export const QUEST_CATALOG: readonly Quest[] = [ENGINE_DEMO_QUEST];
+export const QUEST_CATALOG: readonly Quest[] = [...STORY_QUESTS, ENGINE_DEMO_QUEST];
 
 export function questById(id: string): Quest | undefined {
   return QUEST_CATALOG.find((quest) => quest.id === id);

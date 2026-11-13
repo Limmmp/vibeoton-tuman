@@ -12,7 +12,7 @@ import type { ActiveStep } from "../quests/types";
 import { QuestRunner } from "../quests/runner";
 import { resolveQuest } from "../quests/schema";
 import { loadQuestSnapshot, saveQuestSnapshot } from "../quests/storage";
-import { QUEST_CATALOG, questById } from "../quests/catalog";
+import { QUEST_CATALOG, QUEST_REQUIRES, questById } from "../quests/catalog";
 import { ProgressManager } from "../progress/progress";
 import { loadProgress, saveProgress } from "../progress/storage";
 import { AVATAR_ITEMS } from "../progress/catalog";
@@ -424,11 +424,18 @@ export class Engine {
         fog.reset();
         fog.reveal(player.pos);
         return;
-      case "listQuests":
-        return QUEST_CATALOG.map(({ id, title, giver, intro, reward, start, source, steps }) => ({ id, title, giver, intro, reward, start, source, stepCount: steps.length }));
+      case "listQuests": {
+        const done = this.progress.state.completedQuests;
+        return QUEST_CATALOG.map(({ id, title, giver, intro, reward, start, source, steps, storyId }) => {
+          const requires = QUEST_REQUIRES[id] ?? [];
+          return { id, title, giver, intro, reward, start, source, storyId, stepCount: steps.length, requires, locked: requires.some((r) => !done[r]), completed: !!done[id] };
+        });
+      }
       case "startQuestById": {
         const quest = questById(cmd.questId);
         if (!quest) throw new Error(`Квест не найден: ${cmd.questId}`);
+        const missing = (QUEST_REQUIRES[quest.id] ?? []).filter((r) => !this.progress.state.completedQuests[r]);
+        if (missing.length) throw new Error(`Квест ещё закрыт: сначала ${missing.map((r) => questById(r)?.title ?? r).join(", ")}`);
         return this.quests.start(quest, { position: player.pos, fogCells: fog.cells.size, trusted: true });
       }
       case "startQuest":

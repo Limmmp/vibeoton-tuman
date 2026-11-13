@@ -96,6 +96,10 @@ export type Quest = {
 
 export type QuestSummary = Pick<Quest, "id" | "title" | "giver" | "intro" | "reward" | "start" | "source"> & {
   stepCount: number;
+  storyId?: string;
+  requires: string[]; // какие квесты нужно пройти до этого
+  locked: boolean; // ещё не открыт
+  completed: boolean; // уже пройден (награда получена)
 };
 
 export type StepRuntime = {
