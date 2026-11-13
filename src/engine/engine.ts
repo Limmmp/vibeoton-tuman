@@ -226,7 +226,7 @@ export class Engine {
       progress: this.progress.state,
       avatar: { ...this.avatar, equipped: { ...this.avatar.equipped } },
       renderProfile: this.renderProfile,
-      engineVersion: "colour-map-3",
+      engineVersion: "buildings-solid-4",
       basemap: { ...this.basemap.status },
       fogEffects: this.fogEffects,
       layers: [...this.layers],

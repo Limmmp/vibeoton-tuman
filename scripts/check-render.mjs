@@ -86,6 +86,25 @@ try {
   await evaluate(`window.tuman.exec({type:'revealAt',lat:43.1155,lon:131.8855,radius:350})`);
   await evaluate(`window.tuman.exec({type:'setViewMode',mode:'3d'})`);
   await waitFor(`window.tuman.map.querySourceFeatures('lit-buildings').length > 0`);
+  for (const zoom of [16, 18, 20]) {
+    await evaluate(`window.tuman.map.jumpTo({zoom:${zoom}}); true`);
+    for (const mode of ['day', 'night']) {
+      await evaluate(`window.tuman.exec({type:'setLighting',mode:'${mode}'})`);
+      const material = await evaluate(`({
+        layers: window.tuman.map.getStyle().layers.filter(layer => layer.type === 'fill-extrusion').map(layer => layer.id),
+        pattern: window.tuman.map.getPaintProperty('building-3d','fill-extrusion-pattern') ?? null,
+        opacity: window.tuman.map.getPaintProperty('building-3d','fill-extrusion-opacity'),
+        dayImage: window.tuman.map.hasImage('windows-day'), nightImage: window.tuman.map.hasImage('windows-night')
+      })`);
+      assert.deepEqual(material, {layers:['building-3d'],pattern:null,opacity:1,dayImage:false,nightImage:false});
+    }
+  }
+  await evaluate(`window.tuman.map.jumpTo({zoom:17,pitch:50}); true`);
+  await waitFor(`window.tuman.map.areTilesLoaded() && window.tuman.map.queryRenderedFeatures({layers:['building-3d']}).length > 0`);
+  if (process.argv[4]) {
+    const screenshot = await call('Page.captureScreenshot', { format: 'png' });
+    await writeFile(process.argv[4].replace(/\.png$/, '-3d.png'), Buffer.from(screenshot.data, 'base64'));
+  }
   await evaluate(`window.tuman.exec({type:'setViewMode',mode:'2d'})`);
   await delay(400);
   await evaluate(`window.tuman.exec({type:'setFogEffects',enabled:true})`);
@@ -121,7 +140,7 @@ try {
   await call('Network.setBlockedURLs', { urls: ['*tiles.openfreemap.org/styles/liberty*'] });
   await call('Page.reload', { ignoreCache: true });
   await waitFor(`window.tuman?.state().basemap.provider === 'raster' && window.tuman.state().basemap.ready`);
-  assert.equal(await evaluate('window.tuman.state().engineVersion'), 'colour-map-3');
+  assert.equal(await evaluate('window.tuman.state().engineVersion'), 'buildings-solid-4');
   console.log('PASS: vector streets, readable style, live pixel ratio, low terrain, movement coalescing, hidden fog, effects toggle, tile/style failures');
 } finally {
   const closed = new Promise(resolve => ws.addEventListener('close', resolve));
