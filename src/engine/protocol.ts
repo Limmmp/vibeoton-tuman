@@ -10,6 +10,7 @@ import type { ActiveStep, Quest } from "../quests/types";
 import type { AvatarAppearance, AvatarSlot, ProgressEvent, ProgressState } from "../progress/types";
 import type { RenderProfile, RenderQuality } from "./performance";
 import type { MapLayer } from "./layers";
+import type { OtherPlayer, SocialMode } from "./players";
 
 export type LatLon = { lat: number; lon: number };
 
@@ -53,6 +54,10 @@ export type Command =
   | { id?: string; type: "listShop" } // ответ: баннеры с шансами и гарантией, витрина с ценами
   | { id?: string; type: "gachaPull"; bannerId: string; count: 1 | 10 } // ответ: { results: [{ itemId, rarity, duplicate, shards }], spent, state }
   | { id?: string; type: "buyItem"; itemId: string; currency: "cash" | "shards" } // ответ: ProgressState
+  | { id?: string; type: "showPlayers"; players: OtherPlayer[] } // заменить всех других игроков; ответ: их число
+  | { id?: string; type: "updatePlayers"; players: OtherPlayer[] } // добавить/обновить по id (новые позиции)
+  | { id?: string; type: "removePlayers"; ids: string[] }
+  | { id?: string; type: "setSocialLayer"; mode: SocialMode } // off | party | friends | all
   | { id?: string; type: "setLighting"; mode: "auto" | "day" | "night" } // окна и свет домов; auto — по времени Владивостока; ответ: { night }
   | { id?: string; type: "setLayers"; layers: MapLayer[] } // какие категории меток видны; ответ: MapLayer[]
   | { id?: string; type: "selectPlace"; placeId: string | null; fly?: boolean } // подпись у метки (и перелёт к ней); null — снять
@@ -88,7 +93,8 @@ export type EngineEvent =
   | { type: "districtProgress"; id: string; name: string; pct: number; revealed: number; total: number } // процент района изменился (целый)
   | { type: "districtMilestone"; id: string; name: string; pct: number } // пройдена веха 25/50/75/90 %, награда придёт в rewardGranted
   | { type: "checkedIn"; placeId: string; first: boolean }
-  | { type: "clusterTap"; lat: number; lon: number; count: number } // тап по кластеру меток; карта сама приближается
+  | { type: "playerTap"; id: string }
+  | { type: "clusterTap"; lat: number; lon: number; count: number; layer: "places" | "players" } // тап по кластеру меток; карта сама приближается
   | ProgressEvent
   | { type: "result"; id: string; ok: boolean; data?: unknown; error?: string };
 
@@ -97,3 +103,4 @@ export type { AvatarAppearance, AvatarItem, AvatarSlot, ProgressState, Reward, R
 export type { RenderProfile, RenderQuality } from "./performance";
 export type { DistrictStat } from "../progress/districts";
 export type { MapLayer } from "./layers";
+export type { OtherPlayer, Relation, SocialMode } from "./players";
