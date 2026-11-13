@@ -12,7 +12,8 @@
     "data:build": "node scripts/build-places.ts",
     "data:check": "node scripts/check-data.ts",
     "data:audit": "node scripts/audit-places.ts",
-    "test": "node --test \"src/**/*.test.ts\""
+    "test": "node --test \"src/**/*.test.ts\"",
+    "data:districts": "node scripts/build-districts.ts"
   },
   "dependencies": {
     "maplibre-gl": "^5.24.1"

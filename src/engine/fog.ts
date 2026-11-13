@@ -18,7 +18,8 @@ const FOG_ALPHA = 0.9;
 // Если вид шире этого (м), холст покрывает весь город целиком, а не окно вокруг вида.
 const MAX_WINDOW_SPAN = 9000;
 const CITY_BBOX = { w: 131.72, s: 42.93, e: 132.18, n: 43.32 }; // Владивосток с Русским островом
-type Listener = (fresh: number) => void;
+// keys — ключи только что открытых ячеек (пусто при сбросе тумана).
+type Listener = (fresh: number, keys: string[]) => void;
 
 export class FogOfWar {
   readonly cells: Set<string>;
@@ -40,18 +41,18 @@ export class FogOfWar {
 
   /** Открыть круг вокруг точки. Возвращает число новых ячеек. */
   reveal(p: LatLon, radius = REVEAL_RADIUS): number {
-    let fresh = 0;
+    const keys: string[] = [];
     for (const k of cellsInRadius(p, radius)) {
       if (!this.cells.has(k)) {
         this.cells.add(k);
-        fresh++;
+        keys.push(k);
       }
     }
-    if (fresh) {
+    if (keys.length) {
       this.persist();
-      this.listeners.forEach((fn) => fn(fresh));
+      this.listeners.forEach((fn) => fn(keys.length, keys));
     }
-    return fresh;
+    return keys.length;
   }
 
   /** Открыть «коридор» между точками, чтобы между редкими фиксами GPS не оставалось дыр. */
@@ -71,7 +72,7 @@ export class FogOfWar {
   reset() {
     this.cells.clear();
     save("fog", []);
-    this.listeners.forEach((fn) => fn(0));
+    this.listeners.forEach((fn) => fn(0, []));
   }
 }
 
