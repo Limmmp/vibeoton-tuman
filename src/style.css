@@ -1,0 +1,14 @@
+html,
+body,
+#map {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background: #0f1720;
+  overflow: hidden;
+}
+
+.tuman-player {
+  filter: drop-shadow(0 0 6px rgba(245, 184, 61, 0.6));
+  pointer-events: none;
+}

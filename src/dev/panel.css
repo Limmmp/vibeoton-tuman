@@ -1,0 +1,63 @@
+.dev-panel {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 280px;
+  max-width: calc(100vw - 24px);
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(15, 23, 32, 0.88);
+  backdrop-filter: blur(6px);
+  color: #e6ebf0;
+  font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+  z-index: 10;
+}
+.dev-title {
+  font-weight: 600;
+  color: #f5b83d;
+  margin-bottom: 8px;
+}
+.dev-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.dev-row button {
+  flex: 1;
+  padding: 6px 4px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background: #1b2633;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.dev-row button:hover {
+  border-color: #f5b83d;
+}
+.dev-stats {
+  margin: 8px 0;
+  color: #9aa6b2;
+}
+.dev-stats b {
+  color: #e6ebf0;
+  font-weight: 600;
+}
+.dev-hint {
+  font-size: 11.5px;
+  color: #7c8794;
+}
+.dev-route {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #263241;
+}
+.dev-route canvas {
+  width: 100%;
+  margin-top: 4px;
+}
+.dev-error {
+  margin-top: 8px;
+  color: #ff7a6b;
+}
