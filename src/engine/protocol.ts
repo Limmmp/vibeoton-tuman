@@ -9,6 +9,7 @@
 import type { ActiveStep, Quest } from "../quests/types";
 import type { AvatarAppearance, AvatarSlot, ProgressEvent, ProgressState } from "../progress/types";
 import type { RenderProfile, RenderQuality } from "./performance";
+import type { MapLayer } from "./layers";
 
 export type LatLon = { lat: number; lon: number };
 
@@ -49,6 +50,8 @@ export type Command =
   | { id?: string; type: "equipAvatarItem"; itemId: string }
   | { id?: string; type: "unequipAvatarSlot"; slot: AvatarSlot }
   | { id?: string; type: "resetProgress" }
+  | { id?: string; type: "setLayers"; layers: MapLayer[] } // какие категории меток видны; ответ: MapLayer[]
+  | { id?: string; type: "selectPlace"; placeId: string | null; fly?: boolean } // подпись у метки (и перелёт к ней); null — снять
   | { id?: string; type: "checkIn"; placeId: string } // ответ: { ok, distance, first?, reward? } — место должно быть в showPlaces, игрок ближе 60 м
   | { id?: string; type: "getDistricts" } // ответ: DistrictStat[]
   | { id?: string; type: "getState" }; // ответ: State
@@ -61,6 +64,7 @@ export type State = {
   progress: ProgressState;
   avatar: AvatarAppearance;
   renderProfile: RenderProfile;
+  layers: MapLayer[]; // видимые категории меток
 };
 
 export type EngineEvent =
@@ -80,6 +84,7 @@ export type EngineEvent =
   | { type: "districtProgress"; id: string; name: string; pct: number; revealed: number; total: number } // процент района изменился (целый)
   | { type: "districtMilestone"; id: string; name: string; pct: number } // пройдена веха 25/50/75/90 %, награда придёт в rewardGranted
   | { type: "checkedIn"; placeId: string; first: boolean }
+  | { type: "clusterTap"; lat: number; lon: number; count: number } // тап по кластеру меток; карта сама приближается
   | ProgressEvent
   | { type: "result"; id: string; ok: boolean; data?: unknown; error?: string };
 
@@ -87,3 +92,4 @@ export type { ActiveStep, Quest, QuestSummary } from "../quests/types";
 export type { AvatarAppearance, AvatarItem, AvatarSlot, ProgressState, Reward, RewardResult } from "../progress/types";
 export type { RenderProfile, RenderQuality } from "./performance";
 export type { DistrictStat } from "../progress/districts";
+export type { MapLayer } from "./layers";

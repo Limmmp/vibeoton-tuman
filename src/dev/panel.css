@@ -76,3 +76,11 @@
 .dev-quest-actions button {
   min-width: 72px;
 }
+.dev-layers button {
+  font-size: 11px;
+  opacity: 0.45;
+}
+.dev-layers button.on {
+  opacity: 1;
+  border-color: #f5b83d;
+}

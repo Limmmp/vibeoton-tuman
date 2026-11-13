@@ -82,14 +82,14 @@
 
 | Команда | Что делает |
 | --- | --- |
-| `setLayers { layers: ("quests" \| "study" \| "leisure" \| "history" \| "events")[] }` | какие категории меток видны |
+| `setLayers { layers: ("quests" \| "study" \| "leisure" \| "history" \| "events")[] }` | какие категории меток видны — **готово** |
 | `showPlayers { players }`, `updatePlayers`, `removePlayers` | другие игроки (диз-док, 8.5) |
 | `setSocialLayer { mode: "off" \| "party" \| "friends" \| "all" }` | фильтр игроков |
 | `setMapTheme { theme: "light" \| "dark" }` | светлый стиль карты, если понадобится (frontend-vision.md) |
 
 ## Порядок работ (движок)
 
-1. **Метки:** `setLayers`, кластеры, подписи по тапу.
+1. ~~**Метки:** `setLayers`, кластеры, подписи по тапу~~ — готово.
 2. **Дома:** окна, цвет по высоте, свет.
 3. **Аватары:** 2D-значки + кластеры, затем 3D-слой с уровнями детализации.
 4. **Туман:** «дыхание», затем облачка на границе.

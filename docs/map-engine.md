@@ -121,11 +121,13 @@ Location.watchPositionAsync(
 | `equipAvatarItem { itemId }` | экипирует полученный предмет в его слот | `ProgressState` |
 | `unequipAvatarSlot { slot }` | снимает предмет из слота | `ProgressState` |
 | `resetProgress` | сбрасывает локальный профиль; только для отладки | `ProgressState` |
+| `setLayers { layers }` | какие категории меток видны: `quests`, `study`, `leisure`, `history`, `events`. По умолчанию видны все | `MapLayer[]` |
+| `selectPlace { placeId, fly? }` | кольцо и подпись у метки, перелёт к ней (`fly: false` — без перелёта); `null` — снять выбор | — |
 | `getDistricts` | районы: открыто уличных ячеек, всего, процент, последняя веха | `DistrictStat[]` |
 | `checkIn { placeId }` | отметиться в месте из `showPlaces`; игрок должен быть ближе 60 м; первая отметка даёт награду и открывает туман вокруг места | `{ ok, distance, first?, reward? }` |
 | `getState` | позиция, режимы, туман, квест и профиль | `State` |
 
-**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `progressChanged`, `rewardGranted`, `districtProgress`, `districtMilestone`, `checkedIn`, `inventoryChanged`, `renderQualityChanged`, `result`.
+**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `progressChanged`, `rewardGranted`, `districtProgress`, `districtMilestone`, `checkedIn`, `clusterTap`, `inventoryChanged`, `renderQualityChanged`, `result`.
 
 `mapTap.action` равен `walk` только в симуляции. При включённом GPS/`external` тап не двигает аватар и приходит как `select`: приложение может выбрать точку или построить маршрут. После отключения GPS нужно отправить `setPlayerMode { mode: "sim" }`, тогда тапы снова запускают демопрогулку.
 
@@ -142,6 +144,14 @@ Location.watchPositionAsync(
 Встроенный квест может выдать `xp`, `cash`, `rep` и косметические `items`. Награда выдаётся один раз на `questId`. Повторное прохождение возвращает `rewardGranted` с `granted: false` и `reason: "already-completed"`. Внешний `startQuest` проходит механику, но не выдаёт награду: событие содержит `reason: "untrusted-quest"`. Это не позволяет приложению подставить квест с произвольной валютой.
 
 Профиль хранится локально в WebView. `completedQuests` содержит историю завершений и полученные награды. `inventory` хранит количество предметов, `equipped` — выбранный предмет по слоту. Сейчас в каталоге есть тестовая `admiral-cap`, которую выдаёт `engine-demo-center`.
+
+## Метки, слои и кластеры
+
+Метки из `showPlaces` кластеризуются: при отдалении близкие метки собираются в кружок с числом, с зума 16 видны по отдельности. Тап по кластеру сам приближает карту и присылает `clusterTap { lat, lon, count }`.
+
+`setLayers` фильтрует метки по категориям меню «Слои». Фильтр работает до кластеризации, поэтому скрытые места не попадают в счётчики. Соответствие `kind` → слой: `quest`/`collect` → `quests`, `study`/`creative` → `study`, `leisure`/`food`/`outdoor` → `leisure`, `culture`/`history` → `history`, `event` → `events`.
+
+Подписи у меток не висят постоянно. Тап по метке показывает кольцо и название и присылает `placeTap`; тап по пустой карте снимает выбор. Из списка в интерфейсе то же самое делает `selectPlace`.
 
 ## Районы и чекин
 

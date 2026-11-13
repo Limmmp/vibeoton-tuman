@@ -4,6 +4,7 @@
 import type { Engine } from "../engine/engine";
 import { formatDistance } from "../engine/geo";
 import type { Place } from "../data/place";
+import type { MapLayer } from "../engine/layers";
 import placesJson from "../../data/places.json";
 import { ENGINE_DEMO_QUEST } from "../quests/catalog";
 import type { ActiveStep } from "../quests/types";
@@ -27,6 +28,13 @@ export function mountDevPanel(engine: Engine) {
     </div>
     <div class="dev-row">
       <button data-act="places">Места</button>
+    </div>
+    <div class="dev-row dev-layers">
+      <button data-layer="quests" class="on">Задания</button>
+      <button data-layer="study" class="on">Учёба</button>
+      <button data-layer="leisure" class="on">Досуг</button>
+      <button data-layer="history" class="on">История</button>
+      <button data-layer="events" class="on">События</button>
     </div>
     <div class="dev-row">
       <button data-act="quest">Тест-квест</button>
@@ -110,6 +118,13 @@ export function mountDevPanel(engine: Engine) {
     const btn = (ev.target as HTMLElement).closest("button");
     if (!btn) return;
     try {
+      // Переключатели слоёв меток → setLayers (как сделает меню «Слои» в приложении).
+      if (btn.dataset.layer) {
+        btn.classList.toggle("on");
+        const layers = [...root.querySelectorAll<HTMLButtonElement>(".dev-layers button.on")].map((b) => b.dataset.layer!);
+        await engine.exec({ type: "setLayers", layers: layers as MapLayer[] });
+        return;
+      }
       switch (btn.dataset.act) {
         case "view": {
           const next = engine.viewMode === "2d" ? "3d" : "2d";

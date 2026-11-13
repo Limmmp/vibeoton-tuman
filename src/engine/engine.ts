@@ -23,6 +23,7 @@ import { DistrictTracker } from "../progress/districts";
 import type { DistrictData } from "../data/districts";
 import districtsJson from "../../data/districts.json";
 import { distance } from "./geo";
+import { MAP_LAYERS, normalizeLayers, visiblePlaces, type MapLayer } from "./layers";
 
 // Чекин: игрок должен быть не дальше этого от места; первая отметка в месте даёт награду.
 const CHECKIN_RADIUS = 60;
@@ -50,6 +51,8 @@ export class Engine {
   private fogLayer: FogLayer | null = null;
   private districts = new DistrictTracker(districtsJson as DistrictData[]);
   private places = new Map<string, Place>(); // последние метки из showPlaces — для чекина
+  private layers: MapLayer[] = [...MAP_LAYERS]; // видимые категории меток (setLayers)
+  private selectedPlace: string | null = null;
 
   private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player, renderProfile: RenderProfile) {
     this.renderProfile = renderProfile;
@@ -148,6 +151,23 @@ export class Engine {
     this.progress.grantReward({ key, source: "district", title: `${hit.name}: открыто ${hit.pct} %`, reward: hit.reward, trusted: true });
   }
 
+  /** Перерисовать метки: только места из включённых слоёв (до кластеризации, чтобы скрытые не попадали в счётчики). */
+  private refreshPlaces() {
+    const shown = visiblePlaces([...this.places.values()], this.layers);
+    (this.map.getSource("places") as GeoJSONSource).setData(placesGeoJSON(shown));
+    if (this.selectedPlace && !shown.some((p) => p.id === this.selectedPlace)) this.selectPlace(null);
+  }
+
+  /** Подпись и кольцо у выбранной метки. null — снять выбор. */
+  private selectPlace(id: string | null) {
+    const place = id ? this.places.get(id) : undefined;
+    this.selectedPlace = place ? place.id : null;
+    (this.map.getSource("place-selected") as GeoJSONSource).setData(place ? {
+      type: "FeatureCollection",
+      features: [{ type: "Feature", properties: { name: place.name ?? "", color: KIND_COLORS[place.kind ?? ""] ?? "#F5B83D" }, geometry: { type: "Point", coordinates: [place.lon, place.lat] } }],
+    } : EMPTY);
+  }
+
   /** Отметиться в месте из showPlaces. Награда — только за первую отметку. */
   private checkIn(placeId: string) {
     const place = this.places.get(placeId);
@@ -170,6 +190,7 @@ export class Engine {
       progress: this.progress.state,
       avatar: { ...this.avatar, equipped: { ...this.avatar.equipped } },
       renderProfile: this.renderProfile,
+      layers: [...this.layers],
     };
   }
 
@@ -232,12 +253,29 @@ export class Engine {
     map.on("moveend", updateBuildings);
     map.on("sourcedata", (e) => e.sourceId === "openmaptiles" && e.isSourceLoaded && updateBuildings());
 
-    // Тап по метке → placeTap; по пустой карте → mapTap (в симуляции ещё и идём туда).
+    // Тап по цели квеста → questTargetTap; по кластеру → приблизить и clusterTap;
+    // по метке → подпись + placeTap; по пустой карте → mapTap (в симуляции ещё и идём туда).
     map.on("click", (e) => {
       const questHit = map.queryRenderedFeatures(e.point, { layers: ["quest-targets"] })[0];
       if (questHit) return this.emit({ type: "questTargetTap", id: String(questHit.properties?.id) });
+      const cluster = map.queryRenderedFeatures(e.point, { layers: ["places-clusters"] })[0];
+      if (cluster && cluster.geometry.type === "Point") {
+        const [lon, lat] = cluster.geometry.coordinates;
+        const count = Number(cluster.properties?.point_count ?? 0);
+        player.follow = false;
+        (map.getSource("places") as GeoJSONSource)
+          .getClusterExpansionZoom(Number(cluster.properties?.cluster_id))
+          .then((zoom) => map.easeTo({ center: [lon, lat], zoom: Math.min(zoom + 0.3, 18) }))
+          .catch(() => map.easeTo({ center: [lon, lat], zoom: map.getZoom() + 2 }));
+        return this.emit({ type: "clusterTap", lat, lon, count });
+      }
       const hit = map.queryRenderedFeatures(e.point, { layers: ["places"] })[0];
-      if (hit) return this.emit({ type: "placeTap", id: String(hit.properties?.id) });
+      if (hit) {
+        const id = String(hit.properties?.id);
+        this.selectPlace(id);
+        return this.emit({ type: "placeTap", id });
+      }
+      if (this.selectedPlace) this.selectPlace(null);
       const p = { lat: e.lngLat.lat, lon: e.lngLat.lng };
       if (player.mode === "sim") player.walkTo(p);
       this.emit({ type: "mapTap", ...p, action: player.mode === "sim" ? "walk" : "select" });
@@ -295,8 +333,19 @@ export class Engine {
         return;
       case "showPlaces":
         this.places = new Map(cmd.places.map((p) => [p.id, p]));
-        (map.getSource("places") as GeoJSONSource).setData(placesGeoJSON(cmd.places));
+        this.refreshPlaces();
         return;
+      case "setLayers":
+        this.layers = normalizeLayers(cmd.layers);
+        this.refreshPlaces();
+        return this.layers;
+      case "selectPlace": {
+        if (cmd.placeId && !this.places.has(cmd.placeId)) throw new Error("Место не показано на карте — сначала showPlaces");
+        this.selectPlace(cmd.placeId);
+        const place = cmd.placeId ? this.places.get(cmd.placeId) : undefined;
+        if (place && cmd.fly !== false) { player.follow = false; map.easeTo({ center: [place.lon, place.lat], zoom: Math.max(map.getZoom(), 16) }); }
+        return;
+      }
       case "checkIn":
         return this.checkIn(cmd.placeId);
       case "getDistricts":
@@ -380,10 +429,36 @@ function addOverlayLayers(map: MLMap, beforeId?: string) {
   map.addSource("route", { type: "geojson", data: EMPTY });
   map.addLayer({ id: "route-casing", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#0F1720", "line-width": 8 } }, beforeId);
   map.addLayer({ id: "route", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#F5B83D", "line-width": 4 } }, beforeId);
-  map.addSource("places", { type: "geojson", data: EMPTY });
+  // Метки мест кластеризуются: при отдалении близкие метки собираются в кружок с числом,
+  // чтобы на экране не было каши. С зума 16 — отдельные метки.
+  map.addSource("places", { type: "geojson", data: EMPTY, cluster: true, clusterRadius: 44, clusterMaxZoom: 15 });
   map.addLayer({
-    id: "places", type: "circle", source: "places",
+    id: "places-clusters", type: "circle", source: "places", filter: ["has", "point_count"],
+    paint: {
+      "circle-color": "rgba(15,23,32,0.88)",
+      "circle-stroke-color": "#F5B83D", "circle-stroke-width": 2,
+      "circle-radius": ["step", ["get", "point_count"], 15, 10, 19, 30, 24],
+    },
+  });
+  map.addLayer({
+    id: "places-cluster-count", type: "symbol", source: "places", filter: ["has", "point_count"],
+    layout: { "text-field": ["get", "point_count_abbreviated"], "text-font": ["Noto Sans Regular"], "text-size": 13, "text-allow-overlap": true },
+    paint: { "text-color": "#F4F6F8" },
+  });
+  map.addLayer({
+    id: "places", type: "circle", source: "places", filter: ["!", ["has", "point_count"]],
     paint: { "circle-radius": 8, "circle-color": ["get", "color"], "circle-stroke-color": "#F4F6F8", "circle-stroke-width": 2 },
+  });
+  // Выбранная метка: кольцо и подпись (подписи только по тапу — без шума на карте).
+  map.addSource("place-selected", { type: "geojson", data: EMPTY });
+  map.addLayer({
+    id: "place-selected-ring", type: "circle", source: "place-selected",
+    paint: { "circle-radius": 14, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": ["get", "color"], "circle-stroke-width": 3 },
+  });
+  map.addLayer({
+    id: "place-selected-label", type: "symbol", source: "place-selected",
+    layout: { "text-field": ["get", "name"], "text-font": ["Noto Sans Regular"], "text-size": 13, "text-offset": [0, 1.6], "text-anchor": "top", "text-max-width": 12, "text-allow-overlap": true },
+    paint: { "text-color": "#F4F6F8", "text-halo-color": "#0F1720", "text-halo-width": 1.6 },
   });
   map.addSource("quest-targets", { type: "geojson", data: EMPTY });
   map.addLayer({
