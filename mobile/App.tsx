@@ -131,7 +131,7 @@ function Demo() {
     <View style={s.header}><View><Text style={s.eyebrow}>ВЛАДИВОСТОК / EXPO DEMO</Text><Text style={s.title}>Город в тумане</Text></View>
       <Pressable accessibilityRole="button" onPress={() => setSettings(!settings)} style={s.icon}><Text style={s.text}>Адрес</Text></Pressable></View>
     <View style={s.stats}><Text style={s.accent}>Открыто {area.toFixed(4)} км²</Text><Text style={s.muted}>{ready ? (gps ? 'GPS телефона' : 'Демопрогулка') : 'Подключение…'}</Text></View>
-    {settings && <View style={s.settings}><Text style={s.text}>Адрес движка карты</Text><TextInput accessibilityLabel="Адрес движка карты" style={s.input} value={address} onChangeText={setAddress} autoCapitalize="none" autoCorrect={false} keyboardType="url" /><Button label="Подключить" onPress={connect} /><Text style={s.muted}>Телефон и компьютер должны быть в одной сети.</Text></View>}
+    {settings && <View style={s.settings}><Text style={s.text}>Адрес движка карты</Text><TextInput accessibilityLabel="Адрес движка карты" style={s.input} value={address} onChangeText={setAddress} autoCapitalize="none" autoCorrect={false} keyboardType="url" /><Button label="Подключить" onPress={connect} /><Text style={s.muted}>По умолчанию — опубликованная карта. Для локального движка: http://IP-компьютера:5173, телефон и компьютер в одной сети.</Text></View>}
     <View style={s.map}>
       {Platform.OS === 'web' ? <View style={s.center}><Text style={s.text}>Открой приложение в Expo Go на Android или iOS.</Text><Text style={s.muted}>Браузерное демо карты: {address}</Text></View> : !!url && <WebView<object> key={generation} ref={web} source={{ uri: url }} style={s.map}
         onMessage={event => onMessage(event.nativeEvent.data)} javaScriptEnabled domStorageEnabled
