@@ -17,6 +17,10 @@
 - Пешие маршруты (OSRM) с профилем высот, суммарным подъёмом и спуском и временем с учётом уклона.
 - Метки мест, тапы по ним и по карте, долгое нажатие.
 
+## Где лежит
+
+**https://limmmp.github.io/vibeoton-tuman/** — собранный движок. Обновляется сам при каждом пуше в `main` (GitHub Actions, ~1–2 минуты). В обычном браузере там видна отладочная панель, внутри приложения её нет.
+
 ## Запуск для разработки
 
 ```bash
@@ -38,7 +42,7 @@ import { useRef } from "react";
 import { WebView } from "react-native-webview";
 import type { Command, EngineEvent } from "./protocol"; // скопировать src/engine/protocol.ts
 
-const MAP_URL = "http://192.168.0.10:5173"; // на время разработки; потом — GitHub Pages или файл в бандле
+const MAP_URL = "https://limmmp.github.io/vibeoton-tuman/"; // или http://<ip-ноутбука>:5173 при локальной разработке движка
 
 export function MapView() {
   const ref = useRef<WebView>(null);
