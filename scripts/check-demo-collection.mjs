@@ -65,7 +65,7 @@ try {
   await call('Runtime.enable'); await call('Page.enable');
   await call('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
   await call('Emulation.setTouchEmulationEnabled', { enabled: true });
-  await call('Page.navigate', { url: new URL('?embedded=1&v=exploration-xp-8', base).href });
+  await call('Page.navigate', { url: new URL('?embedded=1&v=map-controls-9', base).href });
   await wait('!!window.tuman && window.tuman.state().basemap.ready');
   const movement = await evaluate(`(async () => {
     const e=window.tuman,p=e.player,origin={lat:43.1155,lon:131.8855},target={lat:43.1155,lon:131.95};
@@ -123,7 +123,7 @@ try {
   await evaluate(`window.tuman.exec({type:'setRenderQuality',quality:'low'})`);
   assert.equal(await evaluate(`!!window.tuman.map.getLayer('landmark-models')`), false);
 
-  const collection = new URL('collection.html?embedded=1&v=exploration-xp-8', base).href;
+  const collection = new URL('collection.html?embedded=1&v=map-controls-9', base).href;
   await call('Page.navigate', { url: collection });
   await wait(`document.querySelector('#status')?.textContent === 'GLB-модель'`);
   assert.equal(await evaluate(`document.querySelectorAll('#cards button').length`), 4);

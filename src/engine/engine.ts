@@ -259,7 +259,7 @@ export class Engine {
       progress: this.progress.state,
       avatar: { ...this.avatar, equipped: { ...this.avatar.equipped } },
       renderProfile: this.renderProfile,
-      engineVersion: "exploration-xp-8",
+      engineVersion: "map-controls-9",
       basemap: { ...this.basemap.status },
       fogEffects: this.fogEffects,
       layers: [...this.layers],
@@ -430,6 +430,10 @@ export class Engine {
   async exec(cmd: Command): Promise<unknown> {
     const { map, fog, player } = this;
     switch (cmd.type) {
+      case "setMapControlsInset":
+        if (!Number.isFinite(cmd.top) || cmd.top < 0) throw new Error("Некорректный отступ кнопок карты");
+        map.getContainer().style.setProperty("--tuman-controls-top", `${Math.ceil(cmd.top)}px`);
+        return;
       case "setSimSpeed":
         if (player.mode !== "sim") throw new Error("Ускорение доступно только в симуляции. Сначала отключи GPS.");
         player.setSimSpeed(cmd.multiplier);

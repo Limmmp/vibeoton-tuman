@@ -62,6 +62,9 @@ try {
   assert.ok(await evaluate(`window.tuman.map.queryRenderedFeatures().some(feature => feature.layer.id === 'building')`), 'Low/2D lost flat buildings');
 
   assert.equal(await evaluate(`document.querySelector('.tuman-tilt-control').hidden`), false);
+  await evaluate(`window.tuman.exec({type:'setMapControlsInset',top:260})`);
+  assert.ok(await evaluate(`document.querySelector('.tuman-tilt-control button').getBoundingClientRect().top >= 260`), 'Demo notice overlaps tilt control');
+  await evaluate(`window.tuman.exec({type:'setMapControlsInset',top:140})`);
   await evaluate(`document.querySelector('.tuman-tilt-control button').click();true`);
   await waitFor(`Math.abs(window.tuman.map.getPitch()-45)<0.1 && !window.tuman.map.isMoving()`);
   assert.equal(await evaluate('window.tuman.state().viewMode'), '2d');
@@ -153,7 +156,7 @@ try {
   await call('Network.setBlockedURLs', { urls: ['*tiles.openfreemap.org/styles/liberty*'] });
   await call('Page.reload', { ignoreCache: true });
   await waitFor(`window.tuman?.state().basemap.provider === 'raster' && window.tuman.state().basemap.ready`);
-  assert.equal(await evaluate('window.tuman.state().engineVersion'), 'exploration-xp-8');
+  assert.equal(await evaluate('window.tuman.state().engineVersion'), 'map-controls-9');
   const storageBackup = await evaluate(`({progress:localStorage.getItem('tuman:progress'),fog:localStorage.getItem('tuman:fog'),player:localStorage.getItem('tuman:player')})`);
   try {
     await evaluate(`localStorage.removeItem('tuman:progress');localStorage.removeItem('tuman:fog');true`);

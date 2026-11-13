@@ -31,6 +31,7 @@ export type Command =
   | { id?: string; type: "setRenderQuality"; quality: RenderQuality }
   | { id?: string; type: "setViewMode"; mode: "2d" | "3d" }
   | { id?: string; type: "set2dTilt"; enabled: boolean }
+  | { id?: string; type: "setMapControlsInset"; top: number }
   | { id?: string; type: "setPlayerMode"; mode: "sim" | "external" | "gps" }
   | { id?: string; type: "gpsFix"; lat: number; lon: number; accuracy?: number; heading?: number }
   | { id?: string; type: "teleport"; lat: number; lon: number }

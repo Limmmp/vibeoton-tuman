@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, AppState, BackHandler, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import * as Location from 'expo-location';
 import { useNetInfo } from '@react-native-community/netinfo';
@@ -39,6 +39,8 @@ const origin = { lat: 43.1155, lon: 131.8855 };
 const hostedMap = 'https://limmmp.github.io/vibeoton-tuman/';
 
 function Application() {
+  const insets = useSafeAreaInsets();
+  const [mapControlsTop, setMapControlsTop] = useState(140);
   const network = useNetInfo();
   const mapHandlers = useRef<MapHandlers>({ message: () => {}, error: () => {}, reload: () => {} });
   const web = useRef<WebView<object>>(null);
@@ -247,6 +249,12 @@ function Application() {
   };
   useEffect(() => { if (loaded && !initialized.current) { initialized.current = true; const next = preferences.mapAddress || defaultMapUrl; setAddress(next); try { setUrl(mapUrl(next)); } catch { setError('Сохранён неверный адрес карты'); } } }, [loaded]);
   useEffect(() => { if (ready && wantsGps) { setWantsGps(false); void startGps(); } }, [ready, wantsGps]);
+  useEffect(() => {
+    if (!ready) return;
+    let live = true;
+    void bridge.request({ type: 'setMapControlsInset', top: mapControlsTop }).catch(problem => { if (live) setError(problem.message); });
+    return () => { live = false; };
+  }, [bridge, ready, mapControlsTop, generation]);
   useEffect(() => { if (!loaded || ready || !url) return; const timer = setTimeout(() => setError('Карта не ответила. Проверь сеть и адрес в настройках.'), 25000); return () => clearTimeout(timer); }, [loaded, ready, url, generation]);
   useEffect(() => { if (!toast) return; const timer = setTimeout(() => setToast(''), 4000); return () => clearTimeout(timer); }, [toast]);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; gpsGeneration.current++; gpsSubscription.current?.remove(); bridge.disconnect(); }; }, []);
@@ -310,13 +318,15 @@ function Application() {
     <StatusBar style="light" />
     <View style={s.map}>{Platform.OS !== 'web' && !!url && <MapSurface uri={url} generation={generation} web={web} handlers={mapHandlers} />}</View>
     <View pointerEvents="box-none" style={s.foreground}>
+      <View pointerEvents="box-none" onLayout={event => setMapControlsTop(Math.ceil(event.nativeEvent.layout.height + insets.top + 8))}>
       <View style={s.hud}><Button label="‹" disabled={!navigation.history.length && sheet === 0} onPress={goBack} /><View style={{ flex: 1, gap: 5 }}><Text style={u.text}>Ур. {level.level} · {area.toFixed(4)} км²</Text><Bar value={level.fraction} /><Text style={u.muted}>{progress ? `${level.earned} / ${level.required} опыта` : 'Загрузка опыта…'}</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Меню и фильтры" onPress={() => setOverlay('filters')} style={{ padding: 12 }}><Icon name="menu" /></Pressable></View>
       {demoActive && <View style={{ marginHorizontal: 10, padding: 8, backgroundColor: '#353126', borderRadius: 12 }}><Text style={u.muted}>Демо · {demoTapMode === 'teleport' ? 'нажатие телепортирует' : 'нажатие задаёт путь'} · ×{demoSpeed}</Text><Button label="Настроить перемещение" onPress={() => setOverlay('demo')} /></View>}
       {network.isConnected === false && <View style={s.error}><Text style={u.text}>Нет сети. Новые тайлы, аудио и маршруты могут быть недоступны.</Text></View>}
       {(!!error || !!storageError) && <View style={s.error}><Text style={u.text}>{error || storageError}</Text><View style={u.row}><Button label="Настройки" onPress={() => setOverlay('settings')} /><Button label="Закрыть" onPress={() => setError('')} /></View></View>}
       <Notice text={toast} onPress={() => setOverlay('inbox')} />
+      </View>
       <View pointerEvents="box-none" style={{ flex: 1 }}><SwipeSheet level={sheet} onLevel={setSheet} title={tab} scroll={tab !== 'Места' || !!selected}>{panelContent()}</SwipeSheet></View>
-      <SafeAreaView edges={['bottom']} style={{ backgroundColor: colors.bg }}><Button label="Куда пойдём?" onPress={() => changeTab('Места')} /><View style={s.nav}>{tabs.map((value, index) => <Pressable key={value} accessibilityRole="tab" accessibilityLabel={value} accessibilityState={{ selected: tab === value }} onPress={() => changeTab(value)} style={s.navItem}><Icon name={['player', 'company', 'study', 'history', 'profile'][index]} size={26} /><Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75} style={[s.navText, tab === value && { color: colors.amber }]}>{value}</Text></Pressable>)}</View></SafeAreaView>
+      <SafeAreaView edges={['bottom']} style={{ backgroundColor: colors.bg }}><Button label="Куда пойдём?" onPress={() => changeTab('Места')} /><View style={s.nav}>{tabs.map(value => <Pressable key={value} accessibilityRole="tab" accessibilityLabel={value} accessibilityState={{ selected: tab === value }} onPress={() => changeTab(value)} style={s.navItem}><Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75} style={[s.navText, tab === value && { color: colors.amber }]}>{value}</Text></Pressable>)}</View></SafeAreaView>
     </View>
     <Modal visible={preferences.onboarded && (!!overlay || rewardOpen)} animationType="slide" onRequestClose={() => { goBack(); }}>
       {rewardOpen ? <SafeAreaView style={[s.root, { justifyContent: 'center', padding: 24, gap: 20 }]}>
