@@ -33,3 +33,7 @@ body,
     font-size: 9px;
   }
 }
+.maplibregl-ctrl.tuman-tilt-control { margin-top: 140px; }
+.tuman-tilt-control[hidden] { display: none; }
+.tuman-tilt-control button { min-height: 44px; padding: 10px 14px; border: 1px solid #445663; border-radius: 14px; background: #172633; color: #eef5f5; font: 600 14px system-ui, sans-serif; cursor: pointer; }
+.tuman-tilt-control button[aria-pressed="true"] { border-color: #f5b83d; color: #f5b83d; }

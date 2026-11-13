@@ -50,6 +50,7 @@ const KIND_COLORS: Record<string, string> = {
 
 export class Engine {
   viewMode: ViewMode = "2d";
+  private tilted2d = false;
   private handlers: Handler[] = [];
   private updateBuildings: () => void = () => {};
   private quests: QuestRunner;
@@ -158,10 +159,8 @@ export class Engine {
       setBuildingsVisible(this.map, false);
       (this.map.getSource("lit-buildings") as GeoJSONSource).setData(EMPTY);
     }
-    if (this.viewMode === "3d") {
-      setViewMode(this.map, "3d", this.renderProfile);
-      this.updateBuildings();
-    }
+    setViewMode(this.map, this.viewMode, this.renderProfile, this.tilted2d);
+    this.updateBuildings();
     this.emit({ type: "renderQualityChanged", profile: this.renderProfile });
     return this.renderProfile;
   }
@@ -254,12 +253,13 @@ export class Engine {
       player: { ...p.pos, heading: p.heading, mode: p.mode, follow: p.follow, simSpeed: p.simSpeed },
       demoTapMode: this.demoTapMode,
       viewMode: this.viewMode,
+      tilted2d: this.tilted2d,
       fog: { cells: this.fog.cells.size, km2: +this.fog.areaKm2().toFixed(4) },
       quest: this.quests.active,
       progress: this.progress.state,
       avatar: { ...this.avatar, equipped: { ...this.avatar.equipped } },
       renderProfile: this.renderProfile,
-      engineVersion: "landmarks-avatar-6",
+      engineVersion: "tilt-performance-7",
       basemap: { ...this.basemap.status },
       fogEffects: this.fogEffects,
       layers: [...this.layers],
@@ -316,6 +316,9 @@ export class Engine {
       bTimer = setTimeout(() => {
         bTimer = undefined;
         if (!this.renderActive || this.viewMode !== "3d" || !this.renderProfile.show3dBuildings) return;
+        if (map.getZoom() < 14) return; // слой домов на этом масштабе всё равно скрыт
+        // Пересборка GeoJSON не конкурирует с жестом масштабирования и перелётом.
+        if (map.isMoving()) return;
         // В тайлах много зданий склеены в один MultiPolygon, поэтому проверяем каждый полигон отдельно.
         if (tilesDirty && map.getSource("openmaptiles")) {
           // один дом приходит из соседних тайлов
@@ -392,10 +395,17 @@ export class Engine {
 
     // Игровой цикл.
     let last = performance.now();
+    let pendingTime = 0;
     const loop = (now: number) => {
       const dt = Math.min(0.1, (now - last) / 1000);
       last = now;
-      player.tick(dt);
+      pendingTime += dt;
+      // Камера и маркер не требуют 60 обновлений GPS/симуляции в секунду на телефоне.
+      const interval = this.renderProfile.mobile && this.renderProfile.quality !== "high" ? 1 / 30 : 0;
+      if (pendingTime >= interval) {
+        player.tick(pendingTime);
+        pendingTime = 0;
+      }
       this.quests.tick(dt * player.timeScale);
       requestAnimationFrame(loop);
     };
@@ -437,9 +447,15 @@ export class Engine {
         return this.setRenderQuality(cmd.quality);
       case "setViewMode":
         this.viewMode = cmd.mode;
-        setViewMode(map, cmd.mode, this.renderProfile);
+        setViewMode(map, cmd.mode, this.renderProfile, this.tilted2d);
+        this.emit({ type: "viewChanged", mode: this.viewMode, tilted2d: this.tilted2d });
         this.updateBuildings();
         await this.ensureLandmarkLayer();
+        return;
+      case "set2dTilt":
+        this.tilted2d = cmd.enabled;
+        if (this.viewMode === "2d") setViewMode(map, "2d", this.renderProfile, this.tilted2d);
+        this.emit({ type: "viewChanged", mode: this.viewMode, tilted2d: this.tilted2d });
         return;
       case "setPlayerMode":
         return player.setMode(cmd.mode);

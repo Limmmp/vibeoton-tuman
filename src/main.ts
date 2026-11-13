@@ -3,10 +3,12 @@ import "./style.css";
 import { Engine } from "./engine/engine";
 import { attachBridge, inReactNative, send } from "./engine/bridge";
 import { LANDMARKS } from "./models/catalog";
+import { mountTiltControl } from "./engine/tilt-control";
 
 try {
   const engine = await Engine.create("map");
   attachBridge(engine);
+  mountTiltControl(engine);
   const requestedLandmark = LANDMARKS.find(item => item.id === new URLSearchParams(location.search).get("landmark"));
   if (requestedLandmark) { engine.player.follow = false; engine.map.jumpTo({ center: [requestedLandmark.lon, requestedLandmark.lat], zoom: 17 }); }
   if (!inReactNative() || new URLSearchParams(location.search).has("demo")) {

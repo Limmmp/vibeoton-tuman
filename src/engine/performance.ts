@@ -35,15 +35,15 @@ export function profileFor(quality: RenderQuality, mobile: boolean, devicePixelR
     case "balanced":
       return {
         quality, mobile,
-        pixelRatio: Math.min(devicePixelRatio, mobile ? 1.5 : 1.75),
-        fogMaxCanvas: mobile ? 1280 : 1600,
+        pixelRatio: Math.min(devicePixelRatio, mobile ? 1.25 : 1.75),
+        fogMaxCanvas: mobile ? 1024 : 1600,
         fogScale: mobile ? 1.15 : 1.35,
-        fogIntervalMs: mobile ? 220 : 160,
-        buildingLimit: mobile ? 3000 : 5000,
+        fogIntervalMs: mobile ? 330 : 160,
+        buildingLimit: mobile ? 1200 : 5000,
         show3dBuildings: true,
         terrain: true,
-        hillshade: true,
-        pitch3d: mobile ? 50 : 55,
+        hillshade: !mobile,
+        pitch3d: mobile ? 45 : 55,
       };
     case "high":
       return {

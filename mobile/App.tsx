@@ -29,6 +29,7 @@ import { diagnosticQuest } from './src/diagnostic';
 import { DemoPanel } from './src/DemoPanel';
 import { CollectionPanel } from './src/CollectionPanel';
 import landmarks from '../public/models/landmarks/manifest.json';
+import { levelProgress } from '../src/progress/level';
 
 const tabs = ['Карта', 'Компания', 'Места', 'История', 'Профиль'] as const;
 type Tab = typeof tabs[number];
@@ -82,6 +83,7 @@ function Application() {
   const [quests, setQuests] = useState<QuestSummary[]>([]);
   const [active, setActive] = useState<ActiveStep | null>(null);
   const [progress, setProgress] = useState<ProgressState | null>(null);
+  const level = levelProgress(progress?.xp ?? 0);
   const [items, setItems] = useState<AvatarItem[]>([]);
   const [reward, setReward] = useState<RewardResult | null>(null);
   const [rewardOpen, setRewardOpen] = useState(false);
@@ -308,13 +310,13 @@ function Application() {
     <StatusBar style="light" />
     <View style={s.map}>{Platform.OS !== 'web' && !!url && <MapSurface uri={url} generation={generation} web={web} handlers={mapHandlers} />}</View>
     <View pointerEvents="box-none" style={s.foreground}>
-      <View style={s.hud}><Button label="‹" disabled={!navigation.history.length && sheet === 0} onPress={goBack} /><View style={{ flex: 1, gap: 5 }}><Text style={u.text}>Ур. {progress?.level || 1} · {area.toFixed(4)} км²</Text><Bar value={progress ? (progress.xp - 100 * (progress.level - 1) ** 2) / (100 * progress.level ** 2 - 100 * (progress.level - 1) ** 2) : 0} /></View><Pressable accessibilityRole="button" accessibilityLabel="Меню и фильтры" onPress={() => setOverlay('filters')} style={{ padding: 12 }}><Icon name="menu" /></Pressable></View>
+      <View style={s.hud}><Button label="‹" disabled={!navigation.history.length && sheet === 0} onPress={goBack} /><View style={{ flex: 1, gap: 5 }}><Text style={u.text}>Ур. {level.level} · {area.toFixed(4)} км²</Text><Bar value={level.fraction} /><Text style={u.muted}>{progress ? `${level.earned} / ${level.required} опыта` : 'Загрузка опыта…'}</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Меню и фильтры" onPress={() => setOverlay('filters')} style={{ padding: 12 }}><Icon name="menu" /></Pressable></View>
       {demoActive && <View style={{ marginHorizontal: 10, padding: 8, backgroundColor: '#353126', borderRadius: 12 }}><Text style={u.muted}>Демо · {demoTapMode === 'teleport' ? 'нажатие телепортирует' : 'нажатие задаёт путь'} · ×{demoSpeed}</Text><Button label="Настроить перемещение" onPress={() => setOverlay('demo')} /></View>}
       {network.isConnected === false && <View style={s.error}><Text style={u.text}>Нет сети. Новые тайлы, аудио и маршруты могут быть недоступны.</Text></View>}
       {(!!error || !!storageError) && <View style={s.error}><Text style={u.text}>{error || storageError}</Text><View style={u.row}><Button label="Настройки" onPress={() => setOverlay('settings')} /><Button label="Закрыть" onPress={() => setError('')} /></View></View>}
       <Notice text={toast} onPress={() => setOverlay('inbox')} />
       <View pointerEvents="box-none" style={{ flex: 1 }}><SwipeSheet level={sheet} onLevel={setSheet} title={tab} scroll={tab !== 'Места' || !!selected}>{panelContent()}</SwipeSheet></View>
-      <SafeAreaView edges={['bottom']} style={{ backgroundColor: colors.bg }}><Button label="Куда пойдём?" onPress={() => changeTab('Места')} /><View style={s.nav}>{tabs.map((value, index) => <Pressable key={value} accessibilityRole="tab" accessibilityState={{ selected: tab === value }} onPress={() => changeTab(value)} style={s.navItem}><Icon name={['player', 'company', 'study', 'history', 'profile'][index]} size={26} /><Text style={[s.navText, tab === value && { color: colors.amber }]}>{tab === value ? value : ''}</Text></Pressable>)}</View></SafeAreaView>
+      <SafeAreaView edges={['bottom']} style={{ backgroundColor: colors.bg }}><Button label="Куда пойдём?" onPress={() => changeTab('Места')} /><View style={s.nav}>{tabs.map((value, index) => <Pressable key={value} accessibilityRole="tab" accessibilityLabel={value} accessibilityState={{ selected: tab === value }} onPress={() => changeTab(value)} style={s.navItem}><Icon name={['player', 'company', 'study', 'history', 'profile'][index]} size={26} /><Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75} style={[s.navText, tab === value && { color: colors.amber }]}>{value}</Text></Pressable>)}</View></SafeAreaView>
     </View>
     <Modal visible={preferences.onboarded && (!!overlay || rewardOpen)} animationType="slide" onRequestClose={() => { goBack(); }}>
       {rewardOpen ? <SafeAreaView style={[s.root, { justifyContent: 'center', padding: 24, gap: 20 }]}>

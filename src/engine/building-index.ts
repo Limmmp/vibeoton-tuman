@@ -7,7 +7,7 @@ type Building = { key: string; feature: GeoJSON.Feature<GeoJSON.Polygon>; lon: n
 /** Cache decoded building polygons between vector tile changes. */
 export class BuildingIndex {
   private cells = new Map<string, Building[]>();
-  private signature = "";
+  private signature: string[] | undefined = [];
 
   replace(features: Iterable<GeoJSON.Feature>) {
     this.cells.clear();
@@ -45,11 +45,11 @@ export class BuildingIndex {
         out.push(item.feature);
       }
     }
-    const signature = keys.join("|");
-    if (signature === this.signature) return null;
-    this.signature = signature;
+    // Не склеиваем координаты всех домов в многомегабайтную строку при каждом шаге.
+    if (this.signature?.length === keys.length && keys.every((key, i) => key === this.signature![i])) return null;
+    this.signature = keys;
     return out;
   }
 
-  invalidate() { this.signature = "invalid"; }
+  invalidate() { this.signature = undefined; }
 }

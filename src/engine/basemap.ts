@@ -108,7 +108,9 @@ export function addTerrainLayers(map: MLMap): string | undefined {
   return firstSymbol;
 }
 
-export function setViewMode(map: MLMap, mode: ViewMode, profile?: RenderProfile) {
+export function setViewMode(map: MLMap, mode: ViewMode, profile?: RenderProfile, tilted2d = false) {
+  // При наклоне не загружаем дальние тайлы с детализацией ближнего плана.
+  map.setSourceTileLodParams(4, profile?.mobile && profile.quality !== "high" ? 1.5 : 3);
   if (mode === "3d") {
     map.setTerrain(profile?.terrain === false ? null : { source: "dem-terrain", exaggeration: TERRAIN_EXAGGERATION });
     setBuildingsVisible(map, profile?.show3dBuildings !== false);
@@ -116,6 +118,6 @@ export function setViewMode(map: MLMap, mode: ViewMode, profile?: RenderProfile)
   } else {
     map.setTerrain(null);
     setBuildingsVisible(map, false);
-    map.easeTo({ pitch: 0, bearing: 0, duration: profile?.mobile ? 300 : 700 });
+    map.easeTo({ pitch: tilted2d ? 45 : 0, bearing: 0, duration: profile?.mobile ? 300 : 700 });
   }
 }

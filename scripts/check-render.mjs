@@ -58,7 +58,17 @@ try {
   assert.equal(await evaluate(`window.tuman.map.getPaintProperty('background','background-color')`), '#f8f4f0');
   assert.ok(await evaluate(`window.tuman.map.queryRenderedFeatures().some(feature => feature.layer.id === 'building')`), 'Low/2D lost flat buildings');
 
+  assert.equal(await evaluate(`document.querySelector('.tuman-tilt-control').hidden`), false);
+  await evaluate(`document.querySelector('.tuman-tilt-control button').click();true`);
+  await waitFor(`Math.abs(window.tuman.map.getPitch()-45)<0.1 && !window.tuman.map.isMoving()`);
+  assert.equal(await evaluate('window.tuman.state().viewMode'), '2d');
+  assert.equal(await evaluate('window.tuman.map.getTerrain()'), null);
+  assert.equal(await evaluate(`window.tuman.map.getLayoutProperty('building-3d','visibility')`), 'none');
+  await evaluate(`document.querySelector('.tuman-tilt-control button').click();true`);
+  await waitFor(`window.tuman.map.getPitch()<0.1 && !window.tuman.map.isMoving()`);
+
   await evaluate(`window.tuman.exec({type:'setViewMode',mode:'3d'})`);
+  assert.equal(await evaluate(`document.querySelector('.tuman-tilt-control').hidden`), true);
   assert.equal(await evaluate('window.tuman.map.getTerrain()'), null);
   assert.equal(await evaluate(`window.tuman.map.getLayoutProperty('hillshade-over-fog','visibility')`), 'none');
   await evaluate(`window.tuman.exec({type:'setRenderQuality',quality:'high'})`);
@@ -140,7 +150,7 @@ try {
   await call('Network.setBlockedURLs', { urls: ['*tiles.openfreemap.org/styles/liberty*'] });
   await call('Page.reload', { ignoreCache: true });
   await waitFor(`window.tuman?.state().basemap.provider === 'raster' && window.tuman.state().basemap.ready`);
-  assert.equal(await evaluate('window.tuman.state().engineVersion'), 'landmarks-avatar-6');
+  assert.equal(await evaluate('window.tuman.state().engineVersion'), 'tilt-performance-7');
   console.log('PASS: vector streets, readable style, live pixel ratio, low terrain, movement coalescing, hidden fog, effects toggle, tile/style failures');
 } finally {
   const closed = new Promise(resolve => ws.addEventListener('close', resolve));

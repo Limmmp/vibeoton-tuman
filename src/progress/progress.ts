@@ -1,6 +1,7 @@
 import { AVATAR_SLOTS, type AvatarSlot, type ProgressEvent, type ProgressState, type Reward, type RewardResult } from "./types.ts";
 import { avatarItemById } from "./catalog.ts";
 import { SHOP_PRICE, bannerById, pull, type PullResult } from "./shop.ts";
+import { levelProgress } from "./level.ts";
 
 export const EMPTY_PROGRESS: ProgressState = {
   version: 1,
@@ -165,7 +166,7 @@ export class ProgressManager {
 }
 
 export function levelForXp(xp: number): number {
-  return Math.floor(Math.sqrt(Math.max(0, xp) / 100)) + 1;
+  return levelProgress(xp).level;
 }
 
 function normalizeReward(reward: Reward, validateItems = true): Reward {

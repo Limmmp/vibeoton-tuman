@@ -145,7 +145,7 @@ export class FogLayer {
     if (this.map.getLayer("fog-puffs")) this.map.setLayoutProperty("fog-puffs", "visibility", on ? "visible" : "none");
     if (!on || this.suspended) return;
     this.breathTimer = setInterval(() => {
-      if (document.hidden) return;
+      if (document.hidden || this.map.isMoving() || performance.now() - this.lastDraw < this.profile.fogIntervalMs) return;
       this.composite();
       // Облачка чуть колышутся.
       const t = (performance.now() - this.t0) / 1000;

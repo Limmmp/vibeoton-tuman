@@ -65,7 +65,7 @@ try {
   await call('Runtime.enable'); await call('Page.enable');
   await call('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
   await call('Emulation.setTouchEmulationEnabled', { enabled: true });
-  await call('Page.navigate', { url: new URL('?embedded=1&v=landmarks-avatar-6', base).href });
+  await call('Page.navigate', { url: new URL('?embedded=1&v=tilt-performance-7', base).href });
   await wait('!!window.tuman && window.tuman.state().basemap.ready');
   const movement = await evaluate(`(async () => {
     const e=window.tuman,p=e.player,origin={lat:43.1155,lon:131.8855},target={lat:43.1155,lon:131.95};
@@ -96,7 +96,18 @@ try {
   await evaluate(`document.querySelector('.demo-tools').open=false;true`);
   await wait(`window.tuman.map.areTilesLoaded()`);
   await screenshot('map-model-2d');
+  await evaluate(`document.querySelector('.tuman-tilt-control button').click();true`);
+  await wait(`Math.abs(window.tuman.map.getPitch()-45)<0.1 && !window.tuman.map.isMoving()`);
+  assert.equal(await evaluate('window.tuman.state().viewMode'), '2d');
+  assert.equal(await evaluate('window.tuman.map.getTerrain()'), null);
+  assert.equal(await evaluate(`window.tuman.map.getLayoutProperty('building-3d','visibility')`), 'none');
+  assert.equal(await evaluate('window.tuman.map.getPixelRatio()'), 1.25);
+  await evaluate(`window.tuman.exec({type:'setRenderQuality',quality:'high'})`);
+  await wait(`Math.abs(window.tuman.map.getPitch()-45)<0.1 && !window.tuman.map.isMoving()`);
+  await screenshot('map-model-2d-tilted');
+  await evaluate(`window.tuman.exec({type:'setRenderQuality',quality:'balanced'})`);
   await evaluate(`window.tuman.exec({type:'setViewMode',mode:'3d'})`);
+  assert.equal(await evaluate(`document.querySelector('.tuman-tilt-control').hidden`), true);
   await delay(700);
   assert.equal(await evaluate(`document.querySelector('.tuman-avatar__image').tagName`), 'IMG');
   await screenshot('map-model');
@@ -106,11 +117,13 @@ try {
   assert.equal(await evaluate(`(async()=>{const data=await window.tuman.map.getSource('lit-buildings').getData();return data.features.some(f=>{const p=f.geometry.coordinates[0][0];return Math.hypot((p[0]-131.843056)*111320*Math.cos(43.073056*Math.PI/180),(p[1]-43.073056)*111320)<22})})()`), false, 'Procedural lighthouse geometry overlaps GLB');
   await screenshot('lighthouse-3d');
   await evaluate(`(async()=>{await window.tuman.exec({type:'setViewMode',mode:'2d'});await window.tuman.exec({type:'setRenderQuality',quality:'high'});})()`);
+  await wait(`Math.abs(window.tuman.map.getPitch()-45)<0.1 && !window.tuman.map.isMoving()`);
+  assert.equal(await evaluate(`document.querySelector('.tuman-tilt-control').hidden`), false);
   assert.equal(await evaluate(`!!window.tuman.map.getLayer('landmark-models')`), true);
   await evaluate(`window.tuman.exec({type:'setRenderQuality',quality:'low'})`);
   assert.equal(await evaluate(`!!window.tuman.map.getLayer('landmark-models')`), false);
 
-  const collection = new URL('collection.html?embedded=1&v=landmarks-avatar-6', base).href;
+  const collection = new URL('collection.html?embedded=1&v=tilt-performance-7', base).href;
   await call('Page.navigate', { url: collection });
   await wait(`document.querySelector('#status')?.textContent === 'GLB-модель'`);
   assert.equal(await evaluate(`document.querySelectorAll('#cards button').length`), 4);

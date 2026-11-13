@@ -30,6 +30,7 @@ export type Command =
   | { id?: string; type: "setFogEffects"; enabled: boolean }
   | { id?: string; type: "setRenderQuality"; quality: RenderQuality }
   | { id?: string; type: "setViewMode"; mode: "2d" | "3d" }
+  | { id?: string; type: "set2dTilt"; enabled: boolean }
   | { id?: string; type: "setPlayerMode"; mode: "sim" | "external" | "gps" }
   | { id?: string; type: "gpsFix"; lat: number; lon: number; accuracy?: number; heading?: number }
   | { id?: string; type: "teleport"; lat: number; lon: number }
@@ -76,6 +77,7 @@ export type State = {
   player: LatLon & { heading: number; mode: "sim" | "external" | "gps"; follow: boolean; simSpeed: number };
   demoTapMode: "walk" | "teleport";
   viewMode: "2d" | "3d";
+  tilted2d: boolean;
   fog: { cells: number; km2: number };
   quest: ActiveStep | null;
   progress: ProgressState;
@@ -86,6 +88,7 @@ export type State = {
 };
 
 export type EngineEvent =
+  | { type: "viewChanged"; mode: "2d" | "3d"; tilted2d: boolean }
   | { type: "landmarkTap"; id: string }
   | { type: "demoChanged"; speed: number; tapMode: "walk" | "teleport" }
   | { type: "basemapChanged"; status: BasemapStatus }
