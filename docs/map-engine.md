@@ -121,6 +121,11 @@ Location.watchPositionAsync(
 | `equipAvatarItem { itemId }` | экипирует полученный предмет в его слот | `ProgressState` |
 | `unequipAvatarSlot { slot }` | снимает предмет из слота | `ProgressState` |
 | `resetProgress` | сбрасывает локальный профиль; только для отладки | `ProgressState` |
+| `showPlayers { players }` / `updatePlayers { players }` / `removePlayers { ids }` | другие игроки: `{ id, lat, lon, name?, relation: party \| friend \| public, color? }` | число игроков |
+| `setSocialLayer { mode }` | кого показывать: `off`, `party`, `friends`, `all` | — |
+| `listShop` | магазин: баннеры гачи с ценами, шансами и счётчиком гарантии, витрина вещей с ценами | объект магазина |
+| `gachaPull { bannerId, count: 1 \| 10 }` | крутки набора за монеты | `{ results: [{ itemId, rarity, duplicate, shards }], spent, state }` |
+| `buyItem { itemId, currency: cash \| shards }` | купить вещь на витрине | `ProgressState` |
 | `setLighting { mode }` | окна и свет домов: `auto` (по времени Владивостока, ночь 18:00–07:00), `day`, `night` — для демо | `{ night }` |
 | `setLayers { layers }` | какие категории меток видны: `quests`, `study`, `leisure`, `history`, `events`. По умолчанию видны все | `MapLayer[]` |
 | `selectPlace { placeId, fly? }` | кольцо и подпись у метки, перелёт к ней (`fly: false` — без перелёта); `null` — снять выбор | — |
@@ -128,7 +133,7 @@ Location.watchPositionAsync(
 | `checkIn { placeId }` | отметиться в месте из `showPlaces`; игрок должен быть ближе 60 м; первая отметка даёт награду и открывает туман вокруг места | `{ ok, distance, first?, reward? }` |
 | `getState` | позиция, режимы, туман, квест и профиль | `State` |
 
-**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `progressChanged`, `rewardGranted`, `districtProgress`, `districtMilestone`, `checkedIn`, `clusterTap`, `inventoryChanged`, `renderQualityChanged`, `result`.
+**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `progressChanged`, `rewardGranted`, `districtProgress`, `districtMilestone`, `checkedIn`, `clusterTap`, `playerTap`, `inventoryChanged`, `renderQualityChanged`, `result`.
 
 `mapTap.action` равен `walk` только в симуляции. При включённом GPS/`external` тап не двигает аватар и приходит как `select`: приложение может выбрать точку или построить маршрут. После отключения GPS нужно отправить `setPlayerMode { mode: "sim" }`, тогда тапы снова запускают демопрогулку.
 
@@ -145,6 +150,27 @@ Location.watchPositionAsync(
 Встроенный квест может выдать `xp`, `cash`, `rep` и косметические `items`. Награда выдаётся один раз на `questId`. Повторное прохождение возвращает `rewardGranted` с `granted: false` и `reason: "already-completed"`. Внешний `startQuest` проходит механику, но не выдаёт награду: событие содержит `reason: "untrusted-quest"`. Это не позволяет приложению подставить квест с произвольной валютой.
 
 Профиль хранится локально в WebView. `completedQuests` содержит историю завершений и полученные награды. `inventory` хранит количество предметов, `equipped` — выбранный предмет по слоту. Сейчас в каталоге есть тестовая `admiral-cap`, которую выдаёт `engine-demo-center`.
+
+## Другие игроки
+
+Карта только рисует игроков, которых прислало приложение. Кто кого видит, огрубление координат публичных игроков и сеть — на стороне приложения и сервера (диз-док, 8.5).
+
+- **Значки:** кружок фиксированного размера с инициалом. Кольцо: группа — янтарь, друг — бирюза, публичный — серый, полупрозрачный.
+- **Приоритет отрисовки:** группа → друзья → публичные.
+- **Кластеры:** при отдалении (до зума 16) игроки собираются в кластер; кольцо кластера — по самому «близкому» игроку внутри. Тап по кластеру приближает карту и шлёт `clusterTap { layer: "players" }`, тап по игроку — `playerTap`.
+- **Свой аватар** — отдельный маркер, всегда поверх. 3D-модели игроков — следующий шаг (`docs/map-visuals.md`).
+
+## Магазин и гача
+
+Только за игровые монеты. Шансы: обычная 70 %, редкая 25 %, легендарная 5 %. Гарантия: легендарка не позже 30-й крутки набора без неё, счётчик — `pullsToGuarantee` в `listShop`. Дубликат приносит осколки (5 / 15 / 50 по редкости). На витрине вещь покупается за монеты (обычная 150, редкая 450) или осколки (30 / 90 / 300); легендарки за монеты не продаются. Каталог вещей — `src/progress/catalog.ts`, правила — `src/progress/shop.ts`.
+
+## Туман
+
+Туман на профилях `medium` / `high` «дышит»: шум медленно плывёт, поверх идут крупные клубы. На границе с открытой областью стоят до 150 облачков-билбордов, они создают стену тумана. На профиле `low` туман статичный, облачков нет.
+
+## Маршруты и мосты
+
+Тайлы высот под мостом дают уровень воды, поэтому на отрезках маршрута по мосту (в 14 м от оси моста из `data/bridges.json`) высота берётся по прямой между берегами. Пешие маршруты OSRM не ведут по автомагистральным мостам (Золотой, Русский), поправка работает на мостах, где пешеход реально идёт.
 
 ## Дома
 
