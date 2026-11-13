@@ -18,7 +18,15 @@ import { loadProgress, saveProgress } from "../progress/storage";
 import { AVATAR_ITEMS } from "../progress/catalog";
 import { appearanceFromProgress } from "../progress/avatar";
 import type { AvatarAppearance } from "../progress/types";
-import { detectRenderProfile, type RenderProfile } from "./performance";
+import { detectRenderProfile, profileFor, saveRenderQuality, type RenderProfile, type RenderQuality } from "./performance";
+import { DistrictTracker } from "../progress/districts";
+import type { DistrictData } from "../data/districts";
+import districtsJson from "../../data/districts.json";
+import { distance } from "./geo";
+
+// Чекин: игрок должен быть не дальше этого от места; первая отметка в месте даёт награду.
+const CHECKIN_RADIUS = 60;
+const CHECKIN_REWARD = { xp: 30, cash: 10, rep: 0, items: [] as string[] };
 
 type Handler = (e: EngineEvent) => void;
 
@@ -39,8 +47,12 @@ export class Engine {
   private quests: QuestRunner;
   private progress: ProgressManager;
   private avatar: AvatarAppearance;
+  private fogLayer: FogLayer | null = null;
+  private districts = new DistrictTracker(districtsJson as DistrictData[]);
+  private places = new Map<string, Place>(); // последние метки из showPlaces — для чекина
 
-  private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player, readonly renderProfile: RenderProfile) {
+  private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player, renderProfile: RenderProfile) {
+    this.renderProfile = renderProfile;
     this.progress = new ProgressManager({ initial: loadProgress(), save: saveProgress, emit: (event) => {
       if (event.type === "inventoryChanged") this.applyAvatar(appearanceFromProgress(this.progress.state));
       this.emit(event);
@@ -58,17 +70,20 @@ export class Engine {
     });
   }
 
+  renderProfile: RenderProfile;
+
   static async create(container: HTMLElement | string): Promise<Engine> {
     const renderProfile = detectRenderProfile();
     const map = await createBaseMap(container, undefined, renderProfile);
     await new Promise<void>((r) => map.once("load", () => r()));
     const beforeId = addTerrainLayers(map);
     const fog = new FogOfWar();
-    new FogLayer(map, fog, beforeId, renderProfile);
+    const fogLayer = new FogLayer(map, fog, beforeId, renderProfile);
     addHillshadeOverFog(map, beforeId);
     addOverlayLayers(map, beforeId);
     const player = new Player(map);
     const engine = new Engine(map, fog, player, renderProfile);
+    engine.fogLayer = fogLayer;
     engine.wire();
     const savedQuest = loadQuestSnapshot();
     if (savedQuest) {
@@ -96,6 +111,23 @@ export class Engine {
     this.emit({ type: "avatarChanged", appearance: this.avatar });
   }
 
+  private setRenderQuality(quality: RenderQuality) {
+    saveRenderQuality(quality);
+    const pixelRatio = this.renderProfile.pixelRatio;
+    this.renderProfile = { ...profileFor(quality, this.renderProfile.mobile, window.devicePixelRatio || 1), pixelRatio };
+    this.fogLayer?.setProfile(this.renderProfile);
+    if (!this.renderProfile.show3dBuildings) {
+      this.map.setLayoutProperty("building-3d", "visibility", "none");
+      (this.map.getSource("lit-buildings") as GeoJSONSource).setData(EMPTY);
+    }
+    if (this.viewMode === "3d") {
+      setViewMode(this.map, "3d", this.renderProfile);
+      this.updateBuildings();
+    }
+    this.emit({ type: "renderQualityChanged", profile: this.renderProfile });
+    return this.renderProfile;
+  }
+
   private drawQuestTargets(active: ActiveStep | null) {
     const source = this.map.getSource("quest-targets") as GeoJSONSource | undefined;
     if (!source) return;
@@ -107,6 +139,25 @@ export class Engine {
         geometry: { type: "Point", coordinates: [target.lon, target.lat] },
       })),
     });
+  }
+
+  private claimMilestone(hit: { districtId: string; name: string; pct: number; reward: { xp: number; cash: number; rep: number; items: string[] } }) {
+    const key = `district:${hit.districtId}:${hit.pct}`;
+    if (this.progress.isClaimed(key)) return;
+    this.emit({ type: "districtMilestone", id: hit.districtId, name: hit.name, pct: hit.pct });
+    this.progress.grantReward({ key, source: "district", title: `${hit.name}: открыто ${hit.pct} %`, reward: hit.reward, trusted: true });
+  }
+
+  /** Отметиться в месте из showPlaces. Награда — только за первую отметку. */
+  private checkIn(placeId: string) {
+    const place = this.places.get(placeId);
+    if (!place) throw new Error("Место не показано на карте — сначала showPlaces");
+    const dist = Math.round(distance(this.player.pos, place));
+    if (dist > CHECKIN_RADIUS) return { ok: false as const, distance: dist, radius: CHECKIN_RADIUS };
+    this.fog.reveal(place, CHECKIN_RADIUS);
+    const result = this.progress.grantReward({ key: `checkin:${placeId}`, source: "checkin", title: place.name ?? placeId, reward: CHECKIN_REWARD, trusted: true });
+    this.emit({ type: "checkedIn", placeId, first: result.granted });
+    return { ok: true as const, distance: dist, first: result.granted, reward: result.granted ? result.reward : null };
   }
 
   state(): State {
@@ -136,11 +187,24 @@ export class Engine {
       this.emit({ type: "fogChanged", cells: fog.cells.size, km2: +fog.areaKm2().toFixed(4), fresh });
     });
 
+    // Районы: процент открытых уличных ячеек и вехи 25/50/75/90 % с наградой (один раз на веху).
+    this.districts.recount(fog.cells);
+    for (const hit of this.districts.reachedMilestones()) this.claimMilestone(hit); // догоняем вехи, пройденные до обновления
+    fog.onChange((_fresh, keys) => {
+      if (!keys.length) { this.districts.recount(fog.cells); return; } // сброс тумана
+      const before = new Map(this.districts.stats().map((d) => [d.id, d.pct]));
+      const hits = this.districts.add(keys);
+      for (const d of this.districts.stats()) {
+        if (d.pct !== before.get(d.id)) this.emit({ type: "districtProgress", id: d.id, name: d.name, pct: d.pct, revealed: d.revealed, total: d.total });
+      }
+      for (const hit of hits) this.claimMilestone(hit);
+    });
+
     // 3D-дома — только в открытой области: берём дома из загруженных тайлов, оставляем те,
     // у которых ячейка тумана под первой вершиной открыта, и кладём их в GeoJSON-источник lit-buildings.
     let bTimer: ReturnType<typeof setTimeout> | undefined;
     const updateBuildings = () => {
-      if (bTimer || this.viewMode !== "3d") return;
+      if (bTimer || this.viewMode !== "3d" || !this.renderProfile.show3dBuildings) return;
       bTimer = setTimeout(() => {
         bTimer = undefined;
         const out: GeoJSON.Feature[] = [];
@@ -175,8 +239,8 @@ export class Engine {
       const hit = map.queryRenderedFeatures(e.point, { layers: ["places"] })[0];
       if (hit) return this.emit({ type: "placeTap", id: String(hit.properties?.id) });
       const p = { lat: e.lngLat.lat, lon: e.lngLat.lng };
-      player.walkTo(p);
-      this.emit({ type: "mapTap", ...p });
+      if (player.mode === "sim") player.walkTo(p);
+      this.emit({ type: "mapTap", ...p, action: player.mode === "sim" ? "walk" : "select" });
     });
     // Долгое нажатие / правый клик → mapLongPress (интерфейс решает, что делать: например, маршрут).
     map.on("contextmenu", (e) => this.emit({ type: "mapLongPress", lat: e.lngLat.lat, lon: e.lngLat.lng }));
@@ -203,6 +267,8 @@ export class Engine {
   async exec(cmd: Command): Promise<unknown> {
     const { map, fog, player } = this;
     switch (cmd.type) {
+      case "setRenderQuality":
+        return this.setRenderQuality(cmd.quality);
       case "setViewMode":
         this.viewMode = cmd.mode;
         setViewMode(map, cmd.mode, this.renderProfile);
@@ -228,8 +294,13 @@ export class Engine {
         map.flyTo({ center: [cmd.lon, cmd.lat], zoom: cmd.zoom ?? map.getZoom() });
         return;
       case "showPlaces":
+        this.places = new Map(cmd.places.map((p) => [p.id, p]));
         (map.getSource("places") as GeoJSONSource).setData(placesGeoJSON(cmd.places));
         return;
+      case "checkIn":
+        return this.checkIn(cmd.placeId);
+      case "getDistricts":
+        return this.districts.stats();
       case "route": {
         const r = await routeWithElevation(cmd.from ?? player.pos, cmd.to);
         (map.getSource("route") as GeoJSONSource).setData({

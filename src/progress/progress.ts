@@ -10,6 +10,7 @@ export const EMPTY_PROGRESS: ProgressState = {
   inventory: {},
   equipped: {},
   completedQuests: {},
+  claimed: {},
 };
 
 type ProgressOptions = {
@@ -61,6 +62,33 @@ export class ProgressManager {
     return result;
   }
 
+  /** Награда не за квест (веха района, чекин). Один ключ — одна выдача. */
+  grantReward(input: { key: string; source: "district" | "checkin"; title: string; reward: Reward; trusted: boolean }): RewardResult {
+    const reward = normalizeReward(input.reward, input.trusted);
+    const meta = { source: input.source, title: input.title };
+    if (!input.trusted) return this.denied(input.key, reward, "untrusted-quest", meta);
+    if (this.value.claimed[input.key]) return this.denied(input.key, reward, "already-completed", meta);
+
+    const newItems = reward.items.filter((id) => !this.value.inventory[id]);
+    this.value.xp += reward.xp;
+    this.value.level = levelForXp(this.value.xp);
+    this.value.cash += reward.cash;
+    this.value.rep += reward.rep;
+    for (const id of reward.items) this.value.inventory[id] = (this.value.inventory[id] ?? 0) + 1;
+    this.value.claimed[input.key] = { key: input.key, source: input.source, title: input.title, claimedAt: this.now().toISOString(), reward };
+    this.persist();
+
+    const result = { ...this.result(input.key, reward, true, undefined, newItems), ...meta };
+    this.emit({ type: "rewardGranted", result });
+    if (reward.items.length) this.emit({ type: "inventoryChanged", inventory: { ...this.value.inventory }, equipped: { ...this.value.equipped } });
+    return result;
+  }
+
+  /** Выдавалась ли уже награда с этим ключом. */
+  isClaimed(key: string): boolean {
+    return !!this.value.claimed[key];
+  }
+
   equip(itemId: string): ProgressState {
     const item = avatarItemById(itemId);
     if (!item) throw new Error(`Неизвестный предмет: ${itemId}`);
@@ -86,8 +114,8 @@ export class ProgressManager {
     return this.state;
   }
 
-  private denied(questId: string, reward: Reward, reason: NonNullable<RewardResult["reason"]>) {
-    const result = this.result(questId, reward, false, reason, []);
+  private denied(questId: string, reward: Reward, reason: NonNullable<RewardResult["reason"]>, meta: Pick<RewardResult, "source" | "title"> = {}) {
+    const result = { ...this.result(questId, reward, false, reason, []), ...meta };
     this.emit({ type: "rewardGranted", result });
     return result;
   }
@@ -130,6 +158,7 @@ function normalizeState(state: ProgressState): ProgressState {
     inventory: { ...(state.inventory ?? {}) },
     equipped: { ...(state.equipped ?? {}) },
     completedQuests: { ...(state.completedQuests ?? {}) },
+    claimed: { ...(state.claimed ?? {}) }, // в сохранениях до районов поля нет
   };
 }
 

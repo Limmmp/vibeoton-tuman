@@ -12,3 +12,4 @@ mobile/.env.local
 mobile/dist-*/
 mobile/expo-config-check.json
 !mobile/.env.example
+data/raw/streets/

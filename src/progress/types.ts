@@ -30,6 +30,16 @@ export type QuestCompletion = {
   reward: Reward;
 };
 
+/** Награда не за квест: веха района, первый чекин в месте. Ключ уникален, второй раз не выдаётся. */
+export type RewardSource = "quest" | "district" | "checkin";
+export type Claim = {
+  key: string; // "district:center:25", "checkin:osm-n123"
+  source: Exclude<RewardSource, "quest">;
+  title: string;
+  claimedAt: string;
+  reward: Reward;
+};
+
 export type ProgressState = {
   version: 1;
   xp: number;
@@ -39,10 +49,13 @@ export type ProgressState = {
   inventory: Record<string, number>;
   equipped: Partial<Record<AvatarSlot, string>>;
   completedQuests: Record<string, QuestCompletion>;
+  claimed: Record<string, Claim>;
 };
 
 export type RewardResult = {
-  questId: string;
+  questId: string; // для наград не за квест — ключ награды (Claim.key)
+  source?: RewardSource;
+  title?: string;
   granted: boolean;
   reason?: "already-completed" | "untrusted-quest";
   reward: Reward;
