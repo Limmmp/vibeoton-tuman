@@ -18,7 +18,7 @@ import { loadProgress, saveProgress } from "../progress/storage";
 import { AVATAR_ITEMS } from "../progress/catalog";
 import { appearanceFromProgress } from "../progress/avatar";
 import type { AvatarAppearance } from "../progress/types";
-import { detectRenderProfile, type RenderProfile } from "./performance";
+import { detectRenderProfile, profileFor, saveRenderQuality, type RenderProfile, type RenderQuality } from "./performance";
 
 type Handler = (e: EngineEvent) => void;
 
@@ -39,8 +39,10 @@ export class Engine {
   private quests: QuestRunner;
   private progress: ProgressManager;
   private avatar: AvatarAppearance;
+  private fogLayer: FogLayer | null = null;
 
-  private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player, readonly renderProfile: RenderProfile) {
+  private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player, renderProfile: RenderProfile) {
+    this.renderProfile = renderProfile;
     this.progress = new ProgressManager({ initial: loadProgress(), save: saveProgress, emit: (event) => {
       if (event.type === "inventoryChanged") this.applyAvatar(appearanceFromProgress(this.progress.state));
       this.emit(event);
@@ -58,17 +60,20 @@ export class Engine {
     });
   }
 
+  renderProfile: RenderProfile;
+
   static async create(container: HTMLElement | string): Promise<Engine> {
     const renderProfile = detectRenderProfile();
     const map = await createBaseMap(container, undefined, renderProfile);
     await new Promise<void>((r) => map.once("load", () => r()));
     const beforeId = addTerrainLayers(map);
     const fog = new FogOfWar();
-    new FogLayer(map, fog, beforeId, renderProfile);
+    const fogLayer = new FogLayer(map, fog, beforeId, renderProfile);
     addHillshadeOverFog(map, beforeId);
     addOverlayLayers(map, beforeId);
     const player = new Player(map);
     const engine = new Engine(map, fog, player, renderProfile);
+    engine.fogLayer = fogLayer;
     engine.wire();
     const savedQuest = loadQuestSnapshot();
     if (savedQuest) {
@@ -94,6 +99,23 @@ export class Engine {
     this.avatar = { ...appearance, equipped: { ...appearance.equipped } };
     this.player.setAvatar(this.avatar);
     this.emit({ type: "avatarChanged", appearance: this.avatar });
+  }
+
+  private setRenderQuality(quality: RenderQuality) {
+    saveRenderQuality(quality);
+    const pixelRatio = this.renderProfile.pixelRatio;
+    this.renderProfile = { ...profileFor(quality, this.renderProfile.mobile, window.devicePixelRatio || 1), pixelRatio };
+    this.fogLayer?.setProfile(this.renderProfile);
+    if (!this.renderProfile.show3dBuildings) {
+      this.map.setLayoutProperty("building-3d", "visibility", "none");
+      (this.map.getSource("lit-buildings") as GeoJSONSource).setData(EMPTY);
+    }
+    if (this.viewMode === "3d") {
+      setViewMode(this.map, "3d", this.renderProfile);
+      this.updateBuildings();
+    }
+    this.emit({ type: "renderQualityChanged", profile: this.renderProfile });
+    return this.renderProfile;
   }
 
   private drawQuestTargets(active: ActiveStep | null) {
@@ -140,7 +162,7 @@ export class Engine {
     // у которых ячейка тумана под первой вершиной открыта, и кладём их в GeoJSON-источник lit-buildings.
     let bTimer: ReturnType<typeof setTimeout> | undefined;
     const updateBuildings = () => {
-      if (bTimer || this.viewMode !== "3d") return;
+      if (bTimer || this.viewMode !== "3d" || !this.renderProfile.show3dBuildings) return;
       bTimer = setTimeout(() => {
         bTimer = undefined;
         const out: GeoJSON.Feature[] = [];
@@ -175,8 +197,8 @@ export class Engine {
       const hit = map.queryRenderedFeatures(e.point, { layers: ["places"] })[0];
       if (hit) return this.emit({ type: "placeTap", id: String(hit.properties?.id) });
       const p = { lat: e.lngLat.lat, lon: e.lngLat.lng };
-      player.walkTo(p);
-      this.emit({ type: "mapTap", ...p });
+      if (player.mode === "sim") player.walkTo(p);
+      this.emit({ type: "mapTap", ...p, action: player.mode === "sim" ? "walk" : "select" });
     });
     // Долгое нажатие / правый клик → mapLongPress (интерфейс решает, что делать: например, маршрут).
     map.on("contextmenu", (e) => this.emit({ type: "mapLongPress", lat: e.lngLat.lat, lon: e.lngLat.lng }));
@@ -203,6 +225,8 @@ export class Engine {
   async exec(cmd: Command): Promise<unknown> {
     const { map, fog, player } = this;
     switch (cmd.type) {
+      case "setRenderQuality":
+        return this.setRenderQuality(cmd.quality);
       case "setViewMode":
         this.viewMode = cmd.mode;
         setViewMode(map, cmd.mode, this.renderProfile);
