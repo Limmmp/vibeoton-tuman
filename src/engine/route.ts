@@ -3,6 +3,10 @@
 
 import { distance, lerp, type LatLon } from "./geo";
 import { elevationAt } from "./dem";
+import { BridgeIndex, flattenBridges, type BridgeData } from "./bridges";
+import bridgesJson from "../../data/bridges.json";
+
+const bridges = new BridgeIndex(bridgesJson as BridgeData[]);
 
 const OSRM = "https://routing.openstreetmap.de/routed-foot/route/v1/foot";
 const STEP = 10; // м — шаг выборки высот
@@ -53,7 +57,9 @@ export async function profileOf(path: LatLon[]): Promise<Omit<RouteResult, "path
   const raw = await Promise.all(pts.map((s) => elevationAt(s.p)));
   // Пропуски (нет тайла) заполняем соседними значениями.
   let lastKnown = raw.find((h) => h != null) ?? 0;
-  const hs = raw.map((h) => (h == null ? lastKnown : (lastKnown = h)));
+  const filled = raw.map((h) => (h == null ? lastKnown : (lastKnown = h)));
+  // На мостах тайлы дают высоту воды — берём высоту по прямой между берегами (см. bridges.ts).
+  const hs = flattenBridges(filled, pts.map((s) => bridges.isOnBridge(s.p)), pts.map((s) => s.d));
   const half = Math.floor(SMOOTH / 2);
   const sm = hs.map((_, i) => {
     let s = 0, n = 0;
