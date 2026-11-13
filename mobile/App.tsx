@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, AppState, BackHandler, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 import * as Location from 'expo-location';
 import { useNetInfo } from '@react-native-community/netinfo';
@@ -19,7 +21,7 @@ import { ProfilePanel } from './src/ProfilePanel';
 import { Onboarding } from './src/Onboarding';
 import { usePreferences } from './src/preferences';
 import { catalog, filterPlaces } from './src/catalog';
-import { SwipeSheet, Entrance, Notice } from './src/motion';
+import { SwipeSheet, Entrance, Notice, celebrate, haptic } from './src/motion';
 import { MapSurface, type MapHandlers } from './src/MapSurface';
 import { useNavigation } from './src/useNavigation';
 import { DistrictPanel } from './src/DistrictPanel';
@@ -259,7 +261,7 @@ function Application() {
       case 'mapLongPress': Alert.alert('Пеший маршрут', 'Построить маршрут к этой точке?', [{ text: 'Отмена', style: 'cancel' }, { text: 'Построить', onPress: () => { void buildRoute(event); setTab('Карта'); setSheet(1); } }, { text: 'Телепортироваться · демо', onPress: () => { void teleport(event).then(ok => { if (ok) showDemoMap(); }); } }]); break;
       case 'stepDone': notify('Шаг выполнен'); break;
       case 'questDone': setActive(null); notify(event.trusted ? 'Квест завершён' : 'Квест завершён в демо-режиме'); break;
-      case 'rewardGranted': setReward(event.result); setProgress(event.result.state); setRewardOpen(true); break;
+      case 'rewardGranted': setReward(event.result); setProgress(event.result.state); setRewardOpen(true); haptic.success(); break;
       case 'progressChanged': setProgress(event.state); break;
       case 'inventoryChanged': setProgress(previous => previous ? { ...previous, inventory: event.inventory, equipped: event.equipped } : previous); break;
       case 'questFailed': setActive(null); setFailure({ id: event.questId, reason: event.reason }); notify(`Квест провален: ${event.reason}`); break;
@@ -361,7 +363,7 @@ function Application() {
     </View>
     <Modal visible={preferences.onboarded && (!!overlay || rewardOpen)} animationType="slide" onRequestClose={() => { goBack(); }}>
       {rewardOpen ? <SafeAreaView style={[s.root, { justifyContent: 'center', padding: 24, gap: 20 }]}>
-        <Text style={u.eyebrow}>{reward?.source === 'checkin' ? 'ОТМЕТКА В МЕСТЕ' : reward?.source === 'district' ? 'ВЕХА РАЙОНА' : 'ЭКСПЕДИЦИЯ ЗАВЕРШЕНА'}</Text><Text style={u.title}>{reward?.granted ? 'Город стал ближе' : 'Тест пройден'}</Text>
+        <Text style={u.eyebrow}>{reward?.source === 'checkin' ? 'ОТМЕТКА В МЕСТЕ' : reward?.source === 'district' ? 'ВЕХА РАЙОНА' : 'ЭКСПЕДИЦИЯ ЗАВЕРШЕНА'}</Text><Animated.Text entering={celebrate} style={u.title}>{reward?.granted ? 'Город стал ближе' : 'Тест пройден'}</Animated.Text>
         <RewardStatus result={reward} /><Button label="Продолжить" primary onPress={() => setRewardOpen(false)} />
       </SafeAreaView> : <SafeAreaView style={s.root}>
         <View style={s.modalHeader}><Button kind="quiet" label="‹ Назад" onPress={goBack} /><Text numberOfLines={1} style={[u.heading, { flex: 1, marginHorizontal: 8, fontSize: 17, textAlign: 'center' }]}>{({ demo: 'Демо-перемещение', collection: 'Коллекция', districts: 'Районы', preview: 'Сравнение стилей', filters: 'Карта', quests: 'Задания', developer: 'Для разработчиков', settings: 'Настройки', helper: 'Помощник', inbox: 'Уведомления' })[overlay || 'quests']}</Text><Button kind="quiet" label="Готово" onPress={() => setOverlay(null)} /></View>
@@ -382,7 +384,7 @@ export default function App() {
     Manrope_800ExtraBold: require('@expo-google-fonts/manrope/800ExtraBold/Manrope_800ExtraBold.ttf'),
     RussoOne_400Regular: require('@expo-google-fonts/russo-one/400Regular/RussoOne_400Regular.ttf'),
   });
-  return <SafeAreaProvider>{fontsLoaded || fontError ? <SessionProvider><Application /></SessionProvider> : <SafeAreaView style={s.root}><Text style={{ color: colors.text, padding: 24 }}>Туман Владивостока</Text></SafeAreaView>}</SafeAreaProvider>;
+  return <GestureHandlerRootView style={{ flex: 1 }}><SafeAreaProvider>{fontsLoaded || fontError ? <SessionProvider><Application /></SessionProvider> : <SafeAreaView style={s.root}><Text style={{ color: colors.text, padding: 24 }}>Туман Владивостока</Text></SafeAreaView>}</SafeAreaProvider></GestureHandlerRootView>;
 }
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },

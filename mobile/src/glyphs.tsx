@@ -1,4 +1,8 @@
 import React from 'react';
+import { Platform } from 'react-native';
+
+// На вебе react-native-svg пробрасывает accessible в DOM как атрибут — там он не нужен.
+const hidden = Platform.OS === 'web' ? {} : { accessible: false };
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
 // Единый набор иконок «Тумана»: сетка 24, линия 1,75, скруглённые концы и стыки.
@@ -44,7 +48,7 @@ export const AVATAR_COLORS = ['#F5B83D', '#4CC2B5', '#FF7A6B', '#7C9CFF', '#5BC0
 
 export function Glyph({ name, size = 24, color = '#F2F5F7', stroke = 1.75 }: { name: string; size?: number; color?: string; stroke?: number }) {
   const g = GLYPHS[name] ?? GLYPHS.star;
-  return <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" accessible={false}>
+  return <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...hidden}>
     {g.rects?.map(([x, y, w, h, r], i) => <Rect key={`r${i}`} x={x} y={y} width={w} height={h} rx={r} stroke={color} strokeWidth={stroke} />)}
     {g.circles?.map(([cx, cy, r, fill], i) => <Circle key={`c${i}`} cx={cx} cy={cy} r={r} stroke={fill ? 'none' : color} fill={fill ? color : 'none'} strokeWidth={stroke} />)}
     {g.d?.map((d, i) => <Path key={`p${i}`} d={d} stroke={color} strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" />)}
@@ -54,7 +58,7 @@ export function Glyph({ name, size = 24, color = '#F2F5F7', stroke = 1.75 }: { n
 /** Знаки соцсетей для кнопок входа: фирменный цвет кружка и упрощённый знак. */
 export function ProviderMark({ provider, size = 28 }: { provider: 'vk' | 'telegram' | 'yandex' | 'google' | 'email'; size?: number }) {
   const bg = { vk: '#0077FF', telegram: '#2AABEE', yandex: '#FC3F1D', google: '#FFFFFF', email: '#1B2631' }[provider];
-  return <Svg width={size} height={size} viewBox="0 0 28 28" accessible={false}>
+  return <Svg width={size} height={size} viewBox="0 0 28 28" {...hidden}>
     <Circle cx={14} cy={14} r={14} fill={bg} />
     {provider === 'vk' && <Path d="M7 10h2.6c.2 3.2 1.6 4.6 2.7 4.9V10h2.4v2.8c1.1-.1 2.2-1.4 2.6-2.8h2.4c-.4 1.8-1.8 3.2-2.8 3.8 1 .5 2.6 1.7 3.2 4.2h-2.6c-.5-1.6-1.7-2.8-2.8-2.9V18h-.3C9.6 18 7.2 15 7 10Z" fill="#fff" />}
     {provider === 'telegram' && <Path d="m6.5 13.6 13.6-5.3c.6-.2 1.2.2 1 1.1l-2.3 10.9c-.2.8-.7 1-1.4.6l-3.5-2.6-1.7 1.6c-.2.2-.4.3-.8.3l.3-3.6 6.5-5.9c.3-.3-.1-.4-.4-.2l-8 5-3.4-1.1c-.8-.2-.8-.8.1-1.1Z" fill="#fff" />}

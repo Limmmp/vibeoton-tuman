@@ -5,6 +5,8 @@ import { INTERESTS, matchGroup, type Interest, type Member, type MatchOutput } f
 import type { Place } from '../../src/data/place';
 import type { LatLon } from '../../src/engine/protocol';
 import { Button, Card, Chip, Field, colors, u } from './ui';
+import Animated from 'react-native-reanimated';
+import { enter } from './motion';
 import { catalog } from './catalog';
 
 export function CompanyPanel({ initialInterests, members, setMembers, buildRoute, climbs, weatherBad }: { initialInterests: Interest[]; members: Member[]; setMembers: (members: Member[]) => void; buildRoute: (point: LatLon, id?: string) => void; climbs: Record<string, number>; weatherBad: boolean | null }) {
@@ -112,14 +114,14 @@ export function CompanyPanel({ initialInterests, members, setMembers, buildRoute
       <Text style={u.label}>{output.window ? `Все свободны ${new Date(output.window.start).toLocaleTimeString('ru-RU', { timeZone: 'Asia/Vladivostok', hour: '2-digit', minute: '2-digit' })}–${new Date(output.window.end).toLocaleTimeString('ru-RU', { timeZone: 'Asia/Vladivostok', hour: '2-digit', minute: '2-digit' })}` : 'Общего свободного окна нет'}</Text>
       {output.hints.map(hint => <Text key={hint} style={u.muted}>{hint}</Text>)}
       {members.length > 1 && <View style={u.row}><Text style={u.muted}>Голосует:</Text>{members.map((member, index) => <Chip key={member.name} label={member.name} active={voter === index} onPress={() => setVoter(index)} />)}</View>}
-      {output.results.map((result, rank) => { const lead = winner?.place.id === result.place.id && score(result.place.id) > 0; const vote = votes[result.place.id]?.[members[voter]?.name || '']; return <View key={result.place.id} style={[c.result, lead && c.resultLead]}>
+      {output.results.map((result, rank) => { const lead = winner?.place.id === result.place.id && score(result.place.id) > 0; const vote = votes[result.place.id]?.[members[voter]?.name || '']; return <Animated.View key={result.place.id} entering={enter(rank)} style={[c.result, lead && c.resultLead]}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}><Text style={c.rank}>{rank + 1}</Text><Text style={[u.heading, { flex: 1 }]}>{result.place.name}</Text>{lead && <Text style={u.eyebrow}>ЛИДЕР</Text>}</View>
         <Text style={u.text}>{result.reason}</Text>
         <Text style={u.muted}>{result.price == null ? 'Цену уточнить' : result.price === 0 ? 'Бесплатно' : `${result.price} ₽ на человека`}{result.flags.length ? ` · ${result.flags.join(' · ')}` : ''}</Text>
         {result.travel.length > 0 && <Text style={u.muted}>{result.travel.map(travel => `${travel.name} ~${travel.minutes} мин`).join(' · ')}</Text>}
         <Button label="Маршрут" primary={rank === 0} onPress={() => buildRoute(result.place, result.place.id)} />
         <View style={u.row}>{members.length > 1 && <><Chip label={`За · ${score(result.place.id)}`} active={vote === 1} onPress={() => setVotes({ ...votes, [result.place.id]: { ...votes[result.place.id], [members[voter]?.name || '']: 1 } })} /><Chip label="Против" active={vote === -1} onPress={() => setVotes({ ...votes, [result.place.id]: { ...votes[result.place.id], [members[voter]?.name || '']: -1 } })} /></>}<Button kind="quiet" label="Поделиться" onPress={() => void share(result.place)} /></View>
-      </View>; })}
+      </Animated.View>; })}
     </View>}
   </View>;
 }

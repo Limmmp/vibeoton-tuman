@@ -4,6 +4,8 @@ import { api, type Session } from './api';
 import { useSession } from './session';
 import { ProviderMark } from './glyphs';
 import { Button, Field, colors, u } from './ui';
+import Animated from 'react-native-reanimated';
+import { enter } from './motion';
 
 const SOCIAL = [
   { id: 'vk', label: 'VK ID' },
@@ -28,13 +30,13 @@ export function AuthScreen() {
   };
   const enabled = new Set(health?.providers ?? []);
   return <ScrollView contentContainerStyle={s.page} keyboardShouldPersistTaps="handled" automaticallyAdjustKeyboardInsets>
-    <View style={{ gap: 10 }}>
+    <Animated.View entering={enter(0)} style={{ gap: 10 }}>
       <Text style={u.eyebrow}>ТУМАН ВЛАДИВОСТОКА</Text>
       <Text style={s.hero}>Город проясняется,{'\n'}когда вы вместе</Text>
       <Text style={u.muted}>Аккаунт нужен, чтобы звать друзей в пачку, собирать встречи и делить бюджет. Карта и прогулки работают и без него.</Text>
-    </View>
+    </Animated.View>
 
-    <View style={{ gap: 10 }}>
+    <Animated.View entering={enter(1)} style={{ gap: 10 }}>
       <View style={s.socialRow}>
         {SOCIAL.map(p => { const on = enabled.has(p.id); return <Pressable key={p.id} accessibilityRole="button" accessibilityLabel={`Войти через ${p.label}`} accessibilityState={{ disabled: !on }} disabled={!on}
           onPress={() => setError('Вход через соцсеть откроется в браузере — подключаем после настройки ключей.')} style={({ pressed }) => [s.social, !on && { opacity: 0.38 }, pressed && u.pressed]}>
@@ -42,9 +44,9 @@ export function AuthScreen() {
         </Pressable>; })}
       </View>
       {SOCIAL.every(p => !enabled.has(p.id)) && <Text style={[u.muted, { textAlign: 'center' }]}>VK, Telegram, Яндекс и Google — подключаем. Пока входите по почте.</Text>}
-    </View>
+    </Animated.View>
 
-    <View style={s.card}>
+    <Animated.View entering={enter(2)} style={s.card}>
       <View style={s.segment}>
         {(['login', 'register'] as const).map(value => <Pressable key={value} accessibilityRole="tab" accessibilityState={{ selected: mode === value }} onPress={() => { setMode(value); setError(''); }} style={[s.segmentItem, mode === value && s.segmentOn]}>
           <Text style={[u.label, mode === value && { color: colors.text }]}>{value === 'login' ? 'Вход' : 'Регистрация'}</Text>
@@ -56,7 +58,7 @@ export function AuthScreen() {
       {!!error && <Text style={[u.text, { color: colors.coral }]}>{error}</Text>}
       <Button primary disabled={!!busy || !email.trim() || !password || (mode === 'register' && !name.trim())} label={busy === 'email' ? 'Секунду…' : mode === 'login' ? 'Войти' : 'Создать аккаунт'}
         onPress={() => void run('email', () => mode === 'login' ? api.login(email.trim(), password) : api.register(email.trim(), password, name.trim()))} />
-    </View>
+    </Animated.View>
 
     {health?.devLogin && <View style={[s.card, { borderColor: 'rgba(245,184,61,0.35)' }]}>
       <Text style={u.heading}>Демо-вход</Text>

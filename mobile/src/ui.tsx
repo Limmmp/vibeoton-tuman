@@ -1,5 +1,7 @@
-import React, { type ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View, type StyleProp, type ViewStyle } from 'react-native';
+import React, { useState, type ReactNode } from 'react';
+import { Platform, Pressable, StyleSheet, Text, TextInput, View, type StyleProp, type ViewStyle } from 'react-native';
+import Animated from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
 
 // Дизайн-система «Туман». Ночной город в тумане: глубокий сине-чёрный фон,
 // слои поверхностей светлеют по мере приближения к пальцу, единственный тёплый
@@ -24,18 +26,30 @@ const font = { regular: 'Manrope_400Regular', medium: 'Manrope_500Medium', semib
 
 type ButtonKind = 'primary' | 'secondary' | 'quiet';
 
-/** Отклик на касание сразу, а не после отпускания: лёгкое сжатие, как у физической кнопки. */
-export function Button({ label, onPress, onLongPress, disabled, primary, kind, style }: { label: string; onPress: () => void; onLongPress?: () => void; disabled?: boolean; primary?: boolean; kind?: ButtonKind; style?: StyleProp<ViewStyle> }) {
-  const variant: ButtonKind = kind ?? (primary ? 'primary' : 'secondary');
-  return <Pressable accessibilityRole="button" accessibilityState={{ disabled: !!disabled }} disabled={disabled} onPress={onPress} onLongPress={onLongPress} hitSlop={4} pressRetentionOffset={12}
-    style={({ pressed }) => [u.button, variant === 'primary' && u.primary, variant === 'quiet' && u.quiet, pressed && u.pressed, disabled && u.disabled, style]}>
-    <Text style={[u.buttonText, variant === 'primary' && { color: colors.bg }, variant === 'quiet' && { color: colors.amber }]}>{label}</Text>
+/**
+ * Нажатие: отклик на касании, а не после отпускания — сжатие до 0,97 за 120 мс (CSS-переход Reanimated
+ * на UI-потоке). Масштаб уносит с собой текст и иконки, поэтому читается как физическая кнопка.
+ */
+function Press({ onPress, onLongPress, disabled, style, innerStyle, children, role = 'button', selected, haptic }: { onPress: () => void; onLongPress?: () => void; disabled?: boolean; style?: StyleProp<ViewStyle>; innerStyle: StyleProp<ViewStyle>; children: ReactNode; role?: 'button' | 'tab' | 'radio'; selected?: boolean; haptic?: boolean }) {
+  const [down, setDown] = useState(false);
+  return <Pressable accessibilityRole={role} accessibilityState={{ disabled: !!disabled, selected }} disabled={disabled} hitSlop={4} pressRetentionOffset={12} style={style}
+    onPressIn={() => setDown(true)} onPressOut={() => setDown(false)} onLongPress={onLongPress}
+    onPress={() => { if (haptic && Platform.OS !== 'web') void Haptics.selectionAsync().catch(() => {}); onPress(); }}>
+    <Animated.View style={[innerStyle, { transform: [{ scale: down ? 0.97 : 1 }], opacity: down ? 0.88 : 1, transitionProperty: ['transform', 'opacity', 'backgroundColor', 'borderColor'], transitionDuration: 120, transitionTimingFunction: 'ease-out' } as object]}>{children}</Animated.View>
   </Pressable>;
 }
+
+export function Button({ label, onPress, onLongPress, disabled, primary, kind, style }: { label: string; onPress: () => void; onLongPress?: () => void; disabled?: boolean; primary?: boolean; kind?: ButtonKind; style?: StyleProp<ViewStyle> }) {
+  const variant: ButtonKind = kind ?? (primary ? 'primary' : 'secondary');
+  return <Press onPress={onPress} onLongPress={onLongPress} disabled={disabled} style={style} innerStyle={[u.button, variant === 'primary' && u.primary, variant === 'quiet' && u.quiet, disabled && u.disabled]}>
+    <Text style={[u.buttonText, variant === 'primary' && { color: colors.bg }, variant === 'quiet' && { color: colors.amber }]}>{label}</Text>
+  </Press>;
+}
+/** Чип — выбор: лёгкий тактильный «щелчок», как у переключателя в iOS. */
 export function Chip({ label, active, onPress }: { label: string; active?: boolean; onPress: () => void }) {
-  return <Pressable accessibilityRole="button" accessibilityState={{ selected: !!active }} onPress={onPress} hitSlop={4} style={({ pressed }) => [u.chip, active && u.chipActive, pressed && u.pressed]}>
+  return <Press onPress={onPress} selected={!!active} haptic innerStyle={[u.chip, active && u.chipActive]}>
     <Text style={[u.chipText, active && { color: colors.amber }]}>{label}</Text>
-  </Pressable>;
+  </Press>;
 }
 export function Field({ label, value, onChangeText, numeric = false, secure = false, placeholder }: { label: string; value: string; onChangeText: (text: string) => void; numeric?: boolean; secure?: boolean; placeholder?: string }) {
   return <View style={{ gap: 6 }}><Text style={u.label}>{label}</Text><TextInput accessibilityLabel={label} value={value} onChangeText={onChangeText} keyboardType={numeric ? 'numeric' : 'default'} secureTextEntry={secure} autoCapitalize="none" autoCorrect={!secure} placeholder={placeholder} placeholderTextColor={colors.faint} selectionColor={colors.amber} style={u.input} /></View>;

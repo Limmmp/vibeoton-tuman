@@ -7,6 +7,8 @@ import { useSession } from './session';
 import { Avatar, AvatarStack } from './Avatar';
 import { Glyph } from './glyphs';
 import { Button, Card, Chip, Field, colors, u } from './ui';
+import Animated, { LinearTransition } from 'react-native-reanimated';
+import { enter, haptic } from './motion';
 
 const MODES: { id: BudgetMode; title: string; text: string }[] = [
   { id: 'individual', title: 'Каждый за себя', text: 'Место подойдёт самому скромному бюджету' },
@@ -39,7 +41,7 @@ export function MeetingsPanel({ buildRoute, quickMatch }: { buildRoute: (point: 
     <View style={{ gap: 6 }}><Text style={u.eyebrow}>КУДА ПОЙДЁМ</Text><Text style={u.title}>Встречи</Text><Text style={u.muted}>Позовите друзей или пачку, договоритесь о бюджете — подберём место, которое подойдёт всем.</Text></View>
     <Button primary label="Новая встреча" onPress={() => setView({ kind: 'new' })} />
     {!!error && <Text style={[u.text, { color: colors.coral }]}>{error}</Text>}
-    {meetings.map(m => <Pressable key={m.id} accessibilityRole="button" accessibilityLabel={m.title} onPress={() => setView({ kind: 'meeting', id: m.id })} style={({ pressed }) => [s.meeting, pressed && u.pressed]}>
+    {meetings.map((m, index) => <Animated.View key={m.id} entering={enter(index)}><Pressable accessibilityRole="button" accessibilityLabel={m.title} onPress={() => setView({ kind: 'meeting', id: m.id })} style={({ pressed }) => [s.meeting, pressed && u.pressed]}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
         <View style={{ flex: 1, gap: 2 }}><Text style={u.heading} numberOfLines={1}>{m.title}</Text><Text style={u.muted}>{fmtDay(m.startsAt)} · {fmtTime(m.startsAt)}–{fmtTime(m.endsAt)}</Text></View>
         <Glyph name="chevronRight" size={20} color={colors.faint} />
@@ -48,7 +50,7 @@ export function MeetingsPanel({ buildRoute, quickMatch }: { buildRoute: (point: 
         <AvatarStack avatars={m.members.map(x => x.user.avatar)} size={26} />
         <Text style={[u.muted, { flex: 1 }]} numberOfLines={1}>{m.status === 'chosen' && m.place?.name ? `Идём: ${m.place.name}` : m.budget.label}</Text>
       </View>
-    </Pressable>)}
+    </Pressable></Animated.View>)}
     {!meetings.length && !error && <Text style={u.muted}>Встреч пока нет.</Text>}
     <Button kind="quiet" label="Быстрый подбор без встречи" onPress={quickMatch} />
   </View>;
@@ -75,8 +77,10 @@ function NewMeeting({ back, created }: { back: () => void; created: (m: Meeting)
     if (!time.test(start) || !time.test(end)) { setError('Время в формате ЧЧ:ММ, например 18:30'); return; }
     setBusy(true); setError('');
     try {
-      created(await api.createMeeting({ title: title.trim() || 'Встреча', startsAt: toIso(day, start), endsAt: toIso(day, end), budgetMode: mode, fixedBudget: mode === 'fixed' ? Number(fixed) || 0 : undefined, myBudget: Number(myBudget) || 0, indoorOnly: indoor, ...(partyId ? { partyId } : { memberIds: ids }) }));
-    } catch (problem) { setError((problem as Error).message); } finally { setBusy(false); }
+      const meeting = await api.createMeeting({ title: title.trim() || 'Встреча', startsAt: toIso(day, start), endsAt: toIso(day, end), budgetMode: mode, fixedBudget: mode === 'fixed' ? Number(fixed) || 0 : undefined, myBudget: Number(myBudget) || 0, indoorOnly: indoor, ...(partyId ? { partyId } : { memberIds: ids }) });
+      haptic.success();
+      created(meeting);
+    } catch (problem) { setError((problem as Error).message); haptic.error(); } finally { setBusy(false); }
   };
   return <View style={{ gap: 18 }}>
     <Button kind="quiet" label="‹ Встречи" onPress={back} style={{ alignSelf: 'flex-start' }} />
@@ -144,11 +148,11 @@ function MeetingView({ id, back, buildRoute }: { id: string; back: () => void; b
 
     <View style={{ gap: 8 }}>
       <Text style={u.label}>Кто идёт</Text>
-      {m.members.map(r => <View key={r.user.id} style={s.member}>
+      {m.members.map(r => <Animated.View key={r.user.id} layout={LinearTransition.duration(200)} style={s.member}>
         <Avatar avatar={r.user.avatar} size={36} />
         <View style={{ flex: 1 }}><Text style={u.text}>{r.user.id === me.id ? 'Вы' : r.user.name}{r.noClimb ? ' · без подъёмов' : ''}</Text><Text style={u.muted}>{rsvpLabel[r.rsvp]}{m.budgetMode === 'fixed' ? (r.enough ? ' · сумма есть' : ' · не хватает') : ''}</Text></View>
         {r.rsvp === 'going' && <Glyph name="check" size={18} color={colors.teal} stroke={2.2} />}
-      </View>)}
+      </Animated.View>)}
     </View>
 
     <Card>
@@ -166,7 +170,7 @@ function MeetingView({ id, back, buildRoute }: { id: string; back: () => void; b
     <Button primary={m.status !== 'chosen'} label={busy ? 'Подбираем…' : results ? 'Подобрать заново' : 'Подобрать места'} disabled={busy} onPress={() => void suggest()} />
     {!!error && <Text style={[u.text, { color: colors.coral }]}>{error}</Text>}
     {hints.map(h => <Text key={h} style={u.muted}>{h}</Text>)}
-    {results?.map((r, rank) => { const v = m.votes[r.place.id]; const my = m.myVotes[r.place.id]; return <View key={r.place.id} style={s.meeting}>
+    {results?.map((r, rank) => { const v = m.votes[r.place.id]; const my = m.myVotes[r.place.id]; return <Animated.View key={r.place.id} entering={enter(rank)} style={s.meeting}>
       <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 10 }}><Text style={s.rank}>{rank + 1}</Text><Text style={[u.heading, { flex: 1 }]}>{r.place.name}</Text>{v && <Text style={u.label}>{v.score > 0 ? '+' : ''}{v.score}</Text>}</View>
       <Text style={u.text}>{r.reason}</Text>
       <Text style={u.muted}>{r.price == null ? 'Цену уточнить' : r.price === 0 ? 'Бесплатно' : `${r.price} ₽ на человека`}{r.travel.length ? ` · в пути ~${Math.max(...r.travel.map(t => t.minutes))} мин` : ''}</Text>
@@ -175,8 +179,8 @@ function MeetingView({ id, back, buildRoute }: { id: string; back: () => void; b
         <Chip label="Против" active={my === -1} onPress={() => void run(() => api.vote(m.id, r.place.id, my === -1 ? 0 : -1))} />
         <Button kind="quiet" label="Маршрут" onPress={() => buildRoute({ lat: r.place.lat, lon: r.place.lon }, r.place.id)} />
       </View>
-      {owner && <Button primary={rank === 0} label="Выбрать это место" onPress={() => void run(() => api.choose(m.id, r.place.id))} />}
-    </View>; })}
+      {owner && <Button primary={rank === 0} label="Выбрать это место" onPress={() => void run(async () => { const chosen = await api.choose(m.id, r.place.id); haptic.success(); return chosen; })} />}
+    </Animated.View>; })}
     {owner && <Button kind="quiet" label="Отменить встречу" onPress={() => void run(async () => { await api.cancel(m.id); back(); })} />}
   </View>;
 }
