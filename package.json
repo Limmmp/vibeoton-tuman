@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "data:fetch": "node scripts/fetch-osm-places.ts",
+    "data:build": "node scripts/build-places.ts",
+    "data:check": "node scripts/check-data.ts"
   },
   "dependencies": {
     "maplibre-gl": "^5.24.1"

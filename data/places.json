@@ -1,0 +1,4584 @@
+[
+  {
+    "id": "osm-n599895008",
+    "name": "Библиотека #4",
+    "lat": 43.112892,
+    "lon": 131.932432,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/599895008",
+    "osm": "node/599895008",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n1152478710",
+    "name": "Библиотека ВГУЭС",
+    "lat": 43.125865,
+    "lon": 131.905301,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1152478710",
+    "osm": "node/1152478710",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n4108930522",
+    "name": "Библиотека имени Горького",
+    "lat": 43.13022,
+    "lon": 131.91073,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/4108930522",
+    "osm": "node/4108930522",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n5035973112",
+    "name": "Библиотека ТГМУ",
+    "lat": 43.128047,
+    "lon": 131.904017,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5035973112",
+    "osm": "node/5035973112",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n2017581808",
+    "name": "Библиотека № 10",
+    "lat": 43.09829,
+    "lon": 131.862113,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": "Su-Fr 11:00-19:00; Sa 10:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2017581808",
+    "osm": "node/2017581808",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n1041062121",
+    "name": "Библиотека № 13",
+    "lat": 43.168869,
+    "lon": 131.928246,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": "Mo-Su 10:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1041062121",
+    "osm": "node/1041062121",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n4245310553",
+    "name": "Библиотека № 14",
+    "lat": 43.098527,
+    "lon": 131.931769,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": "Tu-Fr 11:00-19:00; Sa-Su 10:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/4245310553",
+    "osm": "node/4245310553",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n7018623813",
+    "name": "Библиотека № 21",
+    "lat": 43.109229,
+    "lon": 131.963407,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7018623813",
+    "osm": "node/7018623813",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n5203366694",
+    "name": "Библиотека №20",
+    "lat": 43.177624,
+    "lon": 131.919565,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": "Mo-Fr 09:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5203366694",
+    "osm": "node/5203366694",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить.",
+    "website": "https://vladlib.ru/"
+  },
+  {
+    "id": "osm-n3725680631",
+    "name": "Библиотека №22",
+    "lat": 43.114649,
+    "lon": 131.922169,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/3725680631",
+    "osm": "node/3725680631",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n13323983049",
+    "name": "Библиотека №3",
+    "lat": 43.135548,
+    "lon": 131.894847,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/13323983049",
+    "osm": "node/13323983049",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n1221082366",
+    "name": "Библиотека №5",
+    "lat": 43.09438,
+    "lon": 131.86251,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": "Tu-Su 10:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1221082366",
+    "osm": "node/1221082366",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n5592346221",
+    "name": "Библиотека №9",
+    "lat": 43.098379,
+    "lon": 131.948709,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": "Mo-Su 11:00-19:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5592346221",
+    "osm": "node/5592346221",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n675766616",
+    "name": "Детская библиотека им. Пушкина",
+    "lat": 43.114265,
+    "lon": 131.894271,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/675766616",
+    "osm": "node/675766616",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n2368079715",
+    "name": "Детская краевая",
+    "lat": 43.153832,
+    "lon": 131.910217,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2368079715",
+    "osm": "node/2368079715",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-w47063410",
+    "name": "Научная Библиотека ДВФУ",
+    "lat": 43.126418,
+    "lon": 131.885432,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/47063410",
+    "osm": "way/47063410",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить.",
+    "address": "Алеутская улица, 65Б",
+    "website": "https://www.dvfu.ru/library/"
+  },
+  {
+    "id": "osm-n2655086238",
+    "name": "Приморская краевая библиотека для слепых",
+    "lat": 43.177481,
+    "lon": 131.916496,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": "Mo-Fr 09:00-17:30; Sa 10:00-17:30",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2655086238",
+    "osm": "node/2655086238",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить.",
+    "website": "http://pkbs.su/"
+  },
+  {
+    "id": "osm-n1377433574",
+    "name": "Приморская краевая научная медицинская библиотека",
+    "lat": 43.124803,
+    "lon": 131.884634,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1377433574",
+    "osm": "node/1377433574",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n2368079728",
+    "name": "Центральная им. А.П. Чехова",
+    "lat": 43.153397,
+    "lon": 131.909887,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2368079728",
+    "osm": "node/2368079728",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n4092249240",
+    "name": "Центральная научная библиотека ДВО РАН",
+    "lat": 43.19209,
+    "lon": 131.920619,
+    "kind": [
+      "study",
+      "culture"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "quiet",
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/4092249240",
+    "osm": "node/4092249240",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатный вход — допущение для публичных библиотек, проверить."
+  },
+  {
+    "id": "osm-n4523119689",
+    "name": "\"Комета\"",
+    "lat": 43.208103,
+    "lon": 132.077023,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/4523119689",
+    "osm": "node/4523119689",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n1726018576",
+    "name": "Ансамбль песни и пляски тихоокеанского флота России",
+    "lat": 43.114677,
+    "lon": 131.9021,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1726018576",
+    "osm": "node/1726018576",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n1304264291",
+    "name": "Благотворительный ортопедический фонд",
+    "lat": 43.112614,
+    "lon": 131.920117,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "Mo-Su 12:00-17:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1304264291",
+    "osm": "node/1304264291",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n2913662627",
+    "name": "Весь мир",
+    "lat": 43.131174,
+    "lon": 131.90063,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2913662627",
+    "osm": "node/2913662627",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n2913799514",
+    "name": "Дети приморья",
+    "lat": 43.101872,
+    "lon": 131.939484,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2913799514",
+    "osm": "node/2913799514",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n7132430641",
+    "name": "Детская флотилия \"Варяг\"",
+    "lat": 43.091021,
+    "lon": 131.949206,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7132430641",
+    "osm": "node/7132430641",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n1239537423",
+    "name": "детский клуб \"Звездный\"",
+    "lat": 43.112585,
+    "lon": 131.878497,
+    "kind": [
+      "creative",
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "art"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1239537423",
+    "osm": "node/1239537423",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n8893394518",
+    "name": "Детский клуб им. В.К. Блюхера",
+    "lat": 43.172672,
+    "lon": 131.915939,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "Mo 11:00-18:00; Tu 10:00-18:00; We 11:00-18:00; Th 10:00-18:00; Fr 10:30-18:00; Sa 11:00-17:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/8893394518",
+    "osm": "node/8893394518",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n8893413717",
+    "name": "Детский клуб им. Кирова",
+    "lat": 43.174435,
+    "lon": 131.912133,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "Mo 11:00-17:00; Tu 12:30-18:30; We 11:00-17:00; Th 12:30-18:30; Fr 11:00-17:00; Sa 12:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/8893413717",
+    "osm": "node/8893413717",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n7321126880",
+    "name": "Детский морской центр \"Флотилия Восток\"",
+    "lat": 43.09406,
+    "lon": 131.921655,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7321126880",
+    "osm": "node/7321126880",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-w106044772",
+    "name": "Дом детства и юношества имени Крыгина",
+    "lat": 43.092253,
+    "lon": 131.862962,
+    "kind": [
+      "creative",
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "art"
+    ],
+    "hours": "Mo-Su 09:00-20:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/106044772",
+    "osm": "way/106044772",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "улица Морозова, 5"
+  },
+  {
+    "id": "osm-w208010725",
+    "name": "Дом культуры",
+    "lat": 43.301261,
+    "lon": 132.08173,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/208010725",
+    "osm": "way/208010725",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Порт-Артурская улица, 44"
+  },
+  {
+    "id": "osm-n5258862022",
+    "name": "Культурно-развлекательный центр профсоюзов",
+    "lat": 43.113347,
+    "lon": 131.918374,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5258862022",
+    "osm": "node/5258862022",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-w159487550",
+    "name": "Мед.центр \"ОКЕАН\"",
+    "lat": 43.264405,
+    "lon": 132.020462,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/159487550",
+    "osm": "way/159487550",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Садгородская улица, 21"
+  },
+  {
+    "id": "osm-n2977184698",
+    "name": "Орлёнок",
+    "lat": 43.095169,
+    "lon": 131.968336,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2977184698",
+    "osm": "node/2977184698",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n1609561102",
+    "name": "Ромашка",
+    "lat": 43.107352,
+    "lon": 131.940929,
+    "kind": [
+      "creative",
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "art"
+    ],
+    "hours": "Mo-Su 10:00-20:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1609561102",
+    "osm": "node/1609561102",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n4108879998",
+    "name": "Семицветик",
+    "lat": 43.133434,
+    "lon": 131.898496,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/4108879998",
+    "osm": "node/4108879998",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n2882835653",
+    "name": "Совет ветеранов",
+    "lat": 43.133159,
+    "lon": 131.897776,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "Mo-Fr 11:00-16:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2882835653",
+    "osm": "node/2882835653",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n3846734753",
+    "name": "Старт",
+    "lat": 43.096627,
+    "lon": 131.959618,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/3846734753",
+    "osm": "node/3846734753",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n4992481823",
+    "name": "Танго-клуб \"Нуэстро\"",
+    "lat": 43.12331,
+    "lon": 131.880925,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/4992481823",
+    "osm": "node/4992481823",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://www.nuestro.ru/"
+  },
+  {
+    "id": "osm-n7004478085",
+    "name": "центр культуры солнечный",
+    "lat": 43.214002,
+    "lon": 131.943709,
+    "kind": [
+      "creative",
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7004478085",
+    "osm": "node/7004478085",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n3426214252",
+    "name": "Центр современного искусства ЗАРЯ",
+    "lat": 43.179578,
+    "lon": 131.917824,
+    "kind": [
+      "creative",
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "art"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/3426214252",
+    "osm": "node/3426214252",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://zaryavladivostok.ru/"
+  },
+  {
+    "id": "osm-n10845587761",
+    "name": "Collage Pro",
+    "lat": 43.106646,
+    "lon": 131.876865,
+    "kind": [
+      "creative",
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "art"
+    ],
+    "hours": "Mo-Su 09:00-21:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/10845587761",
+    "osm": "node/10845587761",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://collage.center/"
+  },
+  {
+    "id": "osm-n9950719217",
+    "name": "Арка",
+    "lat": 43.117097,
+    "lon": 131.880687,
+    "kind": [
+      "culture",
+      "creative"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "art"
+    ],
+    "hours": "Tu-Sa 11:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/9950719217",
+    "osm": "node/9950719217",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://arkagallery.ru/"
+  },
+  {
+    "id": "osm-n12160127826",
+    "name": "Артэтаж",
+    "lat": 43.117066,
+    "lon": 131.885736,
+    "kind": [
+      "culture",
+      "creative"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "art"
+    ],
+    "hours": "We-Su 10:00-19:00; PH off",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/12160127826",
+    "osm": "node/12160127826",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://artetage.ru/"
+  },
+  {
+    "id": "osm-n1210401190",
+    "name": "Береговая башенная батарея №981 им. Клима Ворошилова",
+    "lat": 42.981578,
+    "lon": 131.890665,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1210401190",
+    "osm": "node/1210401190",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-w102653595",
+    "name": "Владивостокская крепость",
+    "lat": 43.122529,
+    "lon": 131.876541,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/102653595",
+    "osm": "way/102653595",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Батарейная улица, 4А"
+  },
+  {
+    "id": "osm-n676375880",
+    "name": "Военно-исторический музей Тихоокеанского флота",
+    "lat": 43.114457,
+    "lon": 131.900915,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "We-Su 10:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/676375880",
+    "osm": "node/676375880",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-w29106133",
+    "name": "ДВФУ, Научный музей",
+    "lat": 43.124653,
+    "lon": 131.888121,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "Tu-Fr 10:00-18:00; Sa 11:00-17:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/29106133",
+    "osm": "way/29106133",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Океанский проспект, 37",
+    "website": "http://www.dvfu.ru"
+  },
+  {
+    "id": "osm-w27532893",
+    "name": "Дом офицеров флота",
+    "lat": 43.114476,
+    "lon": 131.890864,
+    "kind": [
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "music"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/27532893",
+    "osm": "way/27532893",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Светланская улица, 48"
+  },
+  {
+    "id": "osm-n11036638005",
+    "name": "Дом путешественника Арсеньева",
+    "lat": 43.112088,
+    "lon": 131.874895,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "Mo-Su 10:00-19:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/11036638005",
+    "osm": "node/11036638005",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://arseniev.org/travelers-house/"
+  },
+  {
+    "id": "osm-w102414523",
+    "name": "Дом-музей ДВГТУ",
+    "lat": 43.118668,
+    "lon": 131.900245,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/102414523",
+    "osm": "way/102414523",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Аксаковская улица, 12А"
+  },
+  {
+    "id": "osm-w106483748",
+    "name": "Дом-музей Суханова",
+    "lat": 43.117276,
+    "lon": 131.89499,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/106483748",
+    "osm": "way/106483748",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "улица Суханова, 9"
+  },
+  {
+    "id": "osm-w102950194",
+    "name": "Исторический фонд Дальневосточного морского пароходства",
+    "lat": 43.105326,
+    "lon": 131.874728,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/102950194",
+    "osm": "way/102950194",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Верхнепортовая улица, 7"
+  },
+  {
+    "id": "osm-w170639233",
+    "name": "Красный вымпел",
+    "lat": 43.11255,
+    "lon": 131.89053,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/170639233",
+    "osm": "way/170639233",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n631419058",
+    "name": "Музей автомотостарины",
+    "lat": 43.096979,
+    "lon": 131.965997,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "We-Su 10:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/631419058",
+    "osm": "node/631419058",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://automotomuseum.ru/"
+  },
+  {
+    "id": "osm-n5775725154",
+    "name": "Музей Города",
+    "lat": 43.11368,
+    "lon": 131.892833,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "10:00-19:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5775725154",
+    "osm": "node/5775725154",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://arseniev.org/filials/filialy-vo-vladivostoke/941/"
+  },
+  {
+    "id": "osm-n1042556860",
+    "name": "Музей истории Дальнего Востока им. В.К. Арсеньева",
+    "lat": 43.116361,
+    "lon": 131.882171,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "Mo-Su 10:00-19:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1042556860",
+    "osm": "node/1042556860",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://arseniev.org/"
+  },
+  {
+    "id": "osm-w175860923",
+    "name": "Музей пограничников",
+    "lat": 43.118508,
+    "lon": 131.884782,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/175860923",
+    "osm": "way/175860923",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Семёновская улица, 17"
+  },
+  {
+    "id": "osm-n14100528032",
+    "name": "Музей Приморской митрополии",
+    "lat": 43.114457,
+    "lon": 131.887145,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/14100528032",
+    "osm": "node/14100528032",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Светланская улица, 38/40с2"
+  },
+  {
+    "id": "osm-n2957112438",
+    "name": "Музей Ростелекома",
+    "lat": 43.114101,
+    "lon": 131.895072,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2957112438",
+    "osm": "node/2957112438",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n6715502585",
+    "name": "Музей трепанга",
+    "lat": 43.100692,
+    "lon": 131.862839,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "Mo-Su 10:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/6715502585",
+    "osm": "node/6715502585",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Верхнепортовая улица, 66A",
+    "website": "https://seacucumber-museum.com/"
+  },
+  {
+    "id": "osm-n1377427667",
+    "name": "Приморская государственная картинная галерея",
+    "lat": 43.124534,
+    "lon": 131.893441,
+    "kind": [
+      "culture",
+      "creative"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "art"
+    ],
+    "hours": "Tu-Su 11:00-19:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1377427667",
+    "osm": "node/1377427667",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://primgallery.com/"
+  },
+  {
+    "id": "osm-n11152750810",
+    "name": "Приморская государственная картинная галерея",
+    "lat": 43.114318,
+    "lon": 131.881927,
+    "kind": [
+      "culture",
+      "creative"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "art"
+    ],
+    "hours": "Tu-Su 11:00-19:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/11152750810",
+    "osm": "node/11152750810",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://primgallery.com/"
+  },
+  {
+    "id": "osm-n8373688118",
+    "name": "Приморская краевая филармония",
+    "lat": 43.116437,
+    "lon": 131.882995,
+    "kind": [
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "music"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/8373688118",
+    "osm": "node/8373688118",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-w187779150",
+    "name": "Приморская сцена Мариинского театра",
+    "lat": 43.100682,
+    "lon": 131.898335,
+    "kind": [
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "music"
+    ],
+    "hours": "We-Su 11:00-19:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/187779150",
+    "osm": "way/187779150",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Фастовская улица, 20",
+    "website": "https://prim.mariinsky.ru/"
+  },
+  {
+    "id": "osm-w26537156",
+    "name": "Приморский драматический театр имени Максима Горького",
+    "lat": 43.115961,
+    "lon": 131.893486,
+    "kind": [
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "music"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/26537156",
+    "osm": "way/26537156",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Светланская улица, 49",
+    "website": "http://www.gorkytheater.ru/"
+  },
+  {
+    "id": "osm-n1210380453",
+    "name": "Приморский краевой драматический театр молодежи",
+    "lat": 43.116322,
+    "lon": 131.883646,
+    "kind": [
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "music"
+    ],
+    "hours": "Tu-Fr 11:00-18:00; Sa-Su 10:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1210380453",
+    "osm": "node/1210380453",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://primtheatre.ru/"
+  },
+  {
+    "id": "osm-n7112753943",
+    "name": "Приморский краевой театр кукол",
+    "lat": 43.11391,
+    "lon": 131.892869,
+    "kind": [
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "music"
+    ],
+    "hours": "We-Fr 09:00-17:00; Sa 12:00-14:00; Su 10:00-14:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7112753943",
+    "osm": "node/7112753943",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://primpuppet.ru/"
+  },
+  {
+    "id": "osm-n1677918608",
+    "name": "Приморское отделение ВТОО \"Союз художников России\"",
+    "lat": 43.114969,
+    "lon": 131.882194,
+    "kind": [
+      "culture",
+      "creative"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "art"
+    ],
+    "hours": "10:00-19:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1677918608",
+    "osm": "node/1677918608",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://artprim.com/"
+  },
+  {
+    "id": "osm-w35333854",
+    "name": "Пушкинский театр",
+    "lat": 43.115705,
+    "lon": 131.90023,
+    "kind": [
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "music"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/35333854",
+    "osm": "way/35333854",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Пушкинская улица, 27"
+  },
+  {
+    "id": "osm-w30281940",
+    "name": "С-56",
+    "lat": 43.113375,
+    "lon": 131.891218,
+    "kind": [
+      "culture",
+      "history"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/30281940",
+    "osm": "way/30281940",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-w26686828",
+    "name": "Цирк",
+    "lat": 43.116147,
+    "lon": 131.906133,
+    "kind": [
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "music"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/26686828",
+    "osm": "way/26686828",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Светланская улица, 103"
+  },
+  {
+    "id": "osm-w26826883",
+    "name": "FESCO Hall",
+    "lat": 43.105069,
+    "lon": 131.871306,
+    "kind": [
+      "culture"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "music"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/26826883",
+    "osm": "way/26826883",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Верхнепортовая улица, 38"
+  },
+  {
+    "id": "osm-w47288296",
+    "name": "Владивосток",
+    "lat": 43.112031,
+    "lon": 131.938135,
+    "kind": [
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "cinema"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/47288296",
+    "osm": "way/47288296",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Трамвайная улица, 16"
+  },
+  {
+    "id": "osm-n10976261841",
+    "name": "Выпусти пар",
+    "lat": 43.128113,
+    "lon": 131.889917,
+    "kind": [
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "Mo-Su 12:00-21:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/10976261841",
+    "osm": "node/10976261841",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-r8182046",
+    "name": "Галактика",
+    "lat": 43.092314,
+    "lon": 131.972936,
+    "kind": [
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "cinema"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/relation/8182046",
+    "osm": "relation/8182046",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "улица Добровольского, 5"
+  },
+  {
+    "id": "osm-n12096758984",
+    "name": "Душа Фараона",
+    "lat": 43.137148,
+    "lon": 131.95797,
+    "kind": [
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "Mo-Su 09:00-21:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/12096758984",
+    "osm": "node/12096758984",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://dushafaraona.ru"
+  },
+  {
+    "id": "osm-n747643058",
+    "name": "Иллюзион",
+    "lat": 43.162427,
+    "lon": 131.911514,
+    "kind": [
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "cinema"
+    ],
+    "hours": "Mo-Su 09:00-02:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/747643058",
+    "osm": "node/747643058",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "http://www.illuzion.ru/"
+  },
+  {
+    "id": "osm-n11958491697",
+    "name": "Лисья Нора",
+    "lat": 43.124017,
+    "lon": 131.904752,
+    "kind": [
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "board-games"
+    ],
+    "hours": "Mo-Su 11:00-19:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/11958491697",
+    "osm": "node/11958491697",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n441700945",
+    "name": "Москва",
+    "lat": 43.133078,
+    "lon": 131.898725,
+    "kind": [
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "cinema"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/441700945",
+    "osm": "node/441700945",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-w72030314",
+    "name": "Нептун",
+    "lat": 43.16977,
+    "lon": 131.92224,
+    "kind": [
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "cinema"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/72030314",
+    "osm": "way/72030314",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Русская улица, 41"
+  },
+  {
+    "id": "osm-w23946365",
+    "name": "Океан",
+    "lat": 43.116472,
+    "lon": 131.877969,
+    "kind": [
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "cinema"
+    ],
+    "hours": "Mo-Su 09:00-00:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/23946365",
+    "osm": "way/23946365",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Набережная улица, 3",
+    "website": "http://www.illuzion.ru"
+  },
+  {
+    "id": "osm-w155396558",
+    "name": "Уссури",
+    "lat": 43.115852,
+    "lon": 131.886726,
+    "kind": [
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "cinema"
+    ],
+    "hours": "Mo-Su 09:00-24:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/155396558",
+    "osm": "way/155396558",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Светланская улица, 31"
+  },
+  {
+    "id": "osm-n10792607686",
+    "name": "Cook&Run",
+    "lat": 43.10575,
+    "lon": 131.874206,
+    "kind": [
+      "leisure"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor"
+    ],
+    "hours": "24/7",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/10792607686",
+    "osm": "node/10792607686",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://cookn.run/"
+  },
+  {
+    "id": "osm-n12050520915",
+    "name": "Агар-Агар",
+    "lat": 43.107038,
+    "lon": 131.872627,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "12:00-22:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/12050520915",
+    "osm": "node/12050520915",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "улица Станюковича, 46",
+    "website": "https://agar-agar.space/"
+  },
+  {
+    "id": "osm-n8514390517",
+    "name": "Белая юрта",
+    "lat": 43.116497,
+    "lon": 131.885503,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Su 11:00-22:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/8514390517",
+    "osm": "node/8514390517",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-w471302778",
+    "name": "Буду кофе",
+    "lat": 43.115499,
+    "lon": 131.908974,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Fr 09:00-19:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/471302778",
+    "osm": "way/471302778",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Пушкинская улица, 32А"
+  },
+  {
+    "id": "osm-w434716641",
+    "name": "Водно Спортивная база",
+    "lat": 43.09491,
+    "lon": 131.855792,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "12:00-22:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/434716641",
+    "osm": "way/434716641",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "улица Сипягина, 17В"
+  },
+  {
+    "id": "osm-n5323268522",
+    "name": "Гранд",
+    "lat": 43.308246,
+    "lon": 132.075465,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5323268522",
+    "osm": "node/5323268522",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n9109884617",
+    "name": "Добрыня и Аня",
+    "lat": 43.106557,
+    "lon": 131.941516,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/9109884617",
+    "osm": "node/9109884617",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n7202326485",
+    "name": "Итальянская кофейня Pazzo",
+    "lat": 43.115379,
+    "lon": 131.895146,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Su 09:00-24:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7202326485",
+    "osm": "node/7202326485",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "http://pazzocoffeelab.ru/"
+  },
+  {
+    "id": "osm-n7295763309",
+    "name": "Кафе АЛОХА",
+    "lat": 43.12229,
+    "lon": 131.887696,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Sa 08:00-20:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7295763309",
+    "osm": "node/7295763309",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://hotelaloha.ru/"
+  },
+  {
+    "id": "osm-w1177175628",
+    "name": "Кафема",
+    "lat": 43.118462,
+    "lon": 131.921886,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Su 08:00-21:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/1177175628",
+    "osm": "way/1177175628",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "улица Всеволода Сибирцева, 84А с1",
+    "website": "www.kafema.ru"
+  },
+  {
+    "id": "osm-n5925587786",
+    "name": "Кофе-шоп Рандеву",
+    "lat": 43.118197,
+    "lon": 131.888688,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Su 07:00-22:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5925587786",
+    "osm": "node/5925587786",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "http://www.lottehotelvladivostok.com/restaurants/"
+  },
+  {
+    "id": "osm-n4611388689",
+    "name": "Морской замок",
+    "lat": 43.196552,
+    "lon": 132.123271,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "24/7",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/4611388689",
+    "osm": "node/4611388689",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "http://vk.com/arc959695"
+  },
+  {
+    "id": "osm-n1811228126",
+    "name": "Отдел культуры",
+    "lat": 43.115923,
+    "lon": 131.887431,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Th 10:00-23:59; Fr-Sa 10:00-05:59; Su 10:00-23:59",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1811228126",
+    "osm": "node/1811228126",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n5755395122",
+    "name": "Пицца Просто",
+    "lat": 43.116177,
+    "lon": 131.8873,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Su 09:00-22:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5755395122",
+    "osm": "node/5755395122",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://pizza-prosto.ru/"
+  },
+  {
+    "id": "osm-n4418942491",
+    "name": "Санья",
+    "lat": 43.093947,
+    "lon": 131.913603,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/4418942491",
+    "osm": "node/4418942491",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n8509348117",
+    "name": "Столовая N1",
+    "lat": 43.11627,
+    "lon": 131.88386,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Su 08:00-21:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/8509348117",
+    "osm": "node/8509348117",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n11583477370",
+    "name": "Хохлома",
+    "lat": 43.110085,
+    "lon": 131.878746,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Fr 10:00-23:00; Sa-Su 12:00-23:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/11583477370",
+    "osm": "node/11583477370",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://hohloma.clients.site/"
+  },
+  {
+    "id": "osm-n2108105568",
+    "name": "Экспресс",
+    "lat": 43.164369,
+    "lon": 131.905842,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2108105568",
+    "osm": "node/2108105568",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n4110539716",
+    "name": "bonus club",
+    "lat": 43.130848,
+    "lon": 131.912379,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/4110539716",
+    "osm": "node/4110539716",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n2508265493",
+    "name": "Coffee beans",
+    "lat": 43.117151,
+    "lon": 131.910909,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2508265493",
+    "osm": "node/2508265493",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n3130556596",
+    "name": "Columbus",
+    "lat": 43.09537,
+    "lon": 131.977043,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/3130556596",
+    "osm": "node/3130556596",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n3448241893",
+    "name": "island",
+    "lat": 43.03119,
+    "lon": 131.886013,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "8:00-22:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/3448241893",
+    "osm": "node/3448241893",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n5950610985",
+    "name": "Local house",
+    "lat": 43.116845,
+    "lon": 131.881821,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Su 08:00-21:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5950610985",
+    "osm": "node/5950610985",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n13116200533",
+    "name": "Nane cake",
+    "lat": 43.12027,
+    "lon": 131.885149,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Su 8:30-22:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/13116200533",
+    "osm": "node/13116200533",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "address": "Фонтанная улица, 35",
+    "website": "foodeon.com"
+  },
+  {
+    "id": "osm-n5398207522",
+    "name": "Oh, my coffee!",
+    "lat": 43.111424,
+    "lon": 131.882948,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Fr 08:00-19:00; Sa-Su 10:00-18:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5398207522",
+    "osm": "node/5398207522",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n6378350525",
+    "name": "Oh, my coffee!",
+    "lat": 43.116445,
+    "lon": 131.882639,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Fr 08:00-19:00; Sa-Su 10:00-19:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/6378350525",
+    "osm": "node/6378350525",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n11568594269",
+    "name": "One Place Coffee",
+    "lat": 43.120745,
+    "lon": 131.883781,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Fr 08:00-20:00; Sa 09:00-20:00; Su 10:00-20:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/11568594269",
+    "osm": "node/11568594269",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "http://coffeeplace.one/"
+  },
+  {
+    "id": "osm-n7153188815",
+    "name": "Pizzaiolo",
+    "lat": 43.116705,
+    "lon": 131.881285,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Su 09:00-23:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7153188815",
+    "osm": "node/7153188815",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://pizza-vl.ru"
+  },
+  {
+    "id": "osm-n7246805897",
+    "name": "Pizzaiolo",
+    "lat": 43.129759,
+    "lon": 131.925892,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Su 09:00-23:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7246805897",
+    "osm": "node/7246805897",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://pizza-vl.ru"
+  },
+  {
+    "id": "osm-n7246820352",
+    "name": "Pizzaiolo",
+    "lat": 43.162589,
+    "lon": 131.952487,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Fr 11:00-23:00; Sa-Su 10:00-23:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7246820352",
+    "osm": "node/7246820352",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://pizza-vl.ru"
+  },
+  {
+    "id": "osm-n7246821999",
+    "name": "Pizzaiolo",
+    "lat": 43.123341,
+    "lon": 131.956867,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": "Mo-Su 09:00-22:00",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7246821999",
+    "osm": "node/7246821999",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://pizza-vl.ru"
+  },
+  {
+    "id": "osm-n11880171069",
+    "name": "Sista Feels",
+    "lat": 43.111597,
+    "lon": 131.878603,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/11880171069",
+    "osm": "node/11880171069",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки."
+  },
+  {
+    "id": "osm-n1684506007",
+    "name": "Traveler's Coffee",
+    "lat": 43.121343,
+    "lon": 131.886452,
+    "kind": [
+      "food",
+      "study"
+    ],
+    "price": null,
+    "priceLevel": "unknown",
+    "tags": [
+      "indoor",
+      "coffee",
+      "wifi"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/1684506007",
+    "osm": "node/1684506007",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки.",
+    "website": "https://travelerscoffee.ru/"
+  },
+  {
+    "id": "osm-n13569693724",
+    "name": "«Скала Любви»",
+    "lat": 43.067467,
+    "lon": 131.839649,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/13569693724",
+    "osm": "node/13569693724",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-w26687466",
+    "name": "Адмиральский сквер",
+    "lat": 43.113976,
+    "lon": 131.891466,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/26687466",
+    "osm": "way/26687466",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w627510872",
+    "name": "Аллея Дружбы",
+    "lat": 43.026667,
+    "lon": 131.895311,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/627510872",
+    "osm": "way/627510872",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w352268643",
+    "name": "Аллея им. Дениса Давыдова",
+    "lat": 43.168697,
+    "lon": 131.917048,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/352268643",
+    "osm": "way/352268643",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-n7043805186",
+    "name": "Большие Сосульки",
+    "lat": 42.971646,
+    "lon": 131.907123,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7043805186",
+    "osm": "node/7043805186",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить.",
+    "website": "https://idilesom.com/prim/places/3126"
+  },
+  {
+    "id": "osm-n9269648331",
+    "name": "вид на «Комета»",
+    "lat": 43.225443,
+    "lon": 132.083206,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/9269648331",
+    "osm": "node/9269648331",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n9269648281",
+    "name": "вид на водохранилище",
+    "lat": 43.224773,
+    "lon": 132.078329,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/9269648281",
+    "osm": "node/9269648281",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n2010487408",
+    "name": "Вид на водохранилище",
+    "lat": 43.21217,
+    "lon": 131.976707,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2010487408",
+    "osm": "node/2010487408",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n2045654344",
+    "name": "Вид на водохранилище",
+    "lat": 43.205055,
+    "lon": 131.96391,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2045654344",
+    "osm": "node/2045654344",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n5358194321",
+    "name": "вид на город",
+    "lat": 43.116356,
+    "lon": 131.914172,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5358194321",
+    "osm": "node/5358194321",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n9128840917",
+    "name": "Вид на город",
+    "lat": 43.095391,
+    "lon": 131.867208,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/9128840917",
+    "osm": "node/9128840917",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n2947709289",
+    "name": "Вид на залив",
+    "lat": 42.962991,
+    "lon": 131.894695,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2947709289",
+    "osm": "node/2947709289",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n663952531",
+    "name": "Вид на залив \"Золотой рог\"",
+    "lat": 43.117518,
+    "lon": 131.898253,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/663952531",
+    "osm": "node/663952531",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n13953465601",
+    "name": "Вид на мыс Вятлина",
+    "lat": 42.977888,
+    "lon": 131.915588,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/13953465601",
+    "osm": "node/13953465601",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n3180202683",
+    "name": "Вид на Патрокл",
+    "lat": 43.079466,
+    "lon": 131.964511,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/3180202683",
+    "osm": "node/3180202683",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n9128753218",
+    "name": "Вид на порт",
+    "lat": 43.092983,
+    "lon": 131.866115,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/9128753218",
+    "osm": "node/9128753218",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n7273273585",
+    "name": "Вид на Русский мост с 2000 рублей",
+    "lat": 43.067706,
+    "lon": 131.915945,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7273273585",
+    "osm": "node/7273273585",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n9269648262",
+    "name": "вид на Шамору и Емар",
+    "lat": 43.218153,
+    "lon": 132.113225,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/9269648262",
+    "osm": "node/9269648262",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n7920331385",
+    "name": "Видовая площадка",
+    "lat": 43.178847,
+    "lon": 131.906058,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7920331385",
+    "osm": "node/7920331385",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n9738830125",
+    "name": "Видовая площадка",
+    "lat": 43.220926,
+    "lon": 132.029024,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/9738830125",
+    "osm": "node/9738830125",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n5292665611",
+    "name": "Грот и нависающие стены",
+    "lat": 42.932948,
+    "lon": 131.830943,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5292665611",
+    "osm": "node/5292665611",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-w516932642",
+    "name": "Дальхимпром",
+    "lat": 43.138401,
+    "lon": 131.976143,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/516932642",
+    "osm": "way/516932642",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-r9497261",
+    "name": "Детский парк",
+    "lat": 43.120202,
+    "lon": 131.876579,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/relation/9497261",
+    "osm": "relation/9497261",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-n6553609683",
+    "name": "Коврижка",
+    "lat": 43.203116,
+    "lon": 131.944537,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/6553609683",
+    "osm": "node/6553609683",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-w1095764880",
+    "name": "Корабль \"Вечный\"",
+    "lat": 43.209981,
+    "lon": 132.166901,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/1095764880",
+    "osm": "way/1095764880",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-n12399108099",
+    "name": "Леопардовая набережная",
+    "lat": 43.074532,
+    "lon": 131.955231,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/12399108099",
+    "osm": "node/12399108099",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w160546366",
+    "name": "Матросский сквер",
+    "lat": 43.11448,
+    "lon": 131.901933,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/160546366",
+    "osm": "way/160546366",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-n8336448618",
+    "name": "мыс Ликандера",
+    "lat": 42.937134,
+    "lon": 131.726447,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/8336448618",
+    "osm": "node/8336448618",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n9690979617",
+    "name": "Набережная на Второй Речке",
+    "lat": 43.161177,
+    "lon": 131.905889,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/9690979617",
+    "osm": "node/9690979617",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-r2904784",
+    "name": "Набережная Цесаревича",
+    "lat": 43.11301,
+    "lon": 131.901717,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/relation/2904784",
+    "osm": "relation/2904784",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w492719949",
+    "name": "Нагорный парк",
+    "lat": 43.118096,
+    "lon": 131.922553,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": "24/7",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/492719949",
+    "osm": "way/492719949",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-n6065981885",
+    "name": "озеро лотосы",
+    "lat": 43.247846,
+    "lon": 132.013994,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/6065981885",
+    "osm": "node/6065981885",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-r1935085",
+    "name": "Парк \"Минный городок\"",
+    "lat": 43.120681,
+    "lon": 131.941371,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/relation/1935085",
+    "osm": "relation/1935085",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w510376256",
+    "name": "парк \"Патриот\"",
+    "lat": 42.982109,
+    "lon": 131.890907,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/510376256",
+    "osm": "way/510376256",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-r7346562",
+    "name": "Парк культуры и отдыха им. Сергея Лазо",
+    "lat": 43.231521,
+    "lon": 131.980134,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/relation/7346562",
+    "osm": "relation/7346562",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-n12399105414",
+    "name": "парк на Торфяном озере",
+    "lat": 43.077019,
+    "lon": 131.962427,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/12399105414",
+    "osm": "node/12399105414",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w35902814",
+    "name": "Парк Победы",
+    "lat": 43.16281,
+    "lon": 131.912416,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/35902814",
+    "osm": "way/35902814",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w220107375",
+    "name": "Парк Солнышко",
+    "lat": 43.166119,
+    "lon": 131.919968,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/220107375",
+    "osm": "way/220107375",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w50633473",
+    "name": "Покровский парк",
+    "lat": 43.125802,
+    "lon": 131.891394,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/50633473",
+    "osm": "way/50633473",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-n2955405622",
+    "name": "Разрушенное военное строение",
+    "lat": 42.967946,
+    "lon": 131.894982,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2955405622",
+    "osm": "node/2955405622",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-w492719947",
+    "name": "Сквер А. И. Щетининой",
+    "lat": 43.084733,
+    "lon": 131.856954,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/492719947",
+    "osm": "way/492719947",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w492719943",
+    "name": "Сквер Веры и Надежды",
+    "lat": 43.153237,
+    "lon": 131.908117,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/492719943",
+    "osm": "way/492719943",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-r2507892",
+    "name": "Сквер Ветеранов",
+    "lat": 43.14888,
+    "lon": 131.910664,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/relation/2507892",
+    "osm": "relation/2507892",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w1034965743",
+    "name": "Сквер Вечнозелёный",
+    "lat": 43.119801,
+    "lon": 131.969191,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/1034965743",
+    "osm": "way/1034965743",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w86575511",
+    "name": "Сквер Гайдамакский",
+    "lat": 43.112865,
+    "lon": 131.925164,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/86575511",
+    "osm": "way/86575511",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w239965854",
+    "name": "Сквер Героев-Даманцев",
+    "lat": 43.101667,
+    "lon": 131.867364,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/239965854",
+    "osm": "way/239965854",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w526332122",
+    "name": "Сквер Героев-Даманцев",
+    "lat": 43.100284,
+    "lon": 131.865245,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/526332122",
+    "osm": "way/526332122",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w106620076",
+    "name": "Сквер Городов Побратимов",
+    "lat": 43.11885,
+    "lon": 131.880695,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/106620076",
+    "osm": "way/106620076",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w116919148",
+    "name": "Сквер Дальзаводской",
+    "lat": 43.113084,
+    "lon": 131.913295,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/116919148",
+    "osm": "way/116919148",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w43031909",
+    "name": "Сквер дружбы",
+    "lat": 43.11275,
+    "lon": 131.918563,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/43031909",
+    "osm": "way/43031909",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w85921165",
+    "name": "Сквер Жариковский",
+    "lat": 43.114288,
+    "lon": 131.911803,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/85921165",
+    "osm": "way/85921165",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w155004900",
+    "name": "сквер Железнодорожников",
+    "lat": 43.130004,
+    "lon": 131.909631,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/155004900",
+    "osm": "way/155004900",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w60354809",
+    "name": "Сквер им. адмирала Макарова",
+    "lat": 43.116059,
+    "lon": 131.877024,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/60354809",
+    "osm": "way/60354809",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-r3457904",
+    "name": "Сквер им. Муравьёва-Амурского",
+    "lat": 43.116528,
+    "lon": 131.894684,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/relation/3457904",
+    "osm": "relation/3457904",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w27534478",
+    "name": "Сквер им. Невельского",
+    "lat": 43.113664,
+    "lon": 131.898789,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/27534478",
+    "osm": "way/27534478",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w469595594",
+    "name": "Сквер им. Острякова",
+    "lat": 43.13276,
+    "lon": 131.900731,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/469595594",
+    "osm": "way/469595594",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w492719940",
+    "name": "Сквер им. Рихарда Зорге",
+    "lat": 43.154821,
+    "lon": 131.910053,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/492719940",
+    "osm": "way/492719940",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w47661496",
+    "name": "Сквер им. Семёнова",
+    "lat": 43.115415,
+    "lon": 131.881836,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/47661496",
+    "osm": "way/47661496",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w25617751",
+    "name": "Сквер им. Суханова",
+    "lat": 43.118234,
+    "lon": 131.891793,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/25617751",
+    "osm": "way/25617751",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w107179335",
+    "name": "Сквер Комсомольцев",
+    "lat": 43.116328,
+    "lon": 131.908235,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/107179335",
+    "osm": "way/107179335",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w492474311",
+    "name": "Сквер Курсантский",
+    "lat": 43.142492,
+    "lon": 131.913374,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/492474311",
+    "osm": "way/492474311",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w492719942",
+    "name": "Сквер Надибаидзе",
+    "lat": 43.093823,
+    "lon": 131.895638,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": "24/7",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/492719942",
+    "osm": "way/492719942",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-r7283104",
+    "name": "Сквер Некрасовский",
+    "lat": 43.132287,
+    "lon": 131.912083,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/relation/7283104",
+    "osm": "relation/7283104",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w28929580",
+    "name": "Сквер Первой маёвки",
+    "lat": 43.103248,
+    "lon": 131.907831,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/28929580",
+    "osm": "way/28929580",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-r2907390",
+    "name": "Сквер Политехников",
+    "lat": 43.115214,
+    "lon": 131.901384,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/relation/2907390",
+    "osm": "relation/2907390",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w139325702",
+    "name": "Сквер Почётных граждан",
+    "lat": 43.121822,
+    "lon": 131.88718,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/139325702",
+    "osm": "way/139325702",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w492719944",
+    "name": "Сквер Русской Славы",
+    "lat": 43.168236,
+    "lon": 131.933475,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/492719944",
+    "osm": "way/492719944",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w492719950",
+    "name": "Сквер Рыбацкая Слава",
+    "lat": 43.091298,
+    "lon": 131.883451,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/492719950",
+    "osm": "way/492719950",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w744794569",
+    "name": "Сквер Хо Ши Мина",
+    "lat": 43.103632,
+    "lon": 131.93702,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/744794569",
+    "osm": "way/744794569",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w47428753",
+    "name": "Сквер Центральный",
+    "lat": 43.114936,
+    "lon": 131.88861,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/47428753",
+    "osm": "way/47428753",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w489746052",
+    "name": "Сквер Чайка",
+    "lat": 43.101751,
+    "lon": 131.911746,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/489746052",
+    "osm": "way/489746052",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w31319055",
+    "name": "Сквер Чеховский",
+    "lat": 43.114047,
+    "lon": 131.875011,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/31319055",
+    "osm": "way/31319055",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-r3252831",
+    "name": "Сквер Энергетиков",
+    "lat": 43.104773,
+    "lon": 131.872947,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/relation/3252831",
+    "osm": "relation/3252831",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w33826284",
+    "name": "Сквер Юнг Российского флота",
+    "lat": 43.106927,
+    "lon": 131.876553,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/33826284",
+    "osm": "way/33826284",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-n12646699905",
+    "name": "Сквозь кроны",
+    "lat": 43.220888,
+    "lon": 131.990969,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/12646699905",
+    "osm": "node/12646699905",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n4896197458",
+    "name": "Смотровая площадка на м. Чуркин.",
+    "lat": 43.091429,
+    "lon": 131.883619,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/4896197458",
+    "osm": "node/4896197458",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n2233213551",
+    "name": "Сосновый бор",
+    "lat": 43.213355,
+    "lon": 131.992021,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/2233213551",
+    "osm": "node/2233213551",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n5278912421",
+    "name": "Створный знак",
+    "lat": 42.945769,
+    "lon": 131.8734,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5278912421",
+    "osm": "node/5278912421",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-n5278912422",
+    "name": "Створный знак",
+    "lat": 42.956951,
+    "lon": 131.87703,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/5278912422",
+    "osm": "node/5278912422",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-w27420195",
+    "name": "Театральный сквер",
+    "lat": 43.114951,
+    "lon": 131.893113,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/27420195",
+    "osm": "way/27420195",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-n7935036385",
+    "name": "Тимпур",
+    "lat": 43.232837,
+    "lon": 132.164521,
+    "kind": [
+      "outdoor"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor",
+      "view"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/node/7935036385",
+    "osm": "node/7935036385",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
+  },
+  {
+    "id": "osm-w1427528729",
+    "name": "Тобольский сквер",
+    "lat": 43.122874,
+    "lon": 131.926636,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": "24/7",
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/1427528729",
+    "osm": "way/1427528729",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w469292217",
+    "name": "Cквер им. Игнатьева",
+    "lat": 43.131399,
+    "lon": 131.896674,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/469292217",
+    "osm": "way/469292217",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  },
+  {
+    "id": "osm-w352282416",
+    "name": "Cквер им. Кутузова",
+    "lat": 43.169494,
+    "lon": 131.921985,
+    "kind": [
+      "outdoor",
+      "leisure"
+    ],
+    "price": 0,
+    "priceLevel": "free",
+    "tags": [
+      "outdoor"
+    ],
+    "hours": null,
+    "photo": null,
+    "source": "https://www.openstreetmap.org/way/352282416",
+    "osm": "way/352282416",
+    "checkedAt": null,
+    "verified": false,
+    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для городских парков, проверить."
+  }
+]

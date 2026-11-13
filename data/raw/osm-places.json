@@ -1,0 +1,3378 @@
+{
+ "fetchedAt": "2026-11-13T02:57:41.595Z",
+ "elements": [
+  {
+   "type": "node",
+   "id": 441700945,
+   "lat": 43.133078,
+   "lon": 131.8987251,
+   "tags": {
+    "amenity": "cinema",
+    "contact:phone": "+7 423 2450977",
+    "name": "Москва"
+   }
+  },
+  {
+   "type": "node",
+   "id": 599895008,
+   "lat": 43.1128919,
+   "lon": 131.9324321,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека #4",
+    "phone": "+74232269144"
+   }
+  },
+  {
+   "type": "node",
+   "id": 614129998,
+   "lat": 43.1269531,
+   "lon": 131.9417571,
+   "tags": {
+    "amenity": "library"
+   }
+  },
+  {
+   "type": "node",
+   "id": 631419058,
+   "lat": 43.0969792,
+   "lon": 131.9659974,
+   "tags": {
+    "contact:vk": "automotomuseumvl",
+    "name": "Музей автомотостарины",
+    "name:en": "Antique Automobile Museum",
+    "opening_hours": "We-Su 10:00-18:00",
+    "phone": "+7 423 221 24 77",
+    "tourism": "museum",
+    "website": "https://automotomuseum.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 638109386,
+   "lat": 43.0864702,
+   "lon": 131.9169909,
+   "tags": {
+    "description": "Вид на мост на о. Русский",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 663952531,
+   "lat": 43.1175183,
+   "lon": 131.8982528,
+   "tags": {
+    "name": "Вид на залив \"Золотой рог\"",
+    "name:en": "View of the Golden Horn Bay",
+    "name:ru": "Вид на залив \"Золотой рог\"",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 675766616,
+   "lat": 43.1142649,
+   "lon": 131.8942714,
+   "tags": {
+    "amenity": "library",
+    "name": "Детская библиотека им. Пушкина",
+    "name:en": "Pushkin Children Library",
+    "name:ru": "Детская библиотека им. Пушкина"
+   }
+  },
+  {
+   "type": "node",
+   "id": 676375880,
+   "lat": 43.1144566,
+   "lon": 131.9009151,
+   "tags": {
+    "name": "Военно-исторический музей Тихоокеанского флота",
+    "name:en": "Pacific Navy Fleet Military Museum",
+    "name:zh": "太平洋海军舰队博物馆",
+    "opening_hours": "We-Su 10:00-18:00",
+    "source": "photograph",
+    "tourism": "museum"
+   }
+  },
+  {
+   "type": "node",
+   "id": 747643058,
+   "lat": 43.1624273,
+   "lon": 131.9115139,
+   "tags": {
+    "amenity": "cinema",
+    "email": "press@illuzion.ru",
+    "name": "Иллюзион",
+    "opening_hours": "Mo-Su 09:00-02:00",
+    "phone": "+74232433845",
+    "website": "http://www.illuzion.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 789743814,
+   "lat": 43.0939008,
+   "lon": 131.9882004,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 845109649,
+   "lat": 43.0848781,
+   "lon": 131.8571605,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 845109655,
+   "lat": 43.0814675,
+   "lon": 131.8530616,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1041062121,
+   "lat": 43.1688687,
+   "lon": 131.9282464,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека № 13",
+    "opening_hours": "Mo-Su 10:00-18:00",
+    "phone": "+7 423 2325596",
+    "ref": "13",
+    "source": "image"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1042556860,
+   "lat": 43.1163613,
+   "lon": 131.8821714,
+   "tags": {
+    "check_date": "2026-08-17",
+    "email": "office@arseniev.org",
+    "museum": "history",
+    "name": "Музей истории Дальнего Востока им. В.К. Арсеньева",
+    "name:en": "Arseniev's Museum",
+    "name:zh": "阿尔谢尼耶夫博物馆",
+    "opening_hours": "Mo-Su 10:00-19:00",
+    "phone": "+7 (423) 241-11-73",
+    "tourism": "museum",
+    "website": "https://arseniev.org/",
+    "wikidata": "Q4378712",
+    "wikimedia_commons": "Category:Arsenyev Museum",
+    "wikipedia": "ru:Музей истории Дальнего Востока имени В. К. Арсеньева"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1152478710,
+   "lat": 43.1258649,
+   "lon": 131.9053009,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека ВГУЭС"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1210380453,
+   "lat": 43.1163221,
+   "lon": 131.8836458,
+   "tags": {
+    "amenity": "theatre",
+    "email": "afisha@primtheatre.ru",
+    "name": "Приморский краевой драматический театр молодежи",
+    "opening_hours": "Tu-Fr 11:00-18:00; Sa-Su 10:00-18:00",
+    "operator": "ГАУК «Приморский краевой драматический театр молодежи»",
+    "phone": "+7 423 2700760",
+    "ref:mkrf_theaters": "18014",
+    "source": "Bing",
+    "website": "https://primtheatre.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1210401190,
+   "lat": 42.9815778,
+   "lon": 131.8906647,
+   "tags": {
+    "building": "bunker",
+    "historic": "yes",
+    "name": "Береговая башенная батарея №981 им. Клима Ворошилова",
+    "source": "Bing",
+    "tourism": "museum",
+    "wikidata": "Q4126005",
+    "wikipedia": "ru:Ворошиловская батарея"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1221082366,
+   "lat": 43.0943802,
+   "lon": 131.8625103,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека №5",
+    "note": "последняя пятница месяца - санитарный день",
+    "opening_hours": "Tu-Su 10:00-18:00"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1239537423,
+   "lat": 43.112585,
+   "lon": 131.878497,
+   "tags": {
+    "amenity": "arts_centre",
+    "name": "детский клуб \"Звездный\""
+   }
+  },
+  {
+   "type": "node",
+   "id": 1244230692,
+   "lat": 43.1157666,
+   "lon": 131.8757753,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1277894296,
+   "lat": 43.1141271,
+   "lon": 132.0216035,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1277894382,
+   "lat": 43.114736,
+   "lon": 132.0221888,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1303477668,
+   "lat": 42.9870562,
+   "lon": 131.7461974,
+   "tags": {
+    "description": "Вид на о. Попова",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1304264291,
+   "lat": 43.1126144,
+   "lon": 131.9201169,
+   "tags": {
+    "amenity": "community_centre",
+    "name": "Благотворительный ортопедический фонд",
+    "opening_hours": "Mo-Su 12:00-17:00",
+    "operator": "Компания \"Стингрей\"",
+    "source": "image"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1377427667,
+   "lat": 43.1245336,
+   "lon": 131.8934406,
+   "tags": {
+    "name": "Приморская государственная картинная галерея",
+    "name:en": "Primorye State Art Gallery",
+    "name:ru": "Приморская государственная картинная галерея",
+    "opening_hours": "Tu-Su 11:00-19:00",
+    "operator": "Приморская государственная картинная галерея",
+    "phone": "+7 423 2427217;+7 423 2411144",
+    "tourism": "gallery",
+    "website": "https://primgallery.com/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1377433574,
+   "lat": 43.1248025,
+   "lon": 131.8846338,
+   "tags": {
+    "amenity": "library",
+    "name": "Приморская краевая научная медицинская библиотека"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1609561102,
+   "lat": 43.1073523,
+   "lon": 131.9409285,
+   "tags": {
+    "amenity": "arts_centre",
+    "description": "детский развивающий центр",
+    "name": "Ромашка",
+    "name:en": "Romashka",
+    "opening_hours": "Mo-Su 10:00-20:00",
+    "source": "image"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1677918608,
+   "lat": 43.1149688,
+   "lon": 131.8821938,
+   "tags": {
+    "name": "Приморское отделение ВТОО \"Союз художников России\"",
+    "name:en": "Union of Artists of Russia, Primorye Branch",
+    "name:ru": "Приморское отделение ВТОО \"Союз художников России\"",
+    "opening_hours": "10:00-19:00",
+    "phone": "+7 423 2414403",
+    "tourism": "gallery",
+    "website": "https://artprim.com/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1684506007,
+   "lat": 43.1213434,
+   "lon": 131.886452,
+   "tags": {
+    "alt_name": "Трэвэлерс кофе",
+    "amenity": "cafe",
+    "brand": "Traveler's Coffee",
+    "brand:wikidata": "Q4051716",
+    "cuisine": "coffee_shop",
+    "int_name": "Traveler's Coffee",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Traveler's Coffee",
+    "takeaway": "yes",
+    "website": "https://travelerscoffee.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1726018576,
+   "lat": 43.1146771,
+   "lon": 131.9021002,
+   "tags": {
+    "amenity": "community_centre",
+    "name": "Ансамбль песни и пляски тихоокеанского флота России",
+    "name:en": "The song and dance ensemble of the pacific fleet",
+    "name:ru": "Ансамбль песни и пляски тихоокеанского флота России",
+    "operator": "Тихоокеанский флот России",
+    "source": "image"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1809513568,
+   "lat": 43.1183136,
+   "lon": 131.9056943,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 1811228126,
+   "lat": 43.115923,
+   "lon": 131.8874308,
+   "tags": {
+    "amenity": "cafe",
+    "cafe": "time_cafe",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Отдел культуры",
+    "opening_hours": "Mo-Th 10:00-23:59; Fr-Sa 10:00-05:59; Su 10:00-23:59",
+    "phone": "+7 951 0097333",
+    "smoking": "no",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2010487408,
+   "lat": 43.2121705,
+   "lon": 131.9767074,
+   "tags": {
+    "image": "https://lh6.googleusercontent.com/-8ubUDGsB3eI/UKDcibFfS6I/AAAAAAAACeQ/NnQ-q5YBhAY/s803/IMG_3579.jpg",
+    "name": "Вид на водохранилище",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2017581808,
+   "lat": 43.09829,
+   "lon": 131.8621135,
+   "tags": {
+    "air_conditioning": "yes",
+    "amenity": "library",
+    "name": "Библиотека № 10",
+    "opening_hours": "Su-Fr 11:00-19:00; Sa 10:00-18:00",
+    "source": "survey",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2045654344,
+   "lat": 43.205055,
+   "lon": 131.9639099,
+   "tags": {
+    "name": "Вид на водохранилище",
+    "source": "survey",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2108105568,
+   "lat": 43.1643686,
+   "lon": 131.9058419,
+   "tags": {
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Экспресс"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2233213551,
+   "lat": 43.2133545,
+   "lon": 131.9920213,
+   "tags": {
+    "name": "Сосновый бор",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2368079715,
+   "lat": 43.153832,
+   "lon": 131.9102173,
+   "tags": {
+    "amenity": "library",
+    "name": "Детская краевая"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2368079728,
+   "lat": 43.1533967,
+   "lon": 131.909887,
+   "tags": {
+    "amenity": "library",
+    "name": "Центральная им. А.П. Чехова"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2423770283,
+   "lat": 42.9693523,
+   "lon": 131.7392307,
+   "tags": {
+    "tourism": "museum"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2475031954,
+   "lat": 43.0968732,
+   "lon": 131.8608187,
+   "tags": {
+    "amenity": "cafe",
+    "internet_access": "wlan"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2475107873,
+   "lat": 43.1139202,
+   "lon": 131.8818068,
+   "tags": {
+    "amenity": "library"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2508265493,
+   "lat": 43.1171513,
+   "lon": 131.9109086,
+   "tags": {
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "name": "Coffee beans",
+    "source": "notes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2637760810,
+   "lat": 43.1119787,
+   "lon": 131.9379359,
+   "tags": {
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "source": "knowleadge"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2655086238,
+   "lat": 43.1774815,
+   "lon": 131.9164963,
+   "tags": {
+    "addr:postcode": "690068",
+    "amenity": "library",
+    "email": "info@pkbs.su",
+    "name": "Приморская краевая библиотека для слепых",
+    "opening_hours": "Mo-Fr 09:00-17:30; Sa 10:00-17:30",
+    "website": "http://pkbs.su/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2850313463,
+   "lat": 42.9782848,
+   "lon": 131.9056039,
+   "tags": {
+    "description": "Вид на бухту Новик",
+    "source": "survey;local_knowledge",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2882835653,
+   "lat": 43.1331588,
+   "lon": 131.8977763,
+   "tags": {
+    "amenity": "community_centre",
+    "name": "Совет ветеранов",
+    "official_name": "Совет ветеранов войны, труда, вооружённых сил и правоохранительных органов города Владивостока",
+    "opening_hours": "Mo-Fr 11:00-16:00"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2913662627,
+   "lat": 43.1311741,
+   "lon": 131.90063,
+   "tags": {
+    "amenity": "community_centre",
+    "description": "образовательный клуб",
+    "name": "Весь мир",
+    "operator": "Российское отделение ассоциации женщин стран АТР \"ВЛАДА\"",
+    "phone": "+7 423 2424841;+7 423 2423072",
+    "source": "image"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2913799514,
+   "lat": 43.101872,
+   "lon": 131.9394841,
+   "tags": {
+    "amenity": "community_centre",
+    "description": "некоммерческий детский благотворительный фонд",
+    "name": "Дети приморья",
+    "source": "image"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2947583637,
+   "lat": 42.9891295,
+   "lon": 131.8345631,
+   "tags": {
+    "description": "Вид на Владивосток с горы Главная",
+    "source": "image",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2947709289,
+   "lat": 42.9629907,
+   "lon": 131.8946953,
+   "tags": {
+    "name": "Вид на залив",
+    "tourism": "viewpoint",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2955405622,
+   "lat": 42.9679465,
+   "lon": 131.8949825,
+   "tags": {
+    "name": "Разрушенное военное строение",
+    "source": "image",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2957112438,
+   "lat": 43.114101,
+   "lon": 131.8950725,
+   "tags": {
+    "name": "Музей Ростелекома",
+    "tourism": "museum"
+   }
+  },
+  {
+   "type": "node",
+   "id": 2977184698,
+   "lat": 43.0951695,
+   "lon": 131.9683361,
+   "tags": {
+    "amenity": "community_centre",
+    "description": "Детский клуб",
+    "name": "Орлёнок",
+    "name:en": "Orlyonok",
+    "name:ru": "Орлёнок",
+    "source": "notes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3074427578,
+   "lat": 43.0922218,
+   "lon": 131.973286,
+   "tags": {
+    "amenity": "cafe",
+    "internet_access": "yes",
+    "source": "image"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3130556596,
+   "lat": 43.0953696,
+   "lon": 131.9770433,
+   "tags": {
+    "amenity": "cafe",
+    "description": "интернет кафе",
+    "internet_access": "yes",
+    "name": "Columbus",
+    "source": "image"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3180202683,
+   "lat": 43.0794659,
+   "lon": 131.9645108,
+   "tags": {
+    "name": "Вид на Патрокл",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3426214252,
+   "lat": 43.1795784,
+   "lon": 131.917824,
+   "tags": {
+    "amenity": "arts_centre",
+    "name": "Центр современного искусства ЗАРЯ",
+    "phone": "+74232317100",
+    "website": "https://zaryavladivostok.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3448241893,
+   "lat": 43.0311895,
+   "lon": 131.8860129,
+   "tags": {
+    "amenity": "cafe",
+    "internet_access": "yes",
+    "name": "island",
+    "opening_hours": "8:00-22:00",
+    "smoking": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3725680631,
+   "lat": 43.1146486,
+   "lon": 131.9221694,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека №22"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3846734753,
+   "lat": 43.096627,
+   "lon": 131.9596183,
+   "tags": {
+    "amenity": "community_centre",
+    "description": "детский шахматный клуб ДЮСШ",
+    "name": "Старт",
+    "source": "notes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4092249240,
+   "lat": 43.1920897,
+   "lon": 131.9206191,
+   "tags": {
+    "amenity": "library",
+    "name": "Центральная научная библиотека ДВО РАН"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4108879998,
+   "lat": 43.1334339,
+   "lon": 131.8984963,
+   "tags": {
+    "amenity": "community_centre",
+    "description": "детский центр",
+    "name": "Семицветик",
+    "source": "notes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4108930522,
+   "lat": 43.1302199,
+   "lon": 131.9107305,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека имени Горького",
+    "source": "notes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4110539716,
+   "lat": 43.1308476,
+   "lon": 131.9123786,
+   "tags": {
+    "amenity": "cafe",
+    "description": "интернет кафе",
+    "internet_access": "yes",
+    "internet_access:fee": "yes",
+    "name": "bonus club",
+    "source": "notes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4245310553,
+   "lat": 43.0985272,
+   "lon": 131.9317693,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека № 14",
+    "opening_hours": "Tu-Fr 11:00-19:00; Sa-Su 10:00-18:00",
+    "phone": "+7 423 2255675"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4418942491,
+   "lat": 43.0939472,
+   "lon": 131.9136027,
+   "tags": {
+    "amenity": "cafe",
+    "cuisine": "chinese",
+    "internet_access": "wlan",
+    "name": "Санья"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4523119689,
+   "lat": 43.208103,
+   "lon": 132.0770233,
+   "tags": {
+    "amenity": "community_centre",
+    "name": "\"Комета\"",
+    "name:ru": "\"Комета\""
+   }
+  },
+  {
+   "type": "node",
+   "id": 4611388689,
+   "lat": 43.1965521,
+   "lon": 132.1232706,
+   "tags": {
+    "amenity": "cafe",
+    "email": "ahmadsaidov2023kvp@gmail.com",
+    "internet_access": "wlan",
+    "name": "Морской замок",
+    "name:en": "Moskoy Zamok",
+    "opening_hours": "24/7",
+    "phone": "+7 423 2920978",
+    "website": "http://vk.com/arc959695"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4896197458,
+   "lat": 43.0914294,
+   "lon": 131.8836192,
+   "tags": {
+    "name": "Смотровая площадка на м. Чуркин.",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4898997222,
+   "lat": 43.1150433,
+   "lon": 131.879758,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4992481823,
+   "lat": 43.1233103,
+   "lon": 131.8809246,
+   "tags": {
+    "amenity": "community_centre",
+    "name": "Танго-клуб \"Нуэстро\"",
+    "name:en": "Tango club \"Nuestro\"",
+    "website": "https://www.nuestro.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5035973112,
+   "lat": 43.1280471,
+   "lon": 131.9040173,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека ТГМУ"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5203366694,
+   "lat": 43.1776235,
+   "lon": 131.9195648,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека №20",
+    "opening_hours": "Mo-Fr 09:00-18:00",
+    "phone": "+74232316999",
+    "website": "https://vladlib.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5258862022,
+   "lat": 43.1133469,
+   "lon": 131.9183738,
+   "tags": {
+    "amenity": "community_centre",
+    "name": "Культурно-развлекательный центр профсоюзов"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5278912421,
+   "lat": 42.9457693,
+   "lon": 131.8734003,
+   "tags": {
+    "name": "Сторожевая башня",
+    "name:en": "Watch Tower",
+    "name:es": "Torre de Vigilancia",
+    "name:ru": "Створный знак",
+    "tourism": "viewpoint",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5278912422,
+   "lat": 42.9569508,
+   "lon": 131.8770297,
+   "tags": {
+    "name": "Створный знак",
+    "name:en": "Watch Tower",
+    "name:es": "Torre de Vigilancia",
+    "name:ru": "Створный знак",
+    "tourism": "viewpoint",
+    "wheelchair": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5292665611,
+   "lat": 42.932948,
+   "lon": 131.8309432,
+   "tags": {
+    "name": "Грот и нависающие стены",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5323268522,
+   "lat": 43.3082459,
+   "lon": 132.0754647,
+   "tags": {
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Гранд",
+    "outdoor_seating": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5358194321,
+   "lat": 43.1163564,
+   "lon": 131.9141718,
+   "tags": {
+    "name": "вид на город",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5398207522,
+   "lat": 43.1114242,
+   "lon": 131.8829483,
+   "tags": {
+    "amenity": "cafe",
+    "contact:email": "hotcoffee.kvadrant@gmail.com",
+    "contact:phone": "+7 908 9999537;+7 924 2358827",
+    "cuisine": "coffee",
+    "internet_access": "wlan",
+    "name": "Oh, my coffee!",
+    "name:en": "Oh, my coffee!",
+    "name:ru": "Oh, my coffee!",
+    "opening_hours": "Mo-Fr 08:00-19:00; Sa-Su 10:00-18:00"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5592346221,
+   "lat": 43.0983785,
+   "lon": 131.9487092,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека №9",
+    "name:en": "bibliotheca 9",
+    "opening_hours": "Mo-Su 11:00-19:00",
+    "phone": "+7 423 2638628"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5755395122,
+   "lat": 43.1161774,
+   "lon": 131.8873003,
+   "tags": {
+    "amenity": "cafe",
+    "check_date": "2025-09-06",
+    "cuisine": "pizza;italian;american",
+    "email": "director@pizza-prosto.ru",
+    "internet_access": "wlan",
+    "name": "Пицца Просто",
+    "name:en": "Pizza Prosto",
+    "opening_hours": "Mo-Su 09:00-22:00",
+    "phone": "+7 423 2017771",
+    "website": "https://pizza-prosto.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5775725154,
+   "lat": 43.11368,
+   "lon": 131.8928335,
+   "tags": {
+    "name": "Музей Города",
+    "name:ru": "Музей Города",
+    "opening_hours": "10:00-19:00",
+    "tourism": "museum",
+    "website": "https://arseniev.org/filials/filialy-vo-vladivostoke/941/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5925587786,
+   "lat": 43.1181972,
+   "lon": 131.8886878,
+   "tags": {
+    "amenity": "cafe",
+    "cuisine": "russian",
+    "internet_access": "wlan",
+    "name": "Кофе-шоп Рандеву",
+    "name:en": "Coffee Shop Rendezvous",
+    "note": "postcode: 690091",
+    "opening_hours": "Mo-Su 07:00-22:00",
+    "phone": "+74232407320",
+    "website": "http://www.lottehotelvladivostok.com/restaurants/",
+    "wikidata": "Q111406992"
+   }
+  },
+  {
+   "type": "node",
+   "id": 5950610985,
+   "lat": 43.1168448,
+   "lon": 131.8818213,
+   "tags": {
+    "amenity": "cafe",
+    "cuisine": "indonesian;russian;breakfast;french;coffee_shop",
+    "email": "local.coffee.vl@gmail.com",
+    "internet_access": "wlan",
+    "name": "Local house",
+    "note": "postcode: 690000",
+    "opening_hours": "Mo-Su 08:00-21:00",
+    "phone": "+7 924 3344440"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6065981885,
+   "lat": 43.2478461,
+   "lon": 132.013994,
+   "tags": {
+    "name": "озеро лотосы",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6378350525,
+   "lat": 43.1164447,
+   "lon": 131.8826388,
+   "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "email": "ynmuravskaya@gmail.com",
+    "internet_access": "wlan",
+    "name": "Oh, my coffee!",
+    "opening_hours": "Mo-Fr 08:00-19:00; Sa-Su 10:00-19:00",
+    "phone": "+7 929 4295959"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6553609683,
+   "lat": 43.2031164,
+   "lon": 131.9445366,
+   "tags": {
+    "direction": "-68",
+    "name": "Коврижка",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6715502585,
+   "lat": 43.1006922,
+   "lon": 131.8628391,
+   "tags": {
+    "addr:housenumber": "66A",
+    "addr:street": "Верхнепортовая улица",
+    "fee": "yes",
+    "name": "Музей трепанга",
+    "name:en": "Trepang Museum",
+    "opening_hours": "Mo-Su 10:00-18:00",
+    "phone": "+79147077672",
+    "tourism": "museum",
+    "website": "https://seacucumber-museum.com/",
+    "wheelchair": "limited"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6738012073,
+   "lat": 43.2998474,
+   "lon": 132.0666745,
+   "tags": {
+    "amenity": "library"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6884646115,
+   "lat": 43.0948051,
+   "lon": 131.8680838,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6936425551,
+   "lat": 43.079102,
+   "lon": 131.8415031,
+   "tags": {
+    "description": "Платный бинокль",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6959126586,
+   "lat": 42.9323898,
+   "lon": 131.824279,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6959196885,
+   "lat": 42.9328306,
+   "lon": 131.8248538,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6959204185,
+   "lat": 42.9335911,
+   "lon": 131.8269442,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6959325585,
+   "lat": 42.9455627,
+   "lon": 131.8721518,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7004478085,
+   "lat": 43.2140023,
+   "lon": 131.9437093,
+   "tags": {
+    "amenity": "community_centre",
+    "name": "центр культуры солнечный"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7018623813,
+   "lat": 43.1092292,
+   "lon": 131.9634068,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека № 21"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7043805186,
+   "lat": 42.9716457,
+   "lon": 131.9071231,
+   "tags": {
+    "name": "Большие Сосульки",
+    "tourism": "viewpoint",
+    "website": "https://idilesom.com/prim/places/3126"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7112753943,
+   "lat": 43.11391,
+   "lon": 131.892869,
+   "tags": {
+    "amenity": "theatre",
+    "email": "prim_puppet@mail.ru",
+    "name": "Приморский краевой театр кукол",
+    "name:ru": "Приморский краевой театр кукол",
+    "opening_hours": "We-Fr 09:00-17:00; Sa 12:00-14:00; Su 10:00-14:00",
+    "operator": "ГАУК «Приморский краевой театр кукол»",
+    "phone": "+7 423 2205383",
+    "ref:mkrf_theaters": "34360",
+    "website": "https://primpuppet.ru/",
+    "wikidata": "Q60975011"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7132430641,
+   "lat": 43.0910206,
+   "lon": 131.9492058,
+   "tags": {
+    "amenity": "community_centre",
+    "name": "Детская флотилия \"Варяг\""
+   }
+  },
+  {
+   "type": "node",
+   "id": 7153188815,
+   "lat": 43.1167048,
+   "lon": 131.8812846,
+   "tags": {
+    "air_conditioning": "yes",
+    "amenity": "cafe",
+    "brand": "Pizzaiolo Group",
+    "check_date": "2025-09-14",
+    "cuisine": "pizza;italian;burger;coffee;pasta;fast_food;breakfast;tea;soup;salad",
+    "delivery": "yes",
+    "description": "tripadvisor.com: 2019 certificate of excellence vl.ru: Лучшая пиццерия декабря 2019 г. vl.ru: Лучшая пиццерия 2018 г., Лучшая пиццерия 2019 г.",
+    "email": "pizzaiolo.vl@gmail.com",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "level": "0",
+    "name": "Pizzaiolo",
+    "opening_hours": "Mo-Su 09:00-23:00",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "phone": "+7 423 2002005",
+    "reservation": "yes",
+    "smoking": "outside",
+    "start_date": "2016",
+    "takeaway": "yes",
+    "website": "https://pizza-vl.ru"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7202326485,
+   "lat": 43.115379,
+   "lon": 131.8951462,
+   "tags": {
+    "amenity": "cafe",
+    "cuisine": "italian",
+    "internet_access": "wlan",
+    "name": "Итальянская кофейня Pazzo",
+    "name:en": "Pazzo Coffee Lab",
+    "opening_hours": "Mo-Su 09:00-24:00",
+    "phone": "+7 914 7050850",
+    "website": "http://pazzocoffeelab.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7246805897,
+   "lat": 43.1297592,
+   "lon": 131.9258917,
+   "tags": {
+    "air_conditioning": "yes",
+    "amenity": "cafe",
+    "brand": "Pizzaiolo Group",
+    "cuisine": "pizza;burger;italian;fast_food;pasta;coffee;soup;salad;breakfast;tea",
+    "delivery": "yes",
+    "description": "tripadvisor.com: 2019 certificate of excellence vl.ru: Лучшая пиццерия декабря 2019 г. vl.ru: Лучшая пиццерия 2018 г., Лучшая пиццерия 2019 г.",
+    "email": "pizzaiolo.vl@gmail.com",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "level": "0",
+    "name": "Pizzaiolo",
+    "opening_hours": "Mo-Su 09:00-23:00",
+    "outdoor_seating": "yes",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "phone": "+7 423 2002005",
+    "reservation": "yes",
+    "smoking": "outside",
+    "start_date": "2014",
+    "takeaway": "yes",
+    "website": "https://pizza-vl.ru"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7246820352,
+   "lat": 43.1625889,
+   "lon": 131.9524871,
+   "tags": {
+    "air_conditioning": "yes",
+    "amenity": "cafe",
+    "brand": "Pizzaiolo Group",
+    "cuisine": "pizza;burger;italian;coffee;tea;pasta;soup;salasd;fast_food;breakfast",
+    "delivery": "yes",
+    "description": "tripadvisor.com: 2019 certificate of excellence vl.ru: Лучшая пиццерия декабря 2019 г. vl.ru: Лучшая пиццерия 2018 г., Лучшая пиццерия 2019 г.",
+    "email": "pizzaiolo.vl@gmail.com",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "level": "1",
+    "name": "Pizzaiolo",
+    "opening_hours": "Mo-Fr 11:00-23:00; Sa-Su 10:00-23:00",
+    "outdoor_seating": "no",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "phone": "+7 924 0048020",
+    "reservation": "yes",
+    "smoking": "outside",
+    "start_date": "2017",
+    "takeaway": "yes",
+    "website": "https://pizza-vl.ru"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7246821999,
+   "lat": 43.1233407,
+   "lon": 131.9568672,
+   "tags": {
+    "air_conditioning": "yes",
+    "amenity": "cafe",
+    "brand": "Pizzaiolo Group",
+    "cuisine": "pizza;burger;italian;pasta;soup;salad;coffee;tea;fast_food;breakfast",
+    "delivery": "yes",
+    "description": "tripadvisor.com: 2019 certificate of excellence vl.ru: Лучшая пиццерия декабря 2019 г. vl.ru: Лучшая пиццерия 2018 г., Лучшая пиццерия 2019 г.",
+    "email": "pizzaiolo.vl@gmail.com",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "level": "0",
+    "name": "Pizzaiolo",
+    "opening_hours": "Mo-Su 09:00-22:00",
+    "outdoor_seating": "no",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "phone": "+7 423 2007474",
+    "reservation": "yes",
+    "smoking": "outside",
+    "start_date": "2019",
+    "takeaway": "yes",
+    "website": "https://pizza-vl.ru"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7273273585,
+   "lat": 43.0677064,
+   "lon": 131.9159453,
+   "tags": {
+    "name": "Вид на Русский мост",
+    "name:en": "Russian bridge view",
+    "name:ru": "Вид на Русский мост с 2000 рублей",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7295763309,
+   "lat": 43.1222899,
+   "lon": 131.8876958,
+   "tags": {
+    "amenity": "cafe",
+    "capacity": "40",
+    "internet_access": "yes",
+    "internet_access:fee": "no",
+    "internet_access:ssid": "Aloha",
+    "name": "Кафе АЛОХА",
+    "opening_hours": "Mo-Sa 08:00-20:00",
+    "website": "https://hotelaloha.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7321126880,
+   "lat": 43.09406,
+   "lon": 131.9216549,
+   "tags": {
+    "amenity": "community_centre",
+    "name": "Детский морской центр \"Флотилия Восток\""
+   }
+  },
+  {
+   "type": "node",
+   "id": 7501365248,
+   "lat": 43.093776,
+   "lon": 131.9284791,
+   "tags": {
+    "tourism": "gallery"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7516754454,
+   "lat": 43.2383489,
+   "lon": 132.0680559,
+   "tags": {
+    "direction": "SSW",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7516776464,
+   "lat": 43.2000298,
+   "lon": 132.1495414,
+   "tags": {
+    "direction": "S",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7516776465,
+   "lat": 43.2000103,
+   "lon": 132.14827,
+   "tags": {
+    "direction": "S",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7516776466,
+   "lat": 43.2002019,
+   "lon": 132.1476772,
+   "tags": {
+    "direction": "S",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7920331385,
+   "lat": 43.1788473,
+   "lon": 131.9060584,
+   "tags": {
+    "name": "Видовая площадка",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 7935036385,
+   "lat": 43.2328373,
+   "lon": 132.1645206,
+   "tags": {
+    "name": "Тимпур",
+    "name:en": "Timpur",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8118443989,
+   "lat": 43.3195143,
+   "lon": 132.1683838,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8336448618,
+   "lat": 42.937134,
+   "lon": 131.7264468,
+   "tags": {
+    "name": "мыс Ликандера",
+    "name:en": "Likander Cape",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8336477917,
+   "lat": 42.9668069,
+   "lon": 131.7492294,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8336478017,
+   "lat": 42.9618211,
+   "lon": 131.7616626,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8373688118,
+   "lat": 43.1164369,
+   "lon": 131.8829952,
+   "tags": {
+    "amenity": "theatre",
+    "name": "Приморская краевая филармония",
+    "name:ru": "Приморская краевая филармония"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8509348117,
+   "lat": 43.1162698,
+   "lon": 131.8838604,
+   "tags": {
+    "amenity": "cafe",
+    "cuisine": "russian",
+    "internet_access": "wlan",
+    "name": "Столовая N1",
+    "name:ru": "Столовая N1",
+    "opening_hours": "Mo-Su 08:00-21:00"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8514390517,
+   "lat": 43.116497,
+   "lon": 131.885503,
+   "tags": {
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "name": "Белая юрта",
+    "opening_hours": "Mo-Su 11:00-22:00"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8893394518,
+   "lat": 43.1726718,
+   "lon": 131.9159386,
+   "tags": {
+    "amenity": "community_centre",
+    "name": "Детский клуб им. В.К. Блюхера",
+    "opening_hours": "Mo 11:00-18:00; Tu 10:00-18:00; We 11:00-18:00; Th 10:00-18:00; Fr 10:30-18:00; Sa 11:00-17:00",
+    "phone": "+74232316564"
+   }
+  },
+  {
+   "type": "node",
+   "id": 8893413717,
+   "lat": 43.1744349,
+   "lon": 131.912133,
+   "tags": {
+    "addr:postcode": "690068",
+    "amenity": "community_centre",
+    "name": "Детский клуб им. Кирова",
+    "opening_hours": "Mo 11:00-17:00; Tu 12:30-18:30; We 11:00-17:00; Th 12:30-18:30; Fr 11:00-17:00; Sa 12:00-18:00",
+    "phone": "+74232314728"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9034990328,
+   "lat": 43.1649115,
+   "lon": 131.9813977,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9109884617,
+   "lat": 43.1065574,
+   "lon": 131.9415164,
+   "tags": {
+    "amenity": "cafe",
+    "internet_access": "wlan",
+    "name": "Добрыня и Аня"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9128753218,
+   "lat": 43.092983,
+   "lon": 131.8661151,
+   "tags": {
+    "name": "Вид на порт",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9128840917,
+   "lat": 43.095391,
+   "lon": 131.8672081,
+   "tags": {
+    "name": "Вид на город",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9269648262,
+   "lat": 43.2181535,
+   "lon": 132.1132247,
+   "tags": {
+    "name": "вид на Шамору и Емар",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9269648281,
+   "lat": 43.2247727,
+   "lon": 132.0783293,
+   "tags": {
+    "name": "вид на водохранилище",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9269648331,
+   "lat": 43.2254426,
+   "lon": 132.083206,
+   "tags": {
+    "name": "вид на «Комета»",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9690979617,
+   "lat": 43.161177,
+   "lon": 131.905889,
+   "tags": {
+    "name": "Набережная на Второй Речке",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9738830125,
+   "lat": 43.2209263,
+   "lon": 132.0290239,
+   "tags": {
+    "name": "Видовая площадка",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9950719217,
+   "lat": 43.1170966,
+   "lon": 131.8806871,
+   "tags": {
+    "name": "Арка",
+    "name:en": "Arka",
+    "name:ru": "Арка",
+    "opening_hours": "Tu-Sa 11:00-18:00",
+    "tourism": "gallery",
+    "website": "https://arkagallery.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9969035104,
+   "lat": 43.2052117,
+   "lon": 132.1582219,
+   "tags": {
+    "direction": "85",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10566663276,
+   "lat": 43.0420937,
+   "lon": 131.8616785,
+   "tags": {
+    "direction": "295",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10792607686,
+   "lat": 43.1057496,
+   "lon": 131.8742063,
+   "tags": {
+    "contact:email": "vdk@cookn.run",
+    "contact:phone": "+7 423 2025593",
+    "contact:website": "https://cookn.run/",
+    "leisure": "escape_game",
+    "name": "Cook&Run",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10845587761,
+   "lat": 43.1066464,
+   "lon": 131.8768653,
+   "tags": {
+    "amenity": "arts_centre",
+    "contact:email": "collage.pro.sb@gmail.com",
+    "contact:phone": "+7 423 2088881;+7 984 1988881",
+    "contact:website": "https://collage.center/",
+    "name": "Collage Pro",
+    "opening_hours": "Mo-Su 09:00-21:00"
+   }
+  },
+  {
+   "type": "node",
+   "id": 10976261841,
+   "lat": 43.128113,
+   "lon": 131.889917,
+   "tags": {
+    "contact:phone": "+7 995 6050999",
+    "leisure": "escape_game",
+    "name": "Выпусти пар",
+    "opening_hours": "Mo-Su 12:00-21:00"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11028885861,
+   "lat": 43.1213806,
+   "lon": 131.918868,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11036638005,
+   "lat": 43.1120882,
+   "lon": 131.8748953,
+   "tags": {
+    "contact:vk": "museum_arseniev",
+    "email": "dom_arsenieva@arseniev.org",
+    "name": "Дом путешественника Арсеньева",
+    "opening_hours": "Mo-Su 10:00-19:00",
+    "phone": "+7 423 241 03 63",
+    "tourism": "museum",
+    "website": "https://arseniev.org/travelers-house/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11078452398,
+   "lat": 43.1169008,
+   "lon": 131.9238062,
+   "tags": {
+    "direction": "SW",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11078703134,
+   "lat": 43.1166674,
+   "lon": 131.9232831,
+   "tags": {
+    "direction": "SW",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11152750810,
+   "lat": 43.1143182,
+   "lon": 131.8819272,
+   "tags": {
+    "name": "Приморская государственная картинная галерея",
+    "name:en": "Primorye State Art Gallery",
+    "name:ru": "Приморская государственная картинная галерея",
+    "opening_hours": "Tu-Su 11:00-19:00",
+    "operator": "Приморская государственная картинная галерея",
+    "phone": "+7 423 2410610;+7 423 2411144",
+    "tourism": "gallery",
+    "website": "https://primgallery.com/",
+    "wikidata": "Q30889527",
+    "wikimedia_commons": "Category:Russian-Asian Bank Building (Vladivostok)",
+    "wikipedia": "ru:Приморская государственная картинная галерея"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11568594269,
+   "lat": 43.1207451,
+   "lon": 131.8837813,
+   "tags": {
+    "amenity": "cafe",
+    "contact:vk": "coffeeplaceone",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "One Place Coffee",
+    "opening_hours": "Mo-Fr 08:00-20:00; Sa 09:00-20:00; Su 10:00-20:00",
+    "phone": "+7 924 1353035",
+    "website": "http://coffeeplace.one/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11583477370,
+   "lat": 43.1100849,
+   "lon": 131.8787459,
+   "tags": {
+    "amenity": "cafe",
+    "cuisine": "russian",
+    "internet_access": "wlan",
+    "name": "Хохлома",
+    "opening_hours": "Mo-Fr 10:00-23:00; Sa-Su 12:00-23:00",
+    "phone": "+7 914 7927151",
+    "website": "https://hohloma.clients.site/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11811124369,
+   "lat": 43.0176792,
+   "lon": 131.9364918,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11816270869,
+   "lat": 42.9856834,
+   "lon": 131.8082146,
+   "tags": {
+    "name:en": "great viewpoint",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11880171069,
+   "lat": 43.1115968,
+   "lon": 131.8786034,
+   "tags": {
+    "amenity": "cafe",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Sista Feels"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11958491697,
+   "lat": 43.1240174,
+   "lon": 131.9047523,
+   "tags": {
+    "contact:phone": "+7 423 2661414",
+    "name": "Лисья Нора",
+    "opening_hours": "Mo-Su 11:00-19:00",
+    "shop": "games"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12028794137,
+   "lat": 43.0971898,
+   "lon": 131.9170188,
+   "tags": {
+    "direction": "355",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12050520915,
+   "lat": 43.1070381,
+   "lon": 131.8726272,
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:housenumber": "46",
+    "addr:postcode": "690003",
+    "addr:street": "улица Станюковича",
+    "air_conditioning": "yes",
+    "amenity": "cafe",
+    "bar": "yes",
+    "cuisine": "regional;asian;seafood;international;russian",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Агар-Агар",
+    "name:en": "Agar-Agar",
+    "opening_hours": "12:00-22:00",
+    "outdoor_seating": "yes",
+    "phone": "+7 (995) 872-01-27",
+    "toilets": "yes",
+    "website": "https://agar-agar.space/",
+    "website:menu": "https://agar-agar.myresto.online/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12096758984,
+   "lat": 43.1371481,
+   "lon": 131.9579701,
+   "tags": {
+    "contact:email": "dushafaraona@mail.ru",
+    "contact:phone": "+7 423 2999490;+7 908 9918199;+7 953 2222280",
+    "contact:website": "https://dushafaraona.ru",
+    "leisure": "escape_game",
+    "name": "Душа Фараона",
+    "opening_hours": "Mo-Su 09:00-21:00"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12160127826,
+   "lat": 43.1170657,
+   "lon": 131.8857361,
+   "tags": {
+    "contact:facebook": "https://www.facebook.com/Artetagemuseum/",
+    "name": "Артэтаж",
+    "name:en": "Artetage",
+    "name:ru": "Артэтаж",
+    "opening_hours": "We-Su 10:00-19:00; PH off",
+    "tourism": "gallery",
+    "website": "https://artetage.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12160127827,
+   "lat": 43.1173048,
+   "lon": 131.8858665,
+   "tags": {
+    "contact:facebook": "https://www.facebook.com/Artetagemuseum/",
+    "name": "Артэтаж",
+    "name:en": "Artetage",
+    "name:ru": "Артэтаж",
+    "opening_hours": "We-Su 10:00-19:00; PH off",
+    "tourism": "gallery",
+    "website": "https://artetage.ru/"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12399105414,
+   "lat": 43.0770191,
+   "lon": 131.9624274,
+   "tags": {
+    "leisure": "park",
+    "name": "парк на Торфяном озере"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12399108099,
+   "lat": 43.074532,
+   "lon": 131.9552306,
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Леопардовой набережной",
+    "name:ru": "Леопардовая набережная"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12646699905,
+   "lat": 43.2208881,
+   "lon": 131.9909691,
+   "tags": {
+    "name": "Сквозь кроны",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13116200533,
+   "lat": 43.1202696,
+   "lon": 131.8851491,
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:housenumber": "35",
+    "addr:street": "Фонтанная улица",
+    "amenity": "cafe",
+    "cuisine": "burger;pizza;breakfast;european",
+    "internet_access": "wlan",
+    "internet_access:fee": "customers",
+    "name": "Nane cake",
+    "opening_hours": "Mo-Su 8:30-22:00",
+    "payment:cash": "yes",
+    "payment:credit_cards": "yes",
+    "payment:debit_cards": "yes",
+    "phone": "+7 984 201-25-55",
+    "takeaway": "yes",
+    "website": "foodeon.com"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13137937838,
+   "lat": 43.1165223,
+   "lon": 131.8762142,
+   "tags": {
+    "amenity": "cinema",
+    "check_date": "2025-09-12"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13323983049,
+   "lat": 43.135548,
+   "lon": 131.8948466,
+   "tags": {
+    "amenity": "library",
+    "name": "Библиотека №3"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13464556758,
+   "lat": 43.2056546,
+   "lon": 132.1590808,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13569693724,
+   "lat": 43.0674666,
+   "lon": 131.8396489,
+   "tags": {
+    "name": "«Скала Любви»",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13686121918,
+   "lat": 43.1196234,
+   "lon": 131.9160512,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13935288272,
+   "lat": 42.9884963,
+   "lon": 131.8344496,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13935288273,
+   "lat": 42.9893682,
+   "lon": 131.8338132,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13937908647,
+   "lat": 43.018784,
+   "lon": 131.7779468,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13937908695,
+   "lat": 43.017953,
+   "lon": 131.7773882,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13953465601,
+   "lat": 42.9778876,
+   "lon": 131.9155884,
+   "tags": {
+    "name": "Вид на мыс Вятлина",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 14100528032,
+   "lat": 43.1144571,
+   "lon": 131.8871451,
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:housenumber": "38/40с2",
+    "addr:street": "Светланская улица",
+    "contact:telegram": "https://t.me/musprimmetropolis",
+    "level": "-1",
+    "museum": "religion;history",
+    "name": "Музей Приморской митрополии",
+    "tourism": "museum"
+   }
+  },
+  {
+   "type": "node",
+   "id": 14335810461,
+   "lat": 42.9702502,
+   "lon": 131.9058353,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "node",
+   "id": 14342768107,
+   "lat": 42.9890586,
+   "lon": 131.9258894,
+   "tags": {
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "way",
+   "id": 23946365,
+   "center": {
+    "lat": 43.1164717,
+    "lon": 131.8779689
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "3",
+    "addr:street": "Набережная улица",
+    "amenity": "cinema",
+    "building": "yes",
+    "contact:vk": "kinoilluzion",
+    "name": "Океан",
+    "name:en": "Ocean",
+    "opening_hours": "Mo-Su 09:00-00:00",
+    "phone": "+7 423 2414292",
+    "toilets": "yes",
+    "website": "http://www.illuzion.ru",
+    "wikidata": "Q4332485"
+   }
+  },
+  {
+   "type": "way",
+   "id": 25617751,
+   "center": {
+    "lat": 43.118234,
+    "lon": 131.8917929
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер им. Суханова"
+   }
+  },
+  {
+   "type": "way",
+   "id": 26537156,
+   "center": {
+    "lat": 43.1159612,
+    "lon": 131.8934865
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "49",
+    "addr:street": "Светланская улица",
+    "amenity": "theatre",
+    "building": "yes",
+    "contact:phone": "+7 423 2220136",
+    "contact:website": "http://www.gorkytheater.ru/",
+    "name": "Приморский драматический театр имени Максима Горького",
+    "name:en": "Maxim Gorky Theater",
+    "official_name": "Приморский академический краевой драматический театр имени М. Горького",
+    "operator": "ГБУК «Приморский академический краевой драматический театр имени М.Горького»",
+    "ref:mkrf_theaters": "13543",
+    "wikidata": "Q4378715",
+    "wikipedia": "ru:Приморский драматический театр имени Горького"
+   }
+  },
+  {
+   "type": "way",
+   "id": 26686828,
+   "center": {
+    "lat": 43.1161469,
+    "lon": 131.9061327
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "103",
+    "addr:street": "Светланская улица",
+    "amenity": "theatre",
+    "building": "yes",
+    "layer": "-1",
+    "name": "Цирк",
+    "theatre:genre": "circus",
+    "wikidata": "Q4112972",
+    "wikipedia": "ru:Владивостокский цирк"
+   }
+  },
+  {
+   "type": "way",
+   "id": 26687466,
+   "center": {
+    "lat": 43.1139761,
+    "lon": 131.8914658
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Адмиральский сквер"
+   }
+  },
+  {
+   "type": "way",
+   "id": 26826883,
+   "center": {
+    "lat": 43.1050694,
+    "lon": 131.871306
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "38",
+    "addr:street": "Верхнепортовая улица",
+    "amenity": "theatre",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "FESCO Hall"
+   }
+  },
+  {
+   "type": "way",
+   "id": 27420195,
+   "center": {
+    "lat": 43.1149507,
+    "lon": 131.8931132
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Театральный сквер"
+   }
+  },
+  {
+   "type": "way",
+   "id": 27532893,
+   "center": {
+    "lat": 43.1144757,
+    "lon": 131.8908639
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "48",
+    "addr:street": "Светланская улица",
+    "amenity": "theatre",
+    "building": "yes",
+    "name": "Дом офицеров флота"
+   }
+  },
+  {
+   "type": "way",
+   "id": 27534478,
+   "center": {
+    "lat": 43.1136638,
+    "lon": 131.8987895
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер им. Невельского"
+   }
+  },
+  {
+   "type": "way",
+   "id": 28929580,
+   "center": {
+    "lat": 43.1032484,
+    "lon": 131.9078314
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Первой маёвки"
+   }
+  },
+  {
+   "type": "way",
+   "id": 29106133,
+   "center": {
+    "lat": 43.1246532,
+    "lon": 131.8881209
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "37",
+    "addr:street": "Океанский проспект",
+    "amenity": "university",
+    "building": "yes",
+    "name": "ДВФУ, Научный музей",
+    "name:en": "FEFU, Science Museum",
+    "opening_hours": "Tu-Fr 10:00-18:00; Sa 11:00-17:00",
+    "phone": "+7 (423) 245-94-37",
+    "tourism": "museum",
+    "website": "http://www.dvfu.ru",
+    "wikidata": "Q130245001"
+   }
+  },
+  {
+   "type": "way",
+   "id": 30281940,
+   "center": {
+    "lat": 43.1133748,
+    "lon": 131.8912183
+   },
+   "tags": {
+    "alt_name": "Мемориальная подводная лодка С-56",
+    "alt_name:en": "S-56 Memorial Submarine",
+    "building": "yes",
+    "historic": "ship",
+    "name": "S-56",
+    "name:ru": "С-56",
+    "ref": "S-56",
+    "ship:type": "submarine",
+    "tourism": "museum",
+    "wikidata": "Q1254559",
+    "wikipedia": "en:Soviet submarine S-56"
+   }
+  },
+  {
+   "type": "way",
+   "id": 31319055,
+   "center": {
+    "lat": 43.114047,
+    "lon": 131.8750106
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Чеховский"
+   }
+  },
+  {
+   "type": "way",
+   "id": 33826284,
+   "center": {
+    "lat": 43.1069275,
+    "lon": 131.8765528
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Юнг Российского флота"
+   }
+  },
+  {
+   "type": "way",
+   "id": 35333854,
+   "center": {
+    "lat": 43.1157049,
+    "lon": 131.9002303
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "27",
+    "addr:street": "Пушкинская улица",
+    "amenity": "theatre",
+    "building": "yes",
+    "building:levels": "3",
+    "name": "Пушкинский театр",
+    "name:en": "Pushkin Theatre",
+    "name:ru": "Пушкинский театр",
+    "source": "Bing",
+    "wikidata": "Q60853240"
+   }
+  },
+  {
+   "type": "way",
+   "id": 35902814,
+   "center": {
+    "lat": 43.1628101,
+    "lon": 131.912416
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Парк Победы"
+   }
+  },
+  {
+   "type": "way",
+   "id": 43031909,
+   "center": {
+    "lat": 43.1127497,
+    "lon": 131.918563
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер дружбы"
+   }
+  },
+  {
+   "type": "way",
+   "id": 47063410,
+   "center": {
+    "lat": 43.1264181,
+    "lon": 131.8854317
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "65Б",
+    "addr:street": "Алеутская улица",
+    "alt_name": "Terra Creativa Бизнес-Инкубатор",
+    "amenity": "library",
+    "building": "yes",
+    "contact:website": "https://www.dvfu.ru/library/",
+    "int_name": "FEFU research library",
+    "name": "Научная Библиотека ДВФУ",
+    "operator": "ДВФУ"
+   }
+  },
+  {
+   "type": "way",
+   "id": 47288296,
+   "center": {
+    "lat": 43.1120307,
+    "lon": 131.938135
+   },
+   "tags": {
+    "addr:housenumber": "16",
+    "addr:street": "Трамвайная улица",
+    "amenity": "cinema",
+    "building": "yes",
+    "building:colour": "red",
+    "building:levels": "4",
+    "height": "16",
+    "name": "Владивосток",
+    "name:ja": "ウラジオストク",
+    "roof:height": "3",
+    "roof:material": "metal",
+    "roof:shape": "gambrel"
+   }
+  },
+  {
+   "type": "way",
+   "id": 47428753,
+   "center": {
+    "lat": 43.1149356,
+    "lon": 131.8886096
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Центральный"
+   }
+  },
+  {
+   "type": "way",
+   "id": 47661496,
+   "center": {
+    "lat": 43.1154151,
+    "lon": 131.8818362
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер им. Семёнова"
+   }
+  },
+  {
+   "type": "way",
+   "id": 50633473,
+   "center": {
+    "lat": 43.1258019,
+    "lon": 131.8913941
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Покровский парк",
+    "name:en": "Pokrovsky Park",
+    "source": "yahoo",
+    "wikidata": "Q16686796"
+   }
+  },
+  {
+   "type": "way",
+   "id": 60354809,
+   "center": {
+    "lat": 43.1160595,
+    "lon": 131.8770242
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер им. адмирала Макарова"
+   }
+  },
+  {
+   "type": "way",
+   "id": 72030314,
+   "center": {
+    "lat": 43.1697698,
+    "lon": 131.9222397
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "41",
+    "addr:street": "Русская улица",
+    "amenity": "cinema",
+    "building": "yes",
+    "building:levels": "3",
+    "name": "Нептун",
+    "name:en": "Neptun"
+   }
+  },
+  {
+   "type": "way",
+   "id": 85921165,
+   "center": {
+    "lat": 43.114288,
+    "lon": 131.9118033
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Жариковский",
+    "source": "yahoo",
+    "wikidata": "Q4178204"
+   }
+  },
+  {
+   "type": "way",
+   "id": 86575511,
+   "center": {
+    "lat": 43.1128645,
+    "lon": 131.9251641
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Гайдамакский",
+    "source": "yahoo"
+   }
+  },
+  {
+   "type": "way",
+   "id": 102414523,
+   "center": {
+    "lat": 43.1186681,
+    "lon": 131.9002451
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "12А",
+    "addr:street": "Аксаковская улица",
+    "building": "yes",
+    "name": "Дом-музей ДВГТУ",
+    "tourism": "museum"
+   }
+  },
+  {
+   "type": "way",
+   "id": 102653595,
+   "center": {
+    "lat": 43.1225286,
+    "lon": 131.8765407
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "4А",
+    "addr:street": "Батарейная улица",
+    "building": "yes",
+    "name": "Владивостокская крепость",
+    "name:en": "Vladivostok Fortress",
+    "name:fr": "Forteresse de Vladivostok",
+    "name:he": "מצודת ולדיווסטוק",
+    "name:it": "Fortezza di Vladivostok",
+    "name:ja": "要塞博物館",
+    "name:zh": "要塞博物馆",
+    "tourism": "museum",
+    "wikidata": "Q4112958"
+   }
+  },
+  {
+   "type": "way",
+   "id": 102950194,
+   "center": {
+    "lat": 43.1053258,
+    "lon": 131.8747277
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "7",
+    "addr:street": "Верхнепортовая улица",
+    "building": "yes",
+    "name": "Исторический фонд Дальневосточного морского пароходства",
+    "tourism": "museum"
+   }
+  },
+  {
+   "type": "way",
+   "id": 106044772,
+   "center": {
+    "lat": 43.0922532,
+    "lon": 131.8629618
+   },
+   "tags": {
+    "addr:housenumber": "5",
+    "addr:street": "улица Морозова",
+    "amenity": "arts_centre",
+    "building": "public",
+    "building:levels": "1",
+    "contact:phone": "+7 423 2496590",
+    "name": "Дом детства и юношества имени Крыгина",
+    "opening_hours": "Mo-Su 09:00-20:00"
+   }
+  },
+  {
+   "type": "way",
+   "id": 106483748,
+   "center": {
+    "lat": 43.1172756,
+    "lon": 131.8949904
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "9",
+    "addr:street": "улица Суханова",
+    "building": "house",
+    "building:levels": "2",
+    "name": "Дом-музей Суханова",
+    "source": "survey",
+    "start_date": "late C19",
+    "tourism": "museum",
+    "wikidata": "Q130362200"
+   }
+  },
+  {
+   "type": "way",
+   "id": 106620076,
+   "center": {
+    "lat": 43.1188495,
+    "lon": 131.8806945
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Городов Побратимов",
+    "source": "Bing"
+   }
+  },
+  {
+   "type": "way",
+   "id": 107179335,
+   "center": {
+    "lat": 43.1163281,
+    "lon": 131.9082349
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Комсомольцев",
+    "source": "Bing"
+   }
+  },
+  {
+   "type": "way",
+   "id": 116919148,
+   "center": {
+    "lat": 43.1130836,
+    "lon": 131.9132948
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Дальзаводской"
+   }
+  },
+  {
+   "type": "way",
+   "id": 139325702,
+   "center": {
+    "lat": 43.1218217,
+    "lon": 131.8871796
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Почётных граждан"
+   }
+  },
+  {
+   "type": "way",
+   "id": 155004900,
+   "center": {
+    "lat": 43.1300038,
+    "lon": 131.9096307
+   },
+   "tags": {
+    "leaf_type": "broadleaved",
+    "leisure": "park",
+    "name": "сквер Железнодорожников",
+    "natural": "wood"
+   }
+  },
+  {
+   "type": "way",
+   "id": 155396558,
+   "center": {
+    "lat": 43.1158516,
+    "lon": 131.8867264
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "31",
+    "addr:street": "Светланская улица",
+    "amenity": "cinema",
+    "building": "yes",
+    "building:levels": "3",
+    "check_date": "2025-09-03",
+    "check_date:opening_hours": "2025-09-03",
+    "heritage": "yes",
+    "name": "Уссури",
+    "name:en": "Ussuri",
+    "name:ru": "Уссури",
+    "opening_hours": "Mo-Su 09:00-24:00",
+    "source": "Bing",
+    "wikidata": "Q61605107",
+    "wikipedia": "ru:Уссури (кинотеатр)"
+   }
+  },
+  {
+   "type": "way",
+   "id": 159487550,
+   "center": {
+    "lat": 43.2644052,
+    "lon": 132.0204617
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "21",
+    "addr:street": "Садгородская улица",
+    "amenity": "community_centre",
+    "building": "yes",
+    "building:levels": "8",
+    "name": "Мед.центр \"ОКЕАН\"",
+    "source": "survey"
+   }
+  },
+  {
+   "type": "way",
+   "id": 160546366,
+   "center": {
+    "lat": 43.1144799,
+    "lon": 131.9019329
+   },
+   "tags": {
+    "landuse": "forest",
+    "leaf_type": "broadleaved",
+    "leisure": "park",
+    "name": "Матросский сквер",
+    "source": "image"
+   }
+  },
+  {
+   "type": "way",
+   "id": 170639233,
+   "center": {
+    "lat": 43.1125496,
+    "lon": 131.8905295
+   },
+   "tags": {
+    "historic": "ship",
+    "name": "Красный вымпел",
+    "name:de": "Krasny Wympel",
+    "name:en": "Krasnyi Vympel",
+    "name:ja": "クラースヌィ・ヴィムペル軍艦",
+    "ship:type": "frigate",
+    "start_date": "1910",
+    "tourism": "museum",
+    "wikidata": "Q4239675",
+    "wikipedia": "ru:Красный вымпел"
+   }
+  },
+  {
+   "type": "way",
+   "id": 175860923,
+   "center": {
+    "lat": 43.1185083,
+    "lon": 131.8847821
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "17",
+    "addr:street": "Семёновская улица",
+    "alt_name": "Музей боевой славы Краснознаменного Пограничного управления ФСБ России по Приморскому краю",
+    "building": "yes",
+    "name": "Музей пограничников",
+    "source": "survey",
+    "tourism": "museum"
+   }
+  },
+  {
+   "type": "way",
+   "id": 187779150,
+   "center": {
+    "lat": 43.1006817,
+    "lon": 131.8983352
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "20",
+    "addr:postcode": "690021",
+    "addr:street": "Фастовская улица",
+    "amenity": "theatre",
+    "building": "yes",
+    "building:levels": "7",
+    "email": "prim@mariinsky.ru",
+    "name": "Приморская сцена Мариинского театра",
+    "opening_hours": "We-Su 11:00-19:00",
+    "operator": "ФГБУК «Государственный академический Мариинский театр»",
+    "phone": "+7 423 2406060",
+    "ref:mkrf_theaters": "35796",
+    "source": "Bing",
+    "website": "https://prim.mariinsky.ru/",
+    "wikidata": "Q16688358",
+    "wikipedia": "ru:Приморский театр оперы и балета"
+   }
+  },
+  {
+   "type": "way",
+   "id": 208010725,
+   "center": {
+    "lat": 43.3012607,
+    "lon": 132.0817303
+   },
+   "tags": {
+    "addr:housenumber": "44",
+    "addr:street": "Порт-Артурская улица",
+    "amenity": "community_centre",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "Дом культуры",
+    "source": "knowledge"
+   }
+  },
+  {
+   "type": "way",
+   "id": 220107375,
+   "center": {
+    "lat": 43.1661186,
+    "lon": 131.9199676
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Парк Солнышко"
+   }
+  },
+  {
+   "type": "way",
+   "id": 239965854,
+   "center": {
+    "lat": 43.1016666,
+    "lon": 131.8673642
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Героев-Даманцев"
+   }
+  },
+  {
+   "type": "way",
+   "id": 352268643,
+   "center": {
+    "lat": 43.1686969,
+    "lon": 131.9170477
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Аллея им. Дениса Давыдова"
+   }
+  },
+  {
+   "type": "way",
+   "id": 352282416,
+   "center": {
+    "lat": 43.1694938,
+    "lon": 131.9219852
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Cквер им. Кутузова"
+   }
+  },
+  {
+   "type": "way",
+   "id": 434716641,
+   "center": {
+    "lat": 43.0949103,
+    "lon": 131.8557924
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:housenumber": "17В",
+    "addr:postcode": "690000",
+    "addr:street": "улица Сипягина",
+    "amenity": "cafe",
+    "building": "yes",
+    "cuisine": "regional",
+    "internet_access": "yes",
+    "name": "Водно Спортивная база",
+    "opening_hours": "12:00-22:00",
+    "smoking": "separated"
+   }
+  },
+  {
+   "type": "way",
+   "id": 462017500,
+   "center": {
+    "lat": 43.3003754,
+    "lon": 132.0651621
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:housenumber": "69А",
+    "addr:street": "улица Лермонтова",
+    "amenity": "arts_centre",
+    "building": "yes",
+    "building:levels": "2"
+   }
+  },
+  {
+   "type": "way",
+   "id": 469292217,
+   "center": {
+    "lat": 43.1313989,
+    "lon": 131.8966739
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Cквер им. Игнатьева"
+   }
+  },
+  {
+   "type": "way",
+   "id": 469595594,
+   "center": {
+    "lat": 43.13276,
+    "lon": 131.9007305
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер им. Острякова"
+   }
+  },
+  {
+   "type": "way",
+   "id": 471302778,
+   "center": {
+    "lat": 43.1154995,
+    "lon": 131.9089738
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:housenumber": "32А",
+    "addr:street": "Пушкинская улица",
+    "amenity": "cafe",
+    "building": "yes",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "name": "Буду кофе",
+    "opening_hours": "Mo-Fr 09:00-19:00",
+    "outdoor_seating": "no"
+   }
+  },
+  {
+   "type": "way",
+   "id": 489746052,
+   "center": {
+    "lat": 43.1017514,
+    "lon": 131.9117458
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Чайка"
+   }
+  },
+  {
+   "type": "way",
+   "id": 492474311,
+   "center": {
+    "lat": 43.1424921,
+    "lon": 131.9133736
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Курсантский"
+   }
+  },
+  {
+   "type": "way",
+   "id": 492719940,
+   "center": {
+    "lat": 43.1548212,
+    "lon": 131.9100532
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер им. Рихарда Зорге"
+   }
+  },
+  {
+   "type": "way",
+   "id": 492719942,
+   "center": {
+    "lat": 43.0938229,
+    "lon": 131.8956379
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Надибаидзе",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "way",
+   "id": 492719943,
+   "center": {
+    "lat": 43.1532374,
+    "lon": 131.9081172
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Веры и Надежды"
+   }
+  },
+  {
+   "type": "way",
+   "id": 492719944,
+   "center": {
+    "lat": 43.1682363,
+    "lon": 131.9334751
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Русской Славы"
+   }
+  },
+  {
+   "type": "way",
+   "id": 492719947,
+   "center": {
+    "lat": 43.084733,
+    "lon": 131.8569537
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер А. И. Щетининой"
+   }
+  },
+  {
+   "type": "way",
+   "id": 492719949,
+   "center": {
+    "lat": 43.1180964,
+    "lon": 131.922553
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Нагорный парк",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "way",
+   "id": 492719950,
+   "center": {
+    "lat": 43.0912979,
+    "lon": 131.8834505
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Рыбацкая Слава"
+   }
+  },
+  {
+   "type": "way",
+   "id": 510376256,
+   "center": {
+    "lat": 42.9821093,
+    "lon": 131.8909067
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "парк \"Патриот\""
+   }
+  },
+  {
+   "type": "way",
+   "id": 516932642,
+   "center": {
+    "lat": 43.1384011,
+    "lon": 131.9761431
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Дальхимпром"
+   }
+  },
+  {
+   "type": "way",
+   "id": 526332122,
+   "center": {
+    "lat": 43.1002837,
+    "lon": 131.8652447
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Героев-Даманцев"
+   }
+  },
+  {
+   "type": "way",
+   "id": 627510872,
+   "center": {
+    "lat": 43.0266674,
+    "lon": 131.8953113
+   },
+   "tags": {
+    "alt_name": "Парк Дружбы",
+    "leisure": "park",
+    "name": "Аллея Дружбы"
+   }
+  },
+  {
+   "type": "way",
+   "id": 744794569,
+   "center": {
+    "lat": 43.1036317,
+    "lon": 131.9370202
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Хо Ши Мина"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1034965743,
+   "center": {
+    "lat": 43.1198008,
+    "lon": 131.9691914
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Вечнозелёный"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1095764880,
+   "center": {
+    "lat": 43.2099812,
+    "lon": 132.1669007
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Корабль \"Вечный\""
+   }
+  },
+  {
+   "type": "way",
+   "id": 1177175628,
+   "center": {
+    "lat": 43.1184622,
+    "lon": 131.9218862
+   },
+   "tags": {
+    "addr:housenumber": "84А с1",
+    "addr:street": "улица Всеволода Сибирцева",
+    "amenity": "cafe",
+    "building": "yes",
+    "check_date": "2025-09-11",
+    "cuisine": "coffee_shop",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "name": "Кафема",
+    "opening_hours": "Mo-Su 08:00-21:00",
+    "outdoor_seating": "yes",
+    "phone": "+7 423 249‒96‒69",
+    "toilets": "yes",
+    "website": "www.kafema.ru"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1396546129,
+   "center": {
+    "lat": 42.9614726,
+    "lon": 131.7599228
+   },
+   "tags": {
+    "description": "Деревянная видовая площадка со скамейками",
+    "direction": "180",
+    "surface": "wood",
+    "tourism": "viewpoint"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1427528729,
+   "center": {
+    "lat": 43.1228739,
+    "lon": 131.9266364
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Тобольский сквер",
+    "opening_hours": "24/7"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 1935085,
+   "center": {
+    "lat": 43.1206813,
+    "lon": 131.941371
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Парк \"Минный городок\"",
+    "name:en": "Mine Park",
+    "name:ru": "Парк \"Минный городок\"",
+    "type": "multipolygon"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 2507892,
+   "center": {
+    "lat": 43.1488805,
+    "lon": 131.9106637
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Ветеранов",
+    "source": "knowledge",
+    "type": "multipolygon"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 2904784,
+   "center": {
+    "lat": 43.1130103,
+    "lon": 131.9017166
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Набережная Цесаревича",
+    "name:ru": "Набережная Цесаревича",
+    "type": "multipolygon"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 2907390,
+   "center": {
+    "lat": 43.1152139,
+    "lon": 131.9013844
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Политехников",
+    "type": "multipolygon"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 3252831,
+   "center": {
+    "lat": 43.1047728,
+    "lon": 131.8729473
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Энергетиков",
+    "type": "multipolygon"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 3457904,
+   "center": {
+    "lat": 43.1165276,
+    "lon": 131.8946839
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер им. Муравьёва-Амурского",
+    "type": "multipolygon"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 7283104,
+   "center": {
+    "lat": 43.1322868,
+    "lon": 131.9120826
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Сквер Некрасовский",
+    "type": "multipolygon"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 7346562,
+   "center": {
+    "lat": 43.2315207,
+    "lon": 131.9801341
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Парк культуры и отдыха им. Сергея Лазо",
+    "type": "multipolygon"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 8182046,
+   "center": {
+    "lat": 43.0923143,
+    "lon": 131.9729363
+   },
+   "tags": {
+    "addr:city": "Владивосток",
+    "addr:country": "RU",
+    "addr:housenumber": "5",
+    "addr:postcode": "690092",
+    "addr:street": "улица Добровольского",
+    "amenity": "cinema",
+    "building": "yes",
+    "name": "Галактика",
+    "name:en": "Galactica",
+    "name:ru": "Галактика",
+    "type": "multipolygon"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 9497261,
+   "center": {
+    "lat": 43.1202025,
+    "lon": 131.8765788
+   },
+   "tags": {
+    "leisure": "park",
+    "name": "Детский парк",
+    "type": "multipolygon"
+   }
+  }
+ ]
+}

@@ -11,9 +11,14 @@ import type { Command, EngineEvent, Place, State } from "./protocol";
 
 type Handler = (e: EngineEvent) => void;
 
+// Цвета меток — из палитры диз-дока: учёба/творчество — бирюза, досуг/еда/события — коралл,
+// культура/история — медь, прогулки — зелёный, задания и коллекция — янтарь.
 const KIND_COLORS: Record<string, string> = {
-  study: "#3FB8AF", creative: "#3FB8AF", leisure: "#FF7A6B", event: "#FF7A6B",
-  history: "#C98B5A", quest: "#F5B83D", collect: "#F5B83D",
+  study: "#3FB8AF", creative: "#3FB8AF",
+  leisure: "#FF7A6B", food: "#FF7A6B", event: "#FF7A6B",
+  culture: "#C98B5A", history: "#C98B5A",
+  outdoor: "#5BC07A",
+  quest: "#F5B83D", collect: "#F5B83D",
 };
 
 export class Engine {
