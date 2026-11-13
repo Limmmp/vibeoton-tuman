@@ -1,0 +1,30 @@
+{
+  "_comment": "Ручные правки поверх OSM (см. scripts/build-places.ts). Найдено поиском 2026-11-13; verified ставит человек после проверки.",
+  "osm-n4108930522": {
+    "hours": "Mo-Th 10:00-19:00; Sa-Su 11:00-19:00",
+    "source": "https://pgpb.ru/",
+    "notes": "Часы с официального сайта pgpb.ru (пт — выходной; в последний вторник месяца возможен санитарный день). Бесплатный вход — допущение, проверить."
+  },
+  "osm-n2368079728": {
+    "hours": "Tu-Fr 11:00-19:00; Sa-Su 10:00-18:00",
+    "source": "https://vladlib.ru/",
+    "notes": "Часы ВЦБС Владивостока с vladlib.ru (пн — выходной, последняя пятница месяца — санитарный день). Что это часы именно ЦБ им. Чехова — проверить."
+  },
+  "osm-n1042556860": {
+    "price": 400,
+    "priceLevel": "mid",
+    "notes": "Цена взрослого билета 400 ₽ — из отзыва посетителя (июль 2026) на otello.ru, официального прайса не нашли; другие отзывы называют до 1000 ₽ за все экспозиции. Проверить на arseniev.org.",
+    "source": "https://otello.ru/hotels/vladivostok/place/muzei_istorii_dalnego_vostoka_imeni_arseneva"
+  },
+  "osm-w30281940": {
+    "price": 200,
+    "priceLevel": "low",
+    "tags": ["indoor", "sea"],
+    "notes": "Цена 200 ₽ — из описания экскурсии на sputnik8.com, дата актуальности не указана. Часы не нашли. Проверить у Военно-исторического музея ТОФ.",
+    "source": "https://www.sputnik8.com/ru/vladivostok/activities/45103-more-v-gorode-vladivostok"
+  },
+  "osm-w159487550": {
+    "exclude": true,
+    "notes": "Медцентр, в OSM ошибочно размечен как community_centre."
+  }
+}

@@ -1,0 +1,1798 @@
+{
+ "auditedAt": "2026-11-13",
+ "rows": [
+  {
+   "id": "osm-n599895008",
+   "name": "Библиотека #4",
+   "kind": "study",
+   "osmEdited": "2024-12-01",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n1152478710",
+   "name": "Библиотека ВГУЭС",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n4108930522",
+   "name": "Библиотека имени Горького",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n5035973112",
+   "name": "Библиотека ТГМУ",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n2017581808",
+   "name": "Библиотека № 10",
+   "kind": "study",
+   "osmEdited": "2025-08-25",
+   "flags": []
+  },
+  {
+   "id": "osm-n1041062121",
+   "name": "Библиотека № 13",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n4245310553",
+   "name": "Библиотека № 14",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n7018623813",
+   "name": "Библиотека № 21",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n5203366694",
+   "name": "Библиотека №20",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n3725680631",
+   "name": "Библиотека №22",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n13323983049",
+   "name": "Библиотека №3",
+   "kind": "study",
+   "osmEdited": "2025-11-22",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n1221082366",
+   "name": "Библиотека №5",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n5592346221",
+   "name": "Библиотека №9",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n675766616",
+   "name": "Детская библиотека им. Пушкина",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "детская библиотека — подходит ли студентам?"
+    },
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n2368079715",
+   "name": "Детская краевая",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "детская библиотека — подходит ли студентам?"
+    },
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-w47063410",
+   "name": "Научная Библиотека ДВФУ",
+   "kind": "study",
+   "osmEdited": "2024-07-10",
+   "site": "ok",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n2655086238",
+   "name": "Приморская краевая библиотека для слепых",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n1377433574",
+   "name": "Приморская краевая научная медицинская библиотека",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n2368079728",
+   "name": "Центральная им. А.П. Чехова",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n4092249240",
+   "name": "Центральная научная библиотека ДВО РАН",
+   "kind": "study",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n4523119689",
+   "name": "\"Комета\"",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n1726018576",
+   "name": "Ансамбль песни и пляски тихоокеанского флота России",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n1304264291",
+   "name": "Благотворительный ортопедический фонд",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n2913662627",
+   "name": "Весь мир",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n2913799514",
+   "name": "Дети приморья",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n7132430641",
+   "name": "Детская флотилия \"Варяг\"",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n1239537423",
+   "name": "детский клуб \"Звездный\"",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n8893394518",
+   "name": "Детский клуб им. В.К. Блюхера",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n8893413717",
+   "name": "Детский клуб им. Кирова",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n7321126880",
+   "name": "Детский морской центр \"Флотилия Восток\"",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w106044772",
+   "name": "Дом детства и юношества имени Крыгина",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w208010725",
+   "name": "Дом культуры",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n5258862022",
+   "name": "Культурно-развлекательный центр профсоюзов",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w159487550",
+   "name": "Мед.центр \"ОКЕАН\"",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n2977184698",
+   "name": "Орлёнок",
+   "kind": "creative",
+   "osmEdited": "2024-11-18",
+   "flags": []
+  },
+  {
+   "id": "osm-n1609561102",
+   "name": "Ромашка",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n4108879998",
+   "name": "Семицветик",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n2882835653",
+   "name": "Совет ветеранов",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n3846734753",
+   "name": "Старт",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n4992481823",
+   "name": "Танго-клуб \"Нуэстро\"",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n7004478085",
+   "name": "центр культуры солнечный",
+   "kind": "creative",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n3426214252",
+   "name": "Центр современного искусства ЗАРЯ",
+   "kind": "creative",
+   "osmEdited": "2026-05-06",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n10845587761",
+   "name": "Collage Pro",
+   "kind": "creative",
+   "osmEdited": "2024-04-22",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n9950719217",
+   "name": "Арка",
+   "kind": "culture",
+   "osmEdited": "2024-09-07",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n12160127826",
+   "name": "Артэтаж",
+   "kind": "culture",
+   "osmEdited": "2024-09-06",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n1210401190",
+   "name": "Береговая башенная батарея №981 им. Клима Ворошилова",
+   "kind": "culture",
+   "osmEdited": "2023-08-25",
+   "flags": []
+  },
+  {
+   "id": "osm-w102653595",
+   "name": "Владивостокская крепость",
+   "kind": "culture",
+   "osmEdited": "2025-12-01",
+   "flags": []
+  },
+  {
+   "id": "osm-n676375880",
+   "name": "Военно-исторический музей Тихоокеанского флота",
+   "kind": "culture",
+   "osmEdited": "2019-07-25",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 7 лет — может не существовать"
+    }
+   ]
+  },
+  {
+   "id": "osm-w29106133",
+   "name": "ДВФУ, Научный музей",
+   "kind": "culture",
+   "osmEdited": "2024-09-06",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-w27532893",
+   "name": "Дом офицеров флота",
+   "kind": "culture",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n11036638005",
+   "name": "Дом путешественника Арсеньева",
+   "kind": "culture",
+   "osmEdited": "2026-05-06",
+   "site": "таймаут",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: таймаут"
+    }
+   ]
+  },
+  {
+   "id": "osm-w102414523",
+   "name": "Дом-музей ДВГТУ",
+   "kind": "culture",
+   "osmEdited": "2016-02-01",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 10 лет — может не существовать"
+    }
+   ]
+  },
+  {
+   "id": "osm-w106483748",
+   "name": "Дом-музей Суханова",
+   "kind": "culture",
+   "osmEdited": "2024-11-02",
+   "flags": []
+  },
+  {
+   "id": "osm-w102950194",
+   "name": "Исторический фонд Дальневосточного морского пароходства",
+   "kind": "culture",
+   "osmEdited": "2025-09-05",
+   "flags": []
+  },
+  {
+   "id": "osm-w170639233",
+   "name": "Красный вымпел",
+   "kind": "culture",
+   "osmEdited": "2023-08-25",
+   "flags": []
+  },
+  {
+   "id": "osm-n631419058",
+   "name": "Музей автомотостарины",
+   "kind": "culture",
+   "osmEdited": "2023-05-16",
+   "site": "не открывается",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: не открывается"
+    }
+   ]
+  },
+  {
+   "id": "osm-n5775725154",
+   "name": "Музей Города",
+   "kind": "culture",
+   "osmEdited": "2026-06-22",
+   "site": "таймаут",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: таймаут"
+    }
+   ]
+  },
+  {
+   "id": "osm-n1042556860",
+   "name": "Музей истории Дальнего Востока им. В.К. Арсеньева",
+   "kind": "culture",
+   "osmEdited": "2026-08-17",
+   "site": "таймаут",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: таймаут"
+    }
+   ]
+  },
+  {
+   "id": "osm-w175860923",
+   "name": "Музей пограничников",
+   "kind": "culture",
+   "osmEdited": "2018-06-09",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 8 лет — может не существовать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n14100528032",
+   "name": "Музей Приморской митрополии",
+   "kind": "culture",
+   "osmEdited": "2026-08-17",
+   "flags": []
+  },
+  {
+   "id": "osm-n2957112438",
+   "name": "Музей Ростелекома",
+   "kind": "culture",
+   "osmEdited": "2019-07-23",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 7 лет — может не существовать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n6715502585",
+   "name": "Музей трепанга",
+   "kind": "culture",
+   "osmEdited": "2026-08-25",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n1377427667",
+   "name": "Приморская государственная картинная галерея",
+   "kind": "culture",
+   "osmEdited": "2023-08-29",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n11152750810",
+   "name": "Приморская государственная картинная галерея",
+   "kind": "culture",
+   "osmEdited": "2026-08-17",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n8373688118",
+   "name": "Приморская краевая филармония",
+   "kind": "culture",
+   "osmEdited": "2024-04-14",
+   "flags": []
+  },
+  {
+   "id": "osm-w187779150",
+   "name": "Приморская сцена Мариинского театра",
+   "kind": "culture",
+   "osmEdited": "2023-10-24",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-w26537156",
+   "name": "Приморский драматический театр имени Максима Горького",
+   "kind": "culture",
+   "osmEdited": "2023-10-24",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n1210380453",
+   "name": "Приморский краевой драматический театр молодежи",
+   "kind": "culture",
+   "osmEdited": "2023-10-24",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n7112753943",
+   "name": "Приморский краевой театр кукол",
+   "kind": "culture",
+   "osmEdited": "2024-08-31",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n1677918608",
+   "name": "Приморское отделение ВТОО \"Союз художников России\"",
+   "kind": "culture",
+   "osmEdited": "2023-08-29",
+   "site": "таймаут",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: таймаут"
+    }
+   ]
+  },
+  {
+   "id": "osm-w35333854",
+   "name": "Пушкинский театр",
+   "kind": "culture",
+   "osmEdited": "2024-09-26",
+   "flags": []
+  },
+  {
+   "id": "osm-w30281940",
+   "name": "С-56",
+   "kind": "culture",
+   "osmEdited": "2023-08-25",
+   "flags": []
+  },
+  {
+   "id": "osm-w26686828",
+   "name": "Цирк",
+   "kind": "culture",
+   "osmEdited": "2024-12-17",
+   "flags": []
+  },
+  {
+   "id": "osm-w26826883",
+   "name": "FESCO Hall",
+   "kind": "culture",
+   "osmEdited": "2025-09-05",
+   "flags": []
+  },
+  {
+   "id": "osm-w47288296",
+   "name": "Владивосток",
+   "kind": "leisure",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n10976261841",
+   "name": "Выпусти пар",
+   "kind": "leisure",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-r8182046",
+   "name": "Галактика",
+   "kind": "leisure",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n12096758984",
+   "name": "Душа Фараона",
+   "kind": "leisure",
+   "osmEdited": "2024-08-07",
+   "site": "не открывается",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: не открывается"
+    }
+   ]
+  },
+  {
+   "id": "osm-n747643058",
+   "name": "Иллюзион",
+   "kind": "leisure",
+   "osmEdited": "2023-10-24",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n11958491697",
+   "name": "Лисья Нора",
+   "kind": "leisure",
+   "osmEdited": "2024-06-05",
+   "flags": []
+  },
+  {
+   "id": "osm-n441700945",
+   "name": "Москва",
+   "kind": "leisure",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w72030314",
+   "name": "Нептун",
+   "kind": "leisure",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w23946365",
+   "name": "Океан",
+   "kind": "leisure",
+   "osmEdited": "2024-02-01",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-w155396558",
+   "name": "Уссури",
+   "kind": "leisure",
+   "osmEdited": "2025-09-03",
+   "flags": []
+  },
+  {
+   "id": "osm-n10792607686",
+   "name": "Cook&Run",
+   "kind": "leisure",
+   "osmEdited": "2023-12-13",
+   "site": "таймаут",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: таймаут"
+    }
+   ]
+  },
+  {
+   "id": "osm-n12050520915",
+   "name": "Агар-Агар",
+   "kind": "food",
+   "osmEdited": "2024-07-13",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n8514390517",
+   "name": "Белая юрта",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w471302778",
+   "name": "Буду кофе",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w434716641",
+   "name": "Водно Спортивная база",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n5323268522",
+   "name": "Гранд",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n9109884617",
+   "name": "Добрыня и Аня",
+   "kind": "food",
+   "osmEdited": "2024-01-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n7202326485",
+   "name": "Итальянская кофейня Pazzo",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "site": "не открывается",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: не открывается"
+    }
+   ]
+  },
+  {
+   "id": "osm-n7295763309",
+   "name": "Кафе АЛОХА",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "site": "не открывается",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: не открывается"
+    }
+   ]
+  },
+  {
+   "id": "osm-w1177175628",
+   "name": "Кафема",
+   "kind": "food",
+   "osmEdited": "2025-09-11",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n5925587786",
+   "name": "Кофе-шоп Рандеву",
+   "kind": "food",
+   "osmEdited": "2024-08-31",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n4611388689",
+   "name": "Морской замок",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "site": "HTTP 404",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: HTTP 404"
+    }
+   ]
+  },
+  {
+   "id": "osm-n1811228126",
+   "name": "Отдел культуры",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n5755395122",
+   "name": "Пицца Просто",
+   "kind": "food",
+   "osmEdited": "2025-09-05",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n4418942491",
+   "name": "Санья",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n8509348117",
+   "name": "Столовая N1",
+   "kind": "food",
+   "osmEdited": "2024-04-14",
+   "flags": []
+  },
+  {
+   "id": "osm-n11583477370",
+   "name": "Хохлома",
+   "kind": "food",
+   "osmEdited": "2024-02-05",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n2108105568",
+   "name": "Экспресс",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n4110539716",
+   "name": "bonus club",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n2508265493",
+   "name": "Coffee beans",
+   "kind": "food",
+   "osmEdited": "2025-04-17",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n3130556596",
+   "name": "Columbus",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n3448241893",
+   "name": "island",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n5950610985",
+   "name": "Local house",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n13116200533",
+   "name": "Nane cake",
+   "kind": "food",
+   "osmEdited": "2025-09-03",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n5398207522",
+   "name": "Oh, my coffee!",
+   "kind": "food",
+   "osmEdited": "2025-03-03",
+   "flags": []
+  },
+  {
+   "id": "osm-n6378350525",
+   "name": "Oh, my coffee!",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n11568594269",
+   "name": "One Place Coffee",
+   "kind": "food",
+   "osmEdited": "2024-01-30",
+   "site": "таймаут",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: таймаут"
+    }
+   ]
+  },
+  {
+   "id": "osm-n7153188815",
+   "name": "Pizzaiolo",
+   "kind": "food",
+   "osmEdited": "2025-09-14",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n7246805897",
+   "name": "Pizzaiolo",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n7246820352",
+   "name": "Pizzaiolo",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n7246821999",
+   "name": "Pizzaiolo",
+   "kind": "food",
+   "osmEdited": "2023-10-24",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n11880171069",
+   "name": "Sista Feels",
+   "kind": "food",
+   "osmEdited": "2024-05-05",
+   "flags": [
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n1684506007",
+   "name": "Traveler's Coffee",
+   "kind": "food",
+   "osmEdited": "2024-06-13",
+   "site": "таймаут",
+   "flags": [
+    {
+     "level": "check",
+     "text": "сайт: таймаут"
+    },
+    {
+     "level": "check",
+     "text": "нет часов работы — критично для «Мест»"
+    }
+   ]
+  },
+  {
+   "id": "osm-n13569693724",
+   "name": "«Скала Любви»",
+   "kind": "outdoor",
+   "osmEdited": "2026-02-16",
+   "flags": []
+  },
+  {
+   "id": "osm-w26687466",
+   "name": "Адмиральский сквер",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w627510872",
+   "name": "Аллея Дружбы",
+   "kind": "outdoor",
+   "osmEdited": "2026-07-31",
+   "flags": []
+  },
+  {
+   "id": "osm-w352268643",
+   "name": "Аллея им. Дениса Давыдова",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n7043805186",
+   "name": "Большие Сосульки",
+   "kind": "outdoor",
+   "osmEdited": "2023-12-05",
+   "site": "ok",
+   "flags": []
+  },
+  {
+   "id": "osm-n9269648331",
+   "name": "вид на «Комета»",
+   "kind": "outdoor",
+   "osmEdited": "2021-11-20",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 4 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n9269648281",
+   "name": "вид на водохранилище",
+   "kind": "outdoor",
+   "osmEdited": "2021-11-20",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 4 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n2010487408",
+   "name": "Вид на водохранилище",
+   "kind": "outdoor",
+   "osmEdited": "2012-11-12",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 14 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n2045654344",
+   "name": "Вид на водохранилище",
+   "kind": "outdoor",
+   "osmEdited": "2012-12-02",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 13 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n5358194321",
+   "name": "вид на город",
+   "kind": "outdoor",
+   "osmEdited": "2019-07-24",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 7 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n9128840917",
+   "name": "Вид на город",
+   "kind": "outdoor",
+   "osmEdited": "2021-09-28",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 5 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n2947709289",
+   "name": "Вид на залив",
+   "kind": "outdoor",
+   "osmEdited": "2025-12-18",
+   "flags": [
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663952531",
+   "name": "Вид на залив \"Золотой рог\"",
+   "kind": "outdoor",
+   "osmEdited": "2019-07-19",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 7 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n13953465601",
+   "name": "Вид на мыс Вятлина",
+   "kind": "outdoor",
+   "osmEdited": "2026-06-20",
+   "flags": [
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n3180202683",
+   "name": "Вид на Патрокл",
+   "kind": "outdoor",
+   "osmEdited": "2019-09-09",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 7 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n9128753218",
+   "name": "Вид на порт",
+   "kind": "outdoor",
+   "osmEdited": "2021-09-28",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 5 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n7273273585",
+   "name": "Вид на Русский мост с 2000 рублей",
+   "kind": "outdoor",
+   "osmEdited": "2021-09-13",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 5 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n9269648262",
+   "name": "вид на Шамору и Емар",
+   "kind": "outdoor",
+   "osmEdited": "2021-11-20",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 4 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n7920331385",
+   "name": "Видовая площадка",
+   "kind": "outdoor",
+   "osmEdited": "2020-09-18",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 6 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n9738830125",
+   "name": "Видовая площадка",
+   "kind": "outdoor",
+   "osmEdited": "2022-05-14",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 4 лет — может не существовать"
+    },
+    {
+     "level": "check",
+     "text": "безликое название — дать нормальное или убрать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n5292665611",
+   "name": "Грот и нависающие стены",
+   "kind": "outdoor",
+   "osmEdited": "2017-12-19",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 8 лет — может не существовать"
+    }
+   ]
+  },
+  {
+   "id": "osm-w516932642",
+   "name": "Дальхимпром",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-r9497261",
+   "name": "Детский парк",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n6553609683",
+   "name": "Коврижка",
+   "kind": "outdoor",
+   "osmEdited": "2019-06-17",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 7 лет — может не существовать"
+    }
+   ]
+  },
+  {
+   "id": "osm-w1095764880",
+   "name": "Корабль \"Вечный\"",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n12399108099",
+   "name": "Леопардовая набережная",
+   "kind": "outdoor",
+   "osmEdited": "2024-12-19",
+   "flags": []
+  },
+  {
+   "id": "osm-w160546366",
+   "name": "Матросский сквер",
+   "kind": "outdoor",
+   "osmEdited": "2025-02-22",
+   "flags": []
+  },
+  {
+   "id": "osm-n8336448618",
+   "name": "мыс Ликандера",
+   "kind": "outdoor",
+   "osmEdited": "2021-01-19",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 5 лет — может не существовать"
+    }
+   ]
+  },
+  {
+   "id": "osm-n9690979617",
+   "name": "Набережная на Второй Речке",
+   "kind": "outdoor",
+   "osmEdited": "2022-04-25",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 4 лет — может не существовать"
+    }
+   ]
+  },
+  {
+   "id": "osm-r2904784",
+   "name": "Набережная Цесаревича",
+   "kind": "outdoor",
+   "osmEdited": "2024-04-14",
+   "flags": []
+  },
+  {
+   "id": "osm-w492719949",
+   "name": "Нагорный парк",
+   "kind": "outdoor",
+   "osmEdited": "2025-03-18",
+   "flags": []
+  },
+  {
+   "id": "osm-n6065981885",
+   "name": "озеро лотосы",
+   "kind": "outdoor",
+   "osmEdited": "2018-11-16",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 7 лет — может не существовать"
+    }
+   ]
+  },
+  {
+   "id": "osm-r1935085",
+   "name": "Парк \"Минный городок\"",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w510376256",
+   "name": "парк \"Патриот\"",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-r7346562",
+   "name": "Парк культуры и отдыха им. Сергея Лазо",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n12399105414",
+   "name": "парк на Торфяном озере",
+   "kind": "outdoor",
+   "osmEdited": "2024-12-06",
+   "flags": []
+  },
+  {
+   "id": "osm-w35902814",
+   "name": "Парк Победы",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w220107375",
+   "name": "Парк Солнышко",
+   "kind": "outdoor",
+   "osmEdited": "2024-07-17",
+   "flags": []
+  },
+  {
+   "id": "osm-w50633473",
+   "name": "Покровский парк",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n2955405622",
+   "name": "Разрушенное военное строение",
+   "kind": "outdoor",
+   "osmEdited": "2024-07-21",
+   "flags": []
+  },
+  {
+   "id": "osm-w492719947",
+   "name": "Сквер А. И. Щетининой",
+   "kind": "outdoor",
+   "osmEdited": "2025-03-01",
+   "flags": []
+  },
+  {
+   "id": "osm-w492719943",
+   "name": "Сквер Веры и Надежды",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-r2507892",
+   "name": "Сквер Ветеранов",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w1034965743",
+   "name": "Сквер Вечнозелёный",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w86575511",
+   "name": "Сквер Гайдамакский",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w239965854",
+   "name": "Сквер Героев-Даманцев",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w526332122",
+   "name": "Сквер Героев-Даманцев",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w106620076",
+   "name": "Сквер Городов Побратимов",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w116919148",
+   "name": "Сквер Дальзаводской",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w43031909",
+   "name": "Сквер дружбы",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w85921165",
+   "name": "Сквер Жариковский",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w155004900",
+   "name": "сквер Железнодорожников",
+   "kind": "outdoor",
+   "osmEdited": "2026-10-19",
+   "flags": []
+  },
+  {
+   "id": "osm-w60354809",
+   "name": "Сквер им. адмирала Макарова",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-r3457904",
+   "name": "Сквер им. Муравьёва-Амурского",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w27534478",
+   "name": "Сквер им. Невельского",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w469595594",
+   "name": "Сквер им. Острякова",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w492719940",
+   "name": "Сквер им. Рихарда Зорге",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w47661496",
+   "name": "Сквер им. Семёнова",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w25617751",
+   "name": "Сквер им. Суханова",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w107179335",
+   "name": "Сквер Комсомольцев",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w492474311",
+   "name": "Сквер Курсантский",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w492719942",
+   "name": "Сквер Надибаидзе",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-r7283104",
+   "name": "Сквер Некрасовский",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w28929580",
+   "name": "Сквер Первой маёвки",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-r2907390",
+   "name": "Сквер Политехников",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w139325702",
+   "name": "Сквер Почётных граждан",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w492719944",
+   "name": "Сквер Русской Славы",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w492719950",
+   "name": "Сквер Рыбацкая Слава",
+   "kind": "outdoor",
+   "osmEdited": "2025-03-01",
+   "flags": []
+  },
+  {
+   "id": "osm-w744794569",
+   "name": "Сквер Хо Ши Мина",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w47428753",
+   "name": "Сквер Центральный",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w489746052",
+   "name": "Сквер Чайка",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w31319055",
+   "name": "Сквер Чеховский",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-r3252831",
+   "name": "Сквер Энергетиков",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w33826284",
+   "name": "Сквер Юнг Российского флота",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n12646699905",
+   "name": "Сквозь кроны",
+   "kind": "outdoor",
+   "osmEdited": "2025-03-11",
+   "flags": []
+  },
+  {
+   "id": "osm-n4896197458",
+   "name": "Смотровая площадка на м. Чуркин.",
+   "kind": "outdoor",
+   "osmEdited": "2025-03-01",
+   "flags": []
+  },
+  {
+   "id": "osm-n2233213551",
+   "name": "Сосновый бор",
+   "kind": "outdoor",
+   "osmEdited": "2022-05-14",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 4 лет — может не существовать"
+    }
+   ]
+  },
+  {
+   "id": "osm-w27420195",
+   "name": "Театральный сквер",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-n7935036385",
+   "name": "Тимпур",
+   "kind": "outdoor",
+   "osmEdited": "2021-11-20",
+   "flags": [
+    {
+     "level": "check",
+     "text": "в OSM не правилось 4 лет — может не существовать"
+    }
+   ]
+  },
+  {
+   "id": "osm-w1427528729",
+   "name": "Тобольский сквер",
+   "kind": "outdoor",
+   "osmEdited": "2025-11-28",
+   "flags": []
+  },
+  {
+   "id": "osm-w469292217",
+   "name": "Cквер им. Игнатьева",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  },
+  {
+   "id": "osm-w352282416",
+   "name": "Cквер им. Кутузова",
+   "kind": "outdoor",
+   "osmEdited": "2023-10-24",
+   "flags": []
+  }
+ ]
+}

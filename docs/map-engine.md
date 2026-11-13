@@ -17,6 +17,10 @@
 - Пешие маршруты (OSRM) с профилем высот, суммарным подъёмом и спуском и временем с учётом уклона.
 - Метки мест, тапы по ним и по карте, долгое нажатие.
 
+## Где лежит
+
+**https://limmmp.github.io/vibeoton-tuman/** — собранный движок. Обновляется сам при каждом пуше в `main` (GitHub Actions, ~1–2 минуты). В обычном браузере там видна отладочная панель, внутри приложения её нет.
+
 ## Запуск для разработки
 
 ```bash
@@ -38,7 +42,7 @@ import { useRef } from "react";
 import { WebView } from "react-native-webview";
 import type { Command, EngineEvent } from "./protocol"; // скопировать src/engine/protocol.ts
 
-const MAP_URL = "http://192.168.0.10:5173"; // на время разработки; потом — GitHub Pages или файл в бандле
+const MAP_URL = "https://limmmp.github.io/vibeoton-tuman/"; // или http://<ip-ноутбука>:5173 при локальной разработке движка
 
 export function MapView() {
   const ref = useRef<WebView>(null);
@@ -83,7 +87,7 @@ Location.watchPositionAsync(
 
 ## Протокол
 
-Полный контракт с типами — в [`src/engine/protocol.ts`](../src/engine/protocol.ts). Его можно копировать в RN-проект как есть.
+Контракт команд и событий — в [`src/engine/protocol.ts`](../src/engine/protocol.ts), типы квестов — в [`src/quests/types.ts`](../src/quests/types.ts). В RN-проект нужно копировать оба файла.
 
 **Команды (приложение → карта).** Если у команды есть `id`, карта отвечает событием `result` с тем же `id`.
 
@@ -102,9 +106,41 @@ Location.watchPositionAsync(
 | `elevation { lat, lon }` | высота точки | `{ h }` |
 | `revealAt { lat, lon, radius? }` | открывает туман (для отладки и наград) | число новых ячеек |
 | `resetFog` | сбрасывает туман | — |
-| `getState` | позиция, режимы, статистика тумана | `State` |
+| `listQuests` | список встроенных квестов без полных шагов | `QuestSummary[]` |
+| `startQuestById { questId }` | запускает квест из встроенного каталога | активный шаг |
+| `startQuest { quest }` | валидирует и запускает внешний квест | активный шаг |
+| `stopQuest` | останавливает активный квест | — |
+| `answerQuiz { answer }` | отвечает на `quiz`, индекс 0–2 | `{ correct }` |
+| `completeListen` | сообщает, что аудио дослушано | — |
+| `confirmLook` | подтверждает выполнение `look` | — |
+| `getQuestState` | возвращает активный шаг | `ActiveStep | null` |
+| `getState` | позиция, режимы, статистика тумана и активный квест | `State` |
 
-**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `result`.
+**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `result`.
+
+Квестовый движок не рисует интерфейс React Native. Приложение получает `activeStep`, показывает текст, аудио и варианты ответа, затем отправляет команду подтверждения. Шаги `goto`, `hold`, `tail`, `collect`, `explore` и `visit` отслеживает движок. Для `listen` и `look` сначала нужен геотриггер у точки; готовность приходит в `activeStep.runtime`.
+
+`activeStep.targets` содержит вычисленные цели текущего шага. Движок сам показывает их янтарными, зелёными или коралловыми метками. `distanceMeters` — расстояние до ближайшей незавершённой цели. `progress` содержит `current`, `total` и единицу измерения. Нажатие по метке даёт `questTargetTap`; приложение решает, строить ли маршрут или открывать подсказку.
+
+Встроенный технический квест `engine-demo-center` лежит в [`src/quests/catalog.ts`](../src/quests/catalog.ts). Он использует реальные координаты мест из OSM, но не содержит исторических утверждений. В браузерной отладочной панели кнопка «Тест-квест» переносит игрока к старту. Нажатие по целевой метке запускает движение в режиме `sim`.
+
+Активный квест сохраняется в `localStorage` WebView и восстанавливается при запуске. Типы квеста экспортируются из [`src/engine/protocol.ts`](../src/engine/protocol.ts); исходная логика лежит в `src/quests/`.
+
+Минимальный сценарий приложения:
+
+```ts
+send({ id: "quests", type: "listQuests" });
+send({ id: "start", type: "startQuestById", questId: "engine-demo-center" });
+
+// activeStep.step.type === "quiz"
+send({ id: "answer", type: "answerQuiz", answer: 1 });
+
+// activeStep.step.type === "listen" && activeStep.runtime.audioReady
+send({ id: "audio", type: "completeListen" });
+
+// activeStep.step.type === "look" && activeStep.runtime.confirmationReady
+send({ id: "look", type: "confirmLook" });
+```
 
 Для отладки из консоли браузера доступен `window.tuman.exec({...})`.
 
@@ -113,5 +149,6 @@ Location.watchPositionAsync(
 - **Тайлы высот (Terrarium/AWS) срезают вершины.** Орлиное гнездо в них около 163 м, реальная высота заметно больше. Перепады для подъёмов на маршрутах они передают, но на мостах (Золотой, Русский) маршрут «ныряет» к уровню моря и даёт ложный подъём. Это надо будет учесть.
 - **Подписи улиц видны и поверх тумана.** Отдельно их не спрятать: MapLibre рисует подписи после рельефа.
 - **На маршруте в 3D дома местами закрывают линию.**
+- **В заливе на отмывке видны ступенчатые полосы**: это артефакты морского дна в тайлах высот.
 - **Сохранение только локальное**, в хранилище WebView. Синхронизацию сделаем через бэкенд.
 - **Бандл около 1 МБ** (~290 КБ gzip), почти весь вес — MapLibre.

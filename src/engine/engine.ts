@@ -8,20 +8,40 @@ import { Player } from "./player";
 import { routeWithElevation } from "./route";
 import { elevationAt } from "./dem";
 import type { Command, EngineEvent, Place, State } from "./protocol";
+import type { ActiveStep } from "../quests/types";
+import { QuestRunner } from "../quests/runner";
+import { resolveQuest } from "../quests/schema";
+import { loadQuestSnapshot, saveQuestSnapshot } from "../quests/storage";
+import { QUEST_CATALOG, questById } from "../quests/catalog";
 
 type Handler = (e: EngineEvent) => void;
 
+// Цвета меток — из палитры диз-дока: учёба/творчество — бирюза, досуг/еда/события — коралл,
+// культура/история — медь, прогулки — зелёный, задания и коллекция — янтарь.
 const KIND_COLORS: Record<string, string> = {
-  study: "#3FB8AF", creative: "#3FB8AF", leisure: "#FF7A6B", event: "#FF7A6B",
-  history: "#C98B5A", quest: "#F5B83D", collect: "#F5B83D",
+  study: "#3FB8AF", creative: "#3FB8AF",
+  leisure: "#FF7A6B", food: "#FF7A6B", event: "#FF7A6B",
+  culture: "#C98B5A", history: "#C98B5A",
+  outdoor: "#5BC07A",
+  quest: "#F5B83D", collect: "#F5B83D",
 };
 
 export class Engine {
   viewMode: ViewMode = "2d";
   private handlers: Handler[] = [];
   private updateBuildings: () => void = () => {};
+  private quests: QuestRunner;
 
-  private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player) {}
+  private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player) {
+    this.quests = new QuestRunner({
+      emit: (event) => {
+        if (event.type === "activeStep") this.drawQuestTargets(event.active);
+        else if (event.type === "questDone" || event.type === "questFailed" || event.type === "questStopped") this.drawQuestTargets(null);
+        this.emit(event);
+      },
+      save: saveQuestSnapshot,
+    });
+  }
 
   static async create(container: HTMLElement | string): Promise<Engine> {
     const map = await createBaseMap(container);
@@ -34,6 +54,15 @@ export class Engine {
     const player = new Player(map);
     const engine = new Engine(map, fog, player);
     engine.wire();
+    const savedQuest = loadQuestSnapshot();
+    if (savedQuest) {
+      try {
+        engine.quests.restore(savedQuest, { position: player.pos, fogCells: fog.cells.size });
+      } catch (error) {
+        console.warn("[quests] Не удалось восстановить квест", error);
+        saveQuestSnapshot(null);
+      }
+    }
     return engine;
   }
 
@@ -45,12 +74,26 @@ export class Engine {
     this.handlers.forEach((fn) => fn(e));
   }
 
+  private drawQuestTargets(active: ActiveStep | null) {
+    const source = this.map.getSource("quest-targets") as GeoJSONSource | undefined;
+    if (!source) return;
+    source.setData({
+      type: "FeatureCollection",
+      features: (active?.targets ?? []).filter((target) => !target.done).map((target) => ({
+        type: "Feature",
+        properties: { id: target.id, name: target.name, kind: target.kind },
+        geometry: { type: "Point", coordinates: [target.lon, target.lat] },
+      })),
+    });
+  }
+
   state(): State {
     const p = this.player;
     return {
       player: { ...p.pos, heading: p.heading, mode: p.mode, follow: p.follow },
       viewMode: this.viewMode,
       fog: { cells: this.fog.cells.size, km2: +this.fog.areaKm2().toFixed(4) },
+      quest: this.quests.active,
     };
   }
 
@@ -60,9 +103,13 @@ export class Engine {
 
     player.onMove((pos, prev, jump) => {
       if (jump) fog.reveal(pos); else fog.revealPath(prev, pos);
+      this.quests.updatePosition(pos);
       this.emit({ type: "playerMoved", lat: pos.lat, lon: pos.lon, heading: player.heading });
     });
-    fog.onChange((fresh) => this.emit({ type: "fogChanged", cells: fog.cells.size, km2: +fog.areaKm2().toFixed(4), fresh }));
+    fog.onChange((fresh) => {
+      this.quests.updateFog(fog.cells.size);
+      this.emit({ type: "fogChanged", cells: fog.cells.size, km2: +fog.areaKm2().toFixed(4), fresh });
+    });
 
     // 3D-дома — только в открытой области: берём дома из загруженных тайлов, оставляем те,
     // у которых ячейка тумана под первой вершиной открыта, и кладём их в GeoJSON-источник lit-buildings.
@@ -98,6 +145,8 @@ export class Engine {
 
     // Тап по метке → placeTap; по пустой карте → mapTap (в симуляции ещё и идём туда).
     map.on("click", (e) => {
+      const questHit = map.queryRenderedFeatures(e.point, { layers: ["quest-targets"] })[0];
+      if (questHit) return this.emit({ type: "questTargetTap", id: String(questHit.properties?.id) });
       const hit = map.queryRenderedFeatures(e.point, { layers: ["places"] })[0];
       if (hit) return this.emit({ type: "placeTap", id: String(hit.properties?.id) });
       const p = { lat: e.lngLat.lat, lon: e.lngLat.lng };
@@ -119,6 +168,7 @@ export class Engine {
       const dt = Math.min(0.1, (now - last) / 1000);
       last = now;
       player.tick(dt);
+      this.quests.tick(dt * player.timeScale);
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
@@ -175,6 +225,28 @@ export class Engine {
         fog.reset();
         fog.reveal(player.pos);
         return;
+      case "listQuests":
+        return QUEST_CATALOG.map(({ id, title, giver, intro, reward, start, source, steps }) => ({ id, title, giver, intro, reward, start, source, stepCount: steps.length }));
+      case "startQuestById": {
+        const quest = questById(cmd.questId);
+        if (!quest) throw new Error(`Квест не найден: ${cmd.questId}`);
+        return this.quests.start(quest, { position: player.pos, fogCells: fog.cells.size });
+      }
+      case "startQuest":
+        return this.quests.start(resolveQuest(cmd.quest, undefined, cmd.quest.source), { position: player.pos, fogCells: fog.cells.size });
+      case "stopQuest":
+        this.quests.stop();
+        return;
+      case "answerQuiz":
+        return this.quests.answerQuiz(cmd.answer);
+      case "completeListen":
+        this.quests.completeListen();
+        return;
+      case "confirmLook":
+        this.quests.confirmLook();
+        return;
+      case "getQuestState":
+        return this.quests.active;
       case "getState":
         return this.state();
     }
@@ -203,5 +275,14 @@ function addOverlayLayers(map: MLMap, beforeId?: string) {
   map.addLayer({
     id: "places", type: "circle", source: "places",
     paint: { "circle-radius": 8, "circle-color": ["get", "color"], "circle-stroke-color": "#F4F6F8", "circle-stroke-width": 2 },
+  });
+  map.addSource("quest-targets", { type: "geojson", data: EMPTY });
+  map.addLayer({
+    id: "quest-targets", type: "circle", source: "quest-targets",
+    paint: {
+      "circle-radius": ["match", ["get", "kind"], "tail", 10, "collect", 9, 11],
+      "circle-color": ["match", ["get", "kind"], "tail", "#FF7A6B", "collect", "#5BC07A", "#F5B83D"],
+      "circle-stroke-color": "#F4F6F8", "circle-stroke-width": 3,
+    },
   });
 }
