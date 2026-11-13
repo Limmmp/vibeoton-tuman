@@ -7,7 +7,7 @@ const engine = await Engine.create("map");
 attachBridge(engine);
 
 // Отладочная панель — только в обычном браузере. В приложении интерфейс рисует React Native.
-if (!inReactNative()) {
+if (!inReactNative() && !new URLSearchParams(location.search).has("embedded")) {
   const { mountDevPanel } = await import("./dev/panel");
   mountDevPanel(engine);
 }

@@ -33,4 +33,4 @@ npm install
 npm run dev
 ```
 
-Открыть http://localhost:5173. Приложение на React Native + Expo появится здесь же.
+Открыть http://localhost:5173. Мобильное демо на React Native + Expo находится в [`mobile/`](mobile/README.md): WebView-карта, GPS, демопрогулка, 2D/3D, места и пешие маршруты.
