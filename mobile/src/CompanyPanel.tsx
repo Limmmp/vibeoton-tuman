@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Share, Text, View } from 'react-native';
+import { Pressable, Share, StyleSheet, Text, View } from 'react-native';
 import { INTERESTS, matchGroup, type Interest, type Member, type MatchOutput } from '../../src/match/matchGroup';
 import type { Place } from '../../src/data/place';
 import type { LatLon } from '../../src/engine/protocol';
-import { Button, Card, Chip, Field, u } from './ui';
+import { Button, Card, Chip, Field, colors, u } from './ui';
 import { catalog } from './catalog';
 
 export function CompanyPanel({ initialInterests, members, setMembers, buildRoute, climbs, weatherBad }: { initialInterests: Interest[]; members: Member[]; setMembers: (members: Member[]) => void; buildRoute: (point: LatLon, id?: string) => void; climbs: Record<string, number>; weatherBad: boolean | null }) {
@@ -60,9 +60,8 @@ export function CompanyPanel({ initialInterests, members, setMembers, buildRoute
     setName(''); setFromPlace(null); setFromSearch(''); setOutput(null); setVotes({}); setError('');
   };
   const match = () => {
-    // Unknown climbs cannot satisfy an explicit flat-route requirement.
-    const places = members.some(member => member.noClimb) ? catalog.filter(place => climbs[place.id] != null) : catalog;
-    setOutput(matchGroup({ members, places, weather: { bad: badWeather || weatherBad === true }, climbOf: place => climbs[place.id] }));
+    // Неизвестный подъём не отсекаем: к выбранному месту строится пологий маршрут в обход крутых участков.
+    setOutput(matchGroup({ members, places: catalog, weather: { bad: badWeather || weatherBad === true }, climbOf: place => climbs[place.id] }));
     setVotes({});
   };
   const score = (id: string) => Object.values(votes[id] || {}).reduce((sum, value) => sum + value, 0);
@@ -70,21 +69,68 @@ export function CompanyPanel({ initialInterests, members, setMembers, buildRoute
   const share = async (place: Place) => {
     try { await Share.share({ message: `Встречаемся: ${place.name}\n${place.address || ''}\nОкно встречи: ${output?.window?.start || ''} — ${output?.window?.end || ''}\n${place.source}\nЦена и часы требуют проверки.` }); } catch { setError('Не удалось открыть меню отправки.'); }
   };
-  if (!draftLoaded) return <Card><Text style={u.muted}>Загружаем черновик анкеты…</Text></Card>;
-  return <View style={u.stack}><Text style={u.eyebrow}>ПЕРЕДАЙ ТЕЛЕФОН ПО КРУГУ</Text><Text style={u.heading}>Собрать компанию</Text>
-    <Text style={u.muted}>Время — Владивосток, UTC+10. Точные координаты участников не запрашиваются.</Text><View style={u.row}><Chip label="Сегодня" active={day === 0} onPress={() => setDay(0)} /><Chip label="Завтра" active={day === 1} onPress={() => setDay(1)} /></View>
-    <Field label="Имя участника" value={name} onChangeText={setName} /><View style={u.row}>{Object.entries(INTERESTS).map(([id, interest]) => <Chip key={id} label={interest.label} active={interests.includes(id as Interest)} onPress={() => setInterests(interests.includes(id as Interest) ? interests.filter(value => value !== id) : interests.length < 5 ? [...interests, id as Interest] : interests)} />)}</View>
-    <Field label="Бюджет на человека, ₽" value={budget} onChangeText={setBudget} numeric /><Field label="Свободен с (ЧЧ:ММ)" value={start} onChangeText={setStart} /><Field label="Свободен до (ЧЧ:ММ)" value={end} onChangeText={setEnd} />
-    <Field label="Район / ориентир отправления (необязательно)" value={fromSearch} onChangeText={value => { setFromSearch(value); setFromPlace(null); }} />
-    {fromPlace ? <Text style={u.muted}>Отправление от ориентира: {fromPlace.name}</Text> : !!fromSearch.trim() && catalog.filter(place => place.name.toLowerCase().includes(fromSearch.toLowerCase())).slice(0, 4).map(place => <Chip key={place.id} label={place.name} onPress={() => setFromPlace(place)} />)}
-    <Text style={u.muted}>Точный адрес не нужен. Без ориентира алгоритм использует условные 25 минут на дорогу.</Text>
-    <View style={u.row}><Chip label="Спокойно" active={mood === 'calm'} onPress={() => setMood('calm')} /><Chip label="Активно" active={mood === 'active'} onPress={() => setMood('active')} /><Chip label="Без крутых подъёмов" active={noClimb} onPress={() => setNoClimb(!noClimb)} /></View>
-    <Button label="Добавить участника" primary onPress={addMember} />{!!error && <Text style={u.text}>{error}</Text>}
-    {members.map((member, index) => <Card key={member.name}><Text style={u.heading}>{index + 1}. {member.name}</Text><Text style={u.muted}>{member.budget} ₽ · {member.interests.map(id => INTERESTS[id].label).join(', ') || 'Любые интересы'}</Text><Button label="Удалить участника" onPress={() => { setMembers(members.filter((_, i) => i !== index)); setOutput(null); setVotes({}); setVoter(0); }} /></Card>)}
-    <Text style={u.muted}>{weatherBad === null ? 'Погода неизвестна. Можно вручную выбрать помещения.' : weatherBad ? 'Погода плохая: ищем только помещения.' : 'Погода позволяет прогулки.'}</Text><Chip label="Только помещения / плохая погода" active={badWeather} onPress={() => { setBadWeather(!badWeather); setOutput(null); }} />
-    {members.some(member => member.noClimb) && <Text style={u.muted}>Для «без подъёмов» нужны рассчитанные маршруты. Построй их в разделе «Места».</Text>}
-    <Text style={u.muted}>Общий бюджет: до {members.length ? Math.min(...members.map(member => member.budget)) : 0} ₽. Дорога оценивается приблизительно.</Text>
-    <Button label="Подобрать 3 варианта" disabled={!members.length} primary onPress={match} />
-    {output && <><Text style={u.muted}>{output.window ? `Общее окно: ${new Date(output.window.start).toLocaleString('ru-RU', { timeZone: 'Asia/Vladivostok' })} — ${new Date(output.window.end).toLocaleTimeString('ru-RU', { timeZone: 'Asia/Vladivostok' })}` : 'Нет общего окна'}</Text>{output.hints.map(hint => <Text key={hint} style={u.text}>{hint}</Text>)}<View style={u.row}>{members.map((member, index) => <Chip key={member.name} label={`Голосует ${member.name}`} active={voter === index} onPress={() => setVoter(index)} />)}</View>{output.results.map(result => <Card key={result.place.id}><Text style={u.heading}>{result.place.name}</Text><Text style={u.eyebrow}>{winner?.place.id === result.place.id ? 'ЛИДЕР · ' : ''}Голосов: {score(result.place.id)}</Text><Text style={u.text}>{result.reason}</Text><Text style={u.muted}>{result.price == null ? 'Цена неизвестна' : `${result.price} ₽ на человека`} · {result.flags.join(' · ')}</Text>{result.travel.map(travel => <Text style={u.muted} key={travel.name}>{travel.name}: ~{travel.minutes} мин в пути</Text>)}<View style={u.row}><Button label="За" onPress={() => setVotes({ ...votes, [result.place.id]: { ...votes[result.place.id], [members[voter]?.name || '']: 1 } })} /><Button label="Против" onPress={() => setVotes({ ...votes, [result.place.id]: { ...votes[result.place.id], [members[voter]?.name || '']: -1 } })} /><Button label="Маршрут" onPress={() => buildRoute(result.place, result.place.id)} /><Button label="Поделиться планом" onPress={() => void share(result.place)} /></View></Card>)}</>}
+  if (!draftLoaded) return <Card><Text style={u.muted}>Загружаем черновик…</Text></Card>;
+  const minBudget = members.length ? Math.min(...members.map(member => member.budget)) : 0;
+  const flat = members.some(member => member.noClimb);
+  const weatherText = weatherBad === null ? 'Погода неизвестна' : weatherBad ? 'На улице непогода — только помещения' : 'Погода для прогулок';
+  return <View style={{ gap: 20 }}>
+    <View style={{ gap: 6 }}><Text style={u.eyebrow}>КУДА ПОЙДЁМ</Text><Text style={u.title}>Одно место{'\n'}на всю компанию</Text><Text style={u.muted}>Передайте телефон по кругу: каждый отмечает свой бюджет, время и что любит. Подберём то, что подойдёт всем.</Text></View>
+
+    {members.length > 0 && <View style={{ gap: 8 }}>
+      <Text style={u.label}>В компании {members.length}</Text>
+      {members.map((member, index) => <View key={member.name} style={c.member}>
+        <View style={c.avatar}><Text style={c.avatarText}>{member.name.slice(0, 1).toUpperCase()}</Text></View>
+        <View style={{ flex: 1, gap: 2 }}><Text style={u.text}>{member.name}{member.noClimb ? ' · без подъёмов' : ''}</Text><Text style={u.muted} numberOfLines={1}>{member.budget ? `до ${member.budget} ₽` : 'бесплатно'} · {member.interests.map(id => INTERESTS[id].label).join(', ') || 'всё равно'}</Text></View>
+        <Pressable accessibilityRole="button" accessibilityLabel={`Убрать ${member.name}`} hitSlop={10} onPress={() => { setMembers(members.filter((_, i) => i !== index)); setOutput(null); setVotes({}); setVoter(0); }} style={({ pressed }) => [c.remove, pressed && u.pressed]}><Text style={c.removeText}>×</Text></Pressable>
+      </View>)}
+    </View>}
+
+    <Card>
+      <Text style={u.heading}>{members.length ? 'Ещё участник' : 'Кто идёт?'}</Text>
+      <Field label="Имя" value={name} onChangeText={setName} />
+      <Text style={u.label}>Что любит · до пяти</Text>
+      <View style={u.row}>{Object.entries(INTERESTS).map(([id, interest]) => <Chip key={id} label={interest.label} active={interests.includes(id as Interest)} onPress={() => setInterests(interests.includes(id as Interest) ? interests.filter(value => value !== id) : interests.length < 5 ? [...interests, id as Interest] : interests)} />)}</View>
+      <Field label="Бюджет на человека, ₽" value={budget} onChangeText={setBudget} numeric />
+      <View style={{ flexDirection: 'row', gap: 10 }}><View style={{ flex: 1 }}><Field label="Свободен с" value={start} onChangeText={setStart} /></View><View style={{ flex: 1 }}><Field label="до" value={end} onChangeText={setEnd} /></View></View>
+      <View style={u.row}><Chip label="Спокойно" active={mood === 'calm'} onPress={() => setMood('calm')} /><Chip label="Активно" active={mood === 'active'} onPress={() => setMood('active')} /><Chip label="Без крутых подъёмов" active={noClimb} onPress={() => setNoClimb(!noClimb)} /></View>
+      <Field label="Откуда поедет · необязательно" value={fromSearch} onChangeText={value => { setFromSearch(value); setFromPlace(null); }} />
+      {fromPlace ? <Text style={u.muted}>Отправление: {fromPlace.name}</Text> : !!fromSearch.trim() && <View style={u.row}>{catalog.filter(place => place.name.toLowerCase().includes(fromSearch.toLowerCase())).slice(0, 4).map(place => <Chip key={place.id} label={place.name} onPress={() => setFromPlace(place)} />)}</View>}
+      {!!error && <Text style={[u.text, { color: colors.coral }]}>{error}</Text>}
+      <Button label="Добавить в компанию" onPress={addMember} />
+    </Card>
+
+    <View style={{ gap: 8 }}>
+      <Text style={u.label}>Когда и где</Text>
+      <View style={u.row}><Chip label="Сегодня" active={day === 0} onPress={() => setDay(0)} /><Chip label="Завтра" active={day === 1} onPress={() => setDay(1)} /><Chip label="Только в помещении" active={badWeather} onPress={() => { setBadWeather(!badWeather); setOutput(null); }} /></View>
+      <Text style={u.muted}>{weatherText} · время владивостокское</Text>
+    </View>
+
+    <Button label={members.length ? `Подобрать места${minBudget ? ` до ${minBudget} ₽` : ''}` : 'Сначала добавьте участника'} disabled={!members.length} primary onPress={match} />
+    {flat && <Text style={u.muted}>Кто-то не хочет в сопку — к выбранному месту построим пологий маршрут в обход крутых участков.</Text>}
+
+    {output && <View style={{ gap: 12 }}>
+      <Text style={u.label}>{output.window ? `Все свободны ${new Date(output.window.start).toLocaleTimeString('ru-RU', { timeZone: 'Asia/Vladivostok', hour: '2-digit', minute: '2-digit' })}–${new Date(output.window.end).toLocaleTimeString('ru-RU', { timeZone: 'Asia/Vladivostok', hour: '2-digit', minute: '2-digit' })}` : 'Общего свободного окна нет'}</Text>
+      {output.hints.map(hint => <Text key={hint} style={u.muted}>{hint}</Text>)}
+      {members.length > 1 && <View style={u.row}><Text style={u.muted}>Голосует:</Text>{members.map((member, index) => <Chip key={member.name} label={member.name} active={voter === index} onPress={() => setVoter(index)} />)}</View>}
+      {output.results.map((result, rank) => { const lead = winner?.place.id === result.place.id && score(result.place.id) > 0; const vote = votes[result.place.id]?.[members[voter]?.name || '']; return <View key={result.place.id} style={[c.result, lead && c.resultLead]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}><Text style={c.rank}>{rank + 1}</Text><Text style={[u.heading, { flex: 1 }]}>{result.place.name}</Text>{lead && <Text style={u.eyebrow}>ЛИДЕР</Text>}</View>
+        <Text style={u.text}>{result.reason}</Text>
+        <Text style={u.muted}>{result.price == null ? 'Цену уточнить' : result.price === 0 ? 'Бесплатно' : `${result.price} ₽ на человека`}{result.flags.length ? ` · ${result.flags.join(' · ')}` : ''}</Text>
+        {result.travel.length > 0 && <Text style={u.muted}>{result.travel.map(travel => `${travel.name} ~${travel.minutes} мин`).join(' · ')}</Text>}
+        <Button label="Маршрут" primary={rank === 0} onPress={() => buildRoute(result.place, result.place.id)} />
+        <View style={u.row}>{members.length > 1 && <><Chip label={`За · ${score(result.place.id)}`} active={vote === 1} onPress={() => setVotes({ ...votes, [result.place.id]: { ...votes[result.place.id], [members[voter]?.name || '']: 1 } })} /><Chip label="Против" active={vote === -1} onPress={() => setVotes({ ...votes, [result.place.id]: { ...votes[result.place.id], [members[voter]?.name || '']: -1 } })} /></>}<Button kind="quiet" label="Поделиться" onPress={() => void share(result.place)} /></View>
+      </View>; })}
+    </View>}
   </View>;
 }
+
+const c = StyleSheet.create({
+  member: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 10, paddingHorizontal: 12, borderRadius: 16, backgroundColor: colors.panel },
+  avatar: { width: 36, height: 36, borderRadius: 18, backgroundColor: colors.amberSoft, alignItems: 'center', justifyContent: 'center' },
+  avatarText: { color: colors.amber, fontFamily: 'Manrope_800ExtraBold', fontSize: 15 },
+  remove: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.06)' },
+  removeText: { color: colors.muted, fontSize: 18, lineHeight: 20 },
+  result: { backgroundColor: colors.panel, borderRadius: 22, padding: 16, gap: 10, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.line },
+  resultLead: { borderColor: 'rgba(245,184,61,0.6)', borderWidth: 1 },
+  rank: { color: colors.amber, fontFamily: 'Manrope_800ExtraBold', fontSize: 22, letterSpacing: -0.4, width: 22 },
+});
