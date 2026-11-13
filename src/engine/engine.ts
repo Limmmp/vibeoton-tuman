@@ -104,12 +104,15 @@ export class Engine {
     const basemap = new BasemapFallback(map);
     const beforeId = addTerrainLayers(map);
     const fog = new FogOfWar();
-    const fogLayer = new FogLayer(map, fog, beforeId, renderProfile);
-    addHillshadeOverFog(map, beforeId, renderProfile);
-    addOverlayLayers(map, beforeId);
+    // Туман — поверх подписей подложки: названия улиц не должны просвечивать там, где ты не был.
+    // Отмывка сопок, маршрут и метки — поверх тумана.
+    void beforeId;
+    const fogLayer = new FogLayer(map, fog, undefined, renderProfile);
+    addHillshadeOverFog(map, undefined, renderProfile);
+    addOverlayLayers(map, undefined);
     const player = new Player(map);
     const engine = new Engine(map, fog, player, renderProfile, basemap);
-    engine.landmarkBefore = beforeId;
+    engine.landmarkBefore = "route-alt"; // модели мест — над туманом, под маршрутом
     map.addSource("landmarks", { type: "geojson", data: { type: "FeatureCollection", features: LANDMARKS.map(item => ({ type: "Feature", properties: { id: item.id, name: item.name }, geometry: { type: "Point", coordinates: [item.lon, item.lat] } })) } });
     map.addLayer({ id: "landmark-pins", type: "circle", source: "landmarks", minzoom: 12, paint: { "circle-radius": 8, "circle-color": "#f5b83d", "circle-stroke-width": 2, "circle-stroke-color": "#172633" } });
     map.addLayer({ id: "landmark-labels", type: "symbol", source: "landmarks", minzoom: 14, layout: { "text-field": ["get", "name"], "text-size": 12, "text-offset": [0, 1.6] }, paint: { "text-color": "#172633", "text-halo-color": "#fff", "text-halo-width": 1.5 } });

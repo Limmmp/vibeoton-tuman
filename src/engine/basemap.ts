@@ -3,6 +3,7 @@
 import { addBuildingLayers, setBuildingsVisible } from "./buildings";
 import maplibregl, { type Map as MLMap, type StyleSpecification } from "maplibre-gl";
 import { prepareMapStyle } from "./map-style";
+import { darkenStyle } from "./dark-style";
 import { rasterStyle } from "./basemap-fallback";
 import { TERRARIUM_URL } from "./dem";
 import type { RenderProfile } from "./performance";
@@ -33,7 +34,7 @@ export async function createBaseMap(container: HTMLElement | string, center = VL
   try {
     const response = await fetch(STYLE_URL, { signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw new Error(`Не удалось загрузить стиль карты: HTTP ${response.status}`);
-    style = russianLabels(await response.json());
+    style = darkenStyle(russianLabels(await response.json()));
     if (!style.sources?.openmaptiles || !style.layers?.length) throw new Error("Некорректный стиль карты");
   } catch (error) {
     console.warn("[basemap] Резервная подложка:", error);

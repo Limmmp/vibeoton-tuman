@@ -17,13 +17,19 @@ body,
 }
 
 .tuman-avatar { position: relative; width: 64px; height: 88px; }
-.tuman-avatar__image {
-  position: absolute; left: 50%; bottom: 14px; width: 52px; height: 64px;
-  transform: translateX(-50%); object-fit: contain;
+/* Игрок — янтарная стрелка со свечением, как фонарь в тумане. Спрайт аватара скрыт до финальной графики. */
+.tuman-avatar__image { display: none; }
+.tuman-avatar::before {
+  content: ""; position: absolute; left: 50%; bottom: -26px; width: 52px; height: 52px; margin-left: -26px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(245,184,61,0.45) 0%, rgba(245,184,61,0.12) 45%, rgba(245,184,61,0) 70%);
+  animation: tuman-glow 2.4s ease-in-out infinite;
 }
+@keyframes tuman-glow { 0%, 100% { transform: scale(0.85); opacity: 0.75; } 50% { transform: scale(1.1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .tuman-avatar::before { animation: none; } }
 .tuman-avatar__cursor {
-  position: absolute; left: 20px; bottom: -12px; width: 24px; height: 24px;
+  position: absolute; left: 50%; bottom: -16px; width: 32px; height: 32px; margin-left: -16px;
   overflow: visible; transform: rotate(var(--heading)); transform-origin: center;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.55));
 }
 .tuman-avatar__heading { fill: var(--accent); }
 

@@ -15,8 +15,8 @@ export function rasterStyle(): StyleSpecification {
       },
     },
     layers: [
-      { id: "background", type: "background", paint: { "background-color": "#243b45" } },
-      { id: FALLBACK_LAYER, type: "raster", source: FALLBACK_SOURCE, paint: { "raster-fade-duration": 0 } },
+      { id: "background", type: "background", paint: { "background-color": "#0E1419" } },
+      { id: FALLBACK_LAYER, type: "raster", source: FALLBACK_SOURCE, paint: { "raster-fade-duration": 0, "raster-brightness-max": 0.42, "raster-saturation": -0.55, "raster-contrast": 0.1 } }, // приглушённая резервная подложка под ночную тему
     ],
   };
 }
