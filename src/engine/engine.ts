@@ -16,6 +16,9 @@ import { QUEST_CATALOG, questById } from "../quests/catalog";
 import { ProgressManager } from "../progress/progress";
 import { loadProgress, saveProgress } from "../progress/storage";
 import { AVATAR_ITEMS } from "../progress/catalog";
+import { appearanceFromProgress } from "../progress/avatar";
+import type { AvatarAppearance } from "../progress/types";
+import { detectRenderProfile, type RenderProfile } from "./performance";
 
 type Handler = (e: EngineEvent) => void;
 
@@ -35,9 +38,15 @@ export class Engine {
   private updateBuildings: () => void = () => {};
   private quests: QuestRunner;
   private progress: ProgressManager;
+  private avatar: AvatarAppearance;
 
-  private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player) {
-    this.progress = new ProgressManager({ initial: loadProgress(), save: saveProgress, emit: (event) => this.emit(event) });
+  private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player, readonly renderProfile: RenderProfile) {
+    this.progress = new ProgressManager({ initial: loadProgress(), save: saveProgress, emit: (event) => {
+      if (event.type === "inventoryChanged") this.applyAvatar(appearanceFromProgress(this.progress.state));
+      this.emit(event);
+    } });
+    this.avatar = appearanceFromProgress(this.progress.state);
+    this.player.setAvatar(this.avatar);
     this.quests = new QuestRunner({
       emit: (event) => {
         if (event.type === "activeStep") this.drawQuestTargets(event.active);
@@ -50,15 +59,16 @@ export class Engine {
   }
 
   static async create(container: HTMLElement | string): Promise<Engine> {
-    const map = await createBaseMap(container);
+    const renderProfile = detectRenderProfile();
+    const map = await createBaseMap(container, undefined, renderProfile);
     await new Promise<void>((r) => map.once("load", () => r()));
     const beforeId = addTerrainLayers(map);
     const fog = new FogOfWar();
-    new FogLayer(map, fog, beforeId);
+    new FogLayer(map, fog, beforeId, renderProfile);
     addHillshadeOverFog(map, beforeId);
     addOverlayLayers(map, beforeId);
     const player = new Player(map);
-    const engine = new Engine(map, fog, player);
+    const engine = new Engine(map, fog, player, renderProfile);
     engine.wire();
     const savedQuest = loadQuestSnapshot();
     if (savedQuest) {
@@ -78,6 +88,12 @@ export class Engine {
 
   private emit(e: EngineEvent) {
     this.handlers.forEach((fn) => fn(e));
+  }
+
+  private applyAvatar(appearance: AvatarAppearance) {
+    this.avatar = { ...appearance, equipped: { ...appearance.equipped } };
+    this.player.setAvatar(this.avatar);
+    this.emit({ type: "avatarChanged", appearance: this.avatar });
   }
 
   private drawQuestTargets(active: ActiveStep | null) {
@@ -101,6 +117,8 @@ export class Engine {
       fog: { cells: this.fog.cells.size, km2: +this.fog.areaKm2().toFixed(4) },
       quest: this.quests.active,
       progress: this.progress.state,
+      avatar: { ...this.avatar, equipped: { ...this.avatar.equipped } },
+      renderProfile: this.renderProfile,
     };
   }
 
@@ -139,7 +157,7 @@ export class Engine {
             if (seen.has(key)) continue;
             seen.add(key);
             out.push({ type: "Feature", geometry: { type: "Polygon", coordinates: rings }, properties: props });
-            if (out.length > 8000) break outer;
+            if (out.length > this.renderProfile.buildingLimit) break outer;
           }
         }
         (map.getSource("lit-buildings") as GeoJSONSource).setData({ type: "FeatureCollection", features: out });
@@ -187,7 +205,7 @@ export class Engine {
     switch (cmd.type) {
       case "setViewMode":
         this.viewMode = cmd.mode;
-        setViewMode(map, cmd.mode);
+        setViewMode(map, cmd.mode, this.renderProfile);
         this.updateBuildings();
         return;
       case "setPlayerMode":
@@ -256,6 +274,9 @@ export class Engine {
         return this.quests.active;
       case "getProgress":
         return this.progress.state;
+      case "setSelfAvatar":
+        this.applyAvatar(cmd.appearance);
+        return this.avatar;
       case "listAvatarItems":
         return AVATAR_ITEMS;
       case "equipAvatarItem":

@@ -7,6 +7,8 @@ import maplibregl, { type Map as MLMap } from "maplibre-gl";
 import { move, bearing, distance, type LatLon } from "./geo";
 import { load, save, debounced } from "./storage";
 import { VLADIVOSTOK } from "./basemap";
+import type { AvatarAppearance } from "../progress/types";
+import { DEFAULT_AVATAR } from "../progress/avatar";
 
 export type PlayerMode = "sim" | "external" | "gps";
 type MoveListener = (pos: LatLon, prev: LatLon, jump: boolean) => void;
@@ -26,16 +28,17 @@ export class Player {
   private listeners: MoveListener[] = [];
   private gpsWatch: number | null = null;
   private marker: maplibregl.Marker;
+  private markerEl: HTMLElement;
   private persist = debounced(() => save("player", this.pos), 1000);
 
   constructor(private map: MLMap) {
     this.pos = load<LatLon>("player", VLADIVOSTOK);
-    const el = document.createElement("div");
-    el.className = "tuman-player";
-    el.innerHTML = `<svg viewBox="0 0 28 28" width="28" height="28" aria-label="Игрок"><path d="M14 2 L24 25 L14 19 L4 25 Z" fill="#F5B83D" stroke="#0F1720" stroke-width="2" stroke-linejoin="round"/></svg>`;
-    this.marker = new maplibregl.Marker({ element: el, rotationAlignment: "map", pitchAlignment: "map" })
+    this.markerEl = document.createElement("div");
+    this.markerEl.className = "tuman-player";
+    this.marker = new maplibregl.Marker({ element: this.markerEl, rotationAlignment: "viewport", pitchAlignment: "viewport", anchor: "bottom" })
       .setLngLat([this.pos.lon, this.pos.lat])
       .addTo(map);
+    this.setAvatar(DEFAULT_AVATAR);
     this.bindKeys();
     // Пользователь сам потащил карту — перестаём следовать за игроком.
     map.on("dragstart", () => (this.follow = false));
@@ -47,6 +50,24 @@ export class Player {
 
   onMove(fn: MoveListener) {
     this.listeners.push(fn);
+  }
+
+  setAvatar(appearance: AvatarAppearance) {
+    const hat = appearance.equipped.head === "admiral-cap" ? `<path d="M9 9h18l-2 5H11z" fill="#F5B83D"/><path d="M13 6h10l2 3H11z" fill="#F4F6F8" stroke="#0F1720" stroke-width="1.5"/>` : "";
+    this.markerEl.dataset.modelUrl = appearance.modelUrl ?? "";
+    this.markerEl.innerHTML = `<div class="tuman-avatar" aria-label="Игрок">
+      <svg class="tuman-avatar__body" viewBox="0 0 36 50" aria-hidden="true">
+        <ellipse cx="18" cy="46" rx="12" ry="3" fill="rgba(15,23,32,.35)"/>
+        <circle cx="18" cy="14" r="8" fill="#F0C7A5" stroke="#0F1720" stroke-width="2"/>
+        <path d="M8 46v-18c0-7 4-10 10-10s10 3 10 10v18z" fill="${escColor(appearance.bodyColor)}" stroke="#0F1720" stroke-width="2"/>
+        <path d="M13 45V31M23 45V31" stroke="#0F1720" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="15" cy="13" r="1" fill="#0F1720"/><circle cx="21" cy="13" r="1" fill="#0F1720"/>
+        ${hat}
+      </svg>
+      <svg class="tuman-avatar__heading" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M10 1 16 15 10 12 4 15z" fill="${escColor(appearance.accentColor)}" stroke="#0F1720" stroke-width="1.5"/>
+      </svg>
+    </div>`;
   }
 
   /** Идти к точке (только в симуляции). */
@@ -113,7 +134,8 @@ export class Player {
     const prev = this.pos;
     this.pos = { lat: p.lat, lon: p.lon };
     if (heading != null) this.heading = heading;
-    this.marker.setLngLat([p.lon, p.lat]).setRotation(this.heading);
+    this.marker.setLngLat([p.lon, p.lat]);
+    this.markerEl.style.setProperty("--heading", `${this.heading}deg`);
     if (this.follow) this.map.jumpTo({ center: [p.lon, p.lat] });
     this.persist();
     this.listeners.forEach((fn) => fn(this.pos, prev, jump));
@@ -143,4 +165,8 @@ export class Player {
     this.mode = mode;
     return mode;
   }
+}
+
+function escColor(value: string) {
+  return /^#[0-9a-f]{6}$/i.test(value) ? value : "#3FB8AF";
 }

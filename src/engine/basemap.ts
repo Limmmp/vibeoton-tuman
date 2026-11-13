@@ -2,6 +2,7 @@
 
 import maplibregl, { type Map as MLMap, type StyleSpecification } from "maplibre-gl";
 import { TERRARIUM_URL } from "./dem";
+import type { RenderProfile } from "./performance";
 
 export const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 export const VLADIVOSTOK = { lat: 43.1155, lon: 131.8855 }; // Центральная площадь
@@ -29,7 +30,7 @@ function russianLabels(style: StyleSpecification): StyleSpecification {
   return style;
 }
 
-export async function createBaseMap(container: HTMLElement | string, center = VLADIVOSTOK): Promise<MLMap> {
+export async function createBaseMap(container: HTMLElement | string, center = VLADIVOSTOK, profile?: RenderProfile): Promise<MLMap> {
   const style = russianLabels(await (await fetch(STYLE_URL)).json());
   return new maplibregl.Map({
     container,
@@ -37,6 +38,8 @@ export async function createBaseMap(container: HTMLElement | string, center = VL
     center: [center.lon, center.lat],
     zoom: 15,
     maxPitch: 75,
+    pixelRatio: profile?.pixelRatio,
+    fadeDuration: profile?.mobile ? 0 : 300,
     attributionControl: { compact: true },
   });
 }
@@ -114,14 +117,14 @@ export function addTerrainLayers(map: MLMap): string | undefined {
   return firstSymbol;
 }
 
-export function setViewMode(map: MLMap, mode: ViewMode) {
+export function setViewMode(map: MLMap, mode: ViewMode, profile?: RenderProfile) {
   if (mode === "3d") {
     map.setTerrain({ source: "dem-terrain", exaggeration: TERRAIN_EXAGGERATION });
     map.setLayoutProperty("building-3d", "visibility", "visible");
-    map.easeTo({ pitch: PITCH_3D, duration: 900 });
+    map.easeTo({ pitch: profile?.pitch3d ?? PITCH_3D, duration: profile?.mobile ? 350 : 900 });
   } else {
     map.setTerrain(null);
     map.setLayoutProperty("building-3d", "visibility", "none");
-    map.easeTo({ pitch: 0, bearing: 0, duration: 700 });
+    map.easeTo({ pitch: 0, bearing: 0, duration: profile?.mobile ? 300 : 700 });
   }
 }

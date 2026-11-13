@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { ProgressManager, levelForXp } from "./progress.ts";
 import type { ProgressEvent, Reward } from "./types.ts";
+import { appearanceFromProgress, DEFAULT_AVATAR } from "./avatar.ts";
 
 const reward: Reward = { xp: 150, cash: 100, rep: 1, items: ["admiral-cap"] };
 
@@ -63,6 +64,17 @@ test("экипировка требует полученный предмет и
   value.grantQuestReward({ questId: "q1", title: "Квест", reward, trusted: true });
   assert.equal(value.equip("admiral-cap").equipped.head, "admiral-cap");
   assert.equal(value.unequip("head").equipped.head, undefined);
+});
+
+test("внешний вид собирается из экипировки и не меняет исходный профиль", () => {
+  const { value } = manager();
+  value.grantQuestReward({ questId: "q1", title: "Квест", reward, trusted: true });
+  const state = value.equip("admiral-cap");
+  const appearance = appearanceFromProgress(state);
+  assert.equal(appearance.equipped.head, "admiral-cap");
+  appearance.equipped.head = undefined;
+  assert.equal(value.state.equipped.head, "admiral-cap");
+  assert.equal(DEFAULT_AVATAR.bodyColor, "#3FB8AF");
 });
 
 test("уровень вычисляется только из опыта", () => {

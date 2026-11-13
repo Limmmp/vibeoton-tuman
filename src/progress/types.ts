@@ -8,6 +8,13 @@ export type Reward = {
   items: string[];
 };
 
+export type AvatarAppearance = {
+  bodyColor: string;
+  accentColor: string;
+  equipped: Partial<Record<AvatarSlot, string>>;
+  modelUrl?: string;
+};
+
 export type AvatarItem = {
   id: string;
   name: string;
@@ -46,4 +53,5 @@ export type RewardResult = {
 export type ProgressEvent =
   | { type: "progressChanged"; state: ProgressState }
   | { type: "rewardGranted"; result: RewardResult }
-  | { type: "inventoryChanged"; inventory: Record<string, number>; equipped: ProgressState["equipped"] };
+  | { type: "inventoryChanged"; inventory: Record<string, number>; equipped: ProgressState["equipped"] }
+  | { type: "avatarChanged"; appearance: AvatarAppearance };
