@@ -1,0 +1,25 @@
+name: Check clean install
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  root:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --include=dev
+      - run: npm ls @types/node
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run data:check
