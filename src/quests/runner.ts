@@ -38,11 +38,11 @@ export class QuestRunner {
     };
   }
 
-  start(quest: Quest, context: { position?: LatLon; fogCells?: number } = {}) {
+  start(quest: Quest, context: { position?: LatLon; fogCells?: number; trusted?: boolean } = {}) {
     this.position = context.position ?? this.position;
     this.fogCells = context.fogCells ?? this.fogCells;
     this.syncClock = 0;
-    this.snapshot = { quest, stepIndex: 0, runtime: this.initialRuntime(quest.steps[0]) };
+    this.snapshot = { quest, stepIndex: 0, runtime: this.initialRuntime(quest.steps[0]), trusted: context.trusted === true };
     this.persistAndEmit();
     this.evaluatePosition();
     return this.active;
@@ -194,10 +194,10 @@ export class QuestRunner {
     this.emit({ type: "stepDone", questId: state.quest.id, stepId: step.id, stepIndex });
     state.stepIndex++;
     if (state.stepIndex >= state.quest.steps.length) {
-      const { id: questId, reward } = state.quest;
+      const { id: questId, title: questTitle, reward } = state.quest;
       this.snapshot = null;
       this.save(null);
-      this.emit({ type: "questDone", questId, reward });
+      this.emit({ type: "questDone", questId, questTitle, reward, trusted: state.trusted });
       return;
     }
     state.runtime = this.initialRuntime(state.quest.steps[state.stepIndex]);

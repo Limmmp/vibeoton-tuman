@@ -13,6 +13,9 @@ import { QuestRunner } from "../quests/runner";
 import { resolveQuest } from "../quests/schema";
 import { loadQuestSnapshot, saveQuestSnapshot } from "../quests/storage";
 import { QUEST_CATALOG, questById } from "../quests/catalog";
+import { ProgressManager } from "../progress/progress";
+import { loadProgress, saveProgress } from "../progress/storage";
+import { AVATAR_ITEMS } from "../progress/catalog";
 
 type Handler = (e: EngineEvent) => void;
 
@@ -31,13 +34,16 @@ export class Engine {
   private handlers: Handler[] = [];
   private updateBuildings: () => void = () => {};
   private quests: QuestRunner;
+  private progress: ProgressManager;
 
   private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player) {
+    this.progress = new ProgressManager({ initial: loadProgress(), save: saveProgress, emit: (event) => this.emit(event) });
     this.quests = new QuestRunner({
       emit: (event) => {
         if (event.type === "activeStep") this.drawQuestTargets(event.active);
         else if (event.type === "questDone" || event.type === "questFailed" || event.type === "questStopped") this.drawQuestTargets(null);
         this.emit(event);
+        if (event.type === "questDone") this.progress.grantQuestReward({ questId: event.questId, title: event.questTitle, reward: event.reward, trusted: event.trusted });
       },
       save: saveQuestSnapshot,
     });
@@ -94,6 +100,7 @@ export class Engine {
       viewMode: this.viewMode,
       fog: { cells: this.fog.cells.size, km2: +this.fog.areaKm2().toFixed(4) },
       quest: this.quests.active,
+      progress: this.progress.state,
     };
   }
 
@@ -230,7 +237,7 @@ export class Engine {
       case "startQuestById": {
         const quest = questById(cmd.questId);
         if (!quest) throw new Error(`Квест не найден: ${cmd.questId}`);
-        return this.quests.start(quest, { position: player.pos, fogCells: fog.cells.size });
+        return this.quests.start(quest, { position: player.pos, fogCells: fog.cells.size, trusted: true });
       }
       case "startQuest":
         return this.quests.start(resolveQuest(cmd.quest, undefined, cmd.quest.source), { position: player.pos, fogCells: fog.cells.size });
@@ -247,6 +254,16 @@ export class Engine {
         return;
       case "getQuestState":
         return this.quests.active;
+      case "getProgress":
+        return this.progress.state;
+      case "listAvatarItems":
+        return AVATAR_ITEMS;
+      case "equipAvatarItem":
+        return this.progress.equip(cmd.itemId);
+      case "unequipAvatarSlot":
+        return this.progress.unequip(cmd.slot);
+      case "resetProgress":
+        return this.progress.reset();
       case "getState":
         return this.state();
     }

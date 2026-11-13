@@ -10,7 +10,7 @@ export const ENGINE_DEMO_QUEST: Quest = resolveQuest({
   giver: "Кот Адмирал",
   intro: "Короткий маршрут проверяет геотриггеры, ожидание, сбор, вопрос и ручное подтверждение.",
   outro: ["Все основные механики квеста работают."],
-  reward: { cash: 100, rep: 1 },
+  reward: { xp: 150, cash: 100, rep: 1, items: ["admiral-cap"] },
   start: {
     id: "osm-w30281940",
     name: "С-56",
