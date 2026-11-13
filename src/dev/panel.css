@@ -84,3 +84,7 @@
   opacity: 1;
   border-color: #f5b83d;
 }
+
+.dev-route-choice { display: flex; gap: 6px; margin: 6px 0; }
+.dev-route-choice button { flex: 1; padding: 6px 4px; border: 1px solid #334155; border-radius: 8px; background: #1b2633; color: inherit; font: inherit; font-size: 12px; cursor: pointer; }
+.dev-route-choice button.on { border-color: #f5b83d; color: #f5b83d; }

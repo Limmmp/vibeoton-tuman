@@ -5,7 +5,7 @@ import type { Map as MLMap, GeoJSONSource } from "maplibre-gl";
 import { createBaseMap, addTerrainLayers, addHillshadeOverFog, setViewMode, type ViewMode } from "./basemap";
 import { FogOfWar, FogLayer } from "./fog";
 import { Player } from "./player";
-import { routeWithElevation } from "./route";
+import { routeOptions, routeWithElevation, type RouteOptions, type RouteResult } from "./route";
 import { elevationAt } from "./dem";
 import type { Command, EngineEvent, Place, State } from "./protocol";
 import type { ActiveStep } from "../quests/types";
@@ -70,6 +70,7 @@ export class Engine {
   private selectedPlace: string | null = null;
   private others = new Map<string, OtherPlayer>(); // другие игроки (showPlayers / updatePlayers)
   private social: SocialMode = "all"; // кого из них показывать (setSocialLayer)
+  private routeOpts: RouteOptions | null = null; // последний маршрут с вариантами (короткий / пологий)
   private lighting: LightingMode = "auto"; // окна и свет: по времени Владивостока или принудительно
 
   private constructor(readonly map: MLMap, readonly fog: FogOfWar, readonly player: Player, renderProfile: RenderProfile, private basemap: BasemapFallback) {
@@ -226,6 +227,23 @@ export class Engine {
   }
 
   /** Подпись и кольцо у выбранной метки. null — снять выбор. */
+  /** Выбранный маршрут — яркой линией, второй вариант — тусклым пунктиром под ним. */
+  private drawRoutes(main: RouteResult | null, alt: RouteResult | null) {
+    const line = (r: RouteResult | null) => r
+      ? { type: "Feature" as const, properties: {}, geometry: { type: "LineString" as const, coordinates: r.path.map((p) => [p.lon, p.lat]) } }
+      : EMPTY;
+    (this.map.getSource("route") as GeoJSONSource | undefined)?.setData(line(main));
+    (this.map.getSource("route-alt") as GeoJSONSource | undefined)?.setData(line(alt));
+  }
+
+  private drawRouteChoice(which: "short" | "gentle") {
+    const opts = this.routeOpts!;
+    const chosen = which === "gentle" && opts.gentle ? opts.gentle : opts.short;
+    const other = chosen === opts.short ? opts.gentle : opts.short;
+    this.drawRoutes(chosen, other);
+    return { chosen: chosen === opts.short ? "short" : "gentle", short: strip(opts.short), gentle: opts.gentle ? strip(opts.gentle) : null };
+  }
+
   private selectPlace(id: string | null) {
     const place = id ? this.places.get(id) : undefined;
     this.selectedPlace = place ? place.id : null;
@@ -526,16 +544,25 @@ export class Engine {
       case "getDistricts":
         return this.districts.stats();
       case "route": {
-        const r = await routeWithElevation(cmd.from ?? player.pos, cmd.to);
-        (map.getSource("route") as GeoJSONSource).setData({
-          type: "Feature", properties: {},
-          geometry: { type: "LineString", coordinates: r.path.map((p) => [p.lon, p.lat]) },
-        });
-        const { path: _path, ...rest } = r;
-        return rest;
+        const from = cmd.from ?? player.pos;
+        if (cmd.options) {
+          const opts = await routeOptions(from, cmd.to);
+          this.routeOpts = opts;
+          return this.drawRouteChoice(opts.gentle ? "gentle" : "short");
+        }
+        this.routeOpts = null;
+        const r = await routeWithElevation(from, cmd.to);
+        this.drawRoutes(r, null);
+        return strip(r);
+      }
+      case "chooseRoute": {
+        if (!this.routeOpts) throw new Error("Сначала постройте маршрут с вариантами");
+        if (cmd.which === "gentle" && !this.routeOpts.gentle) throw new Error("Пологого варианта нет");
+        return this.drawRouteChoice(cmd.which);
       }
       case "clearRoute":
-        (map.getSource("route") as GeoJSONSource).setData(EMPTY);
+        this.routeOpts = null;
+        this.drawRoutes(null, null);
         return;
       case "elevation":
         return { h: await elevationAt(cmd) };
@@ -602,6 +629,7 @@ export class Engine {
 }
 
 const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
+const strip = ({ path: _path, ...rest }: RouteResult) => rest;
 
 function placesGeoJSON(places: Place[]): GeoJSON.FeatureCollection {
   return {
@@ -616,6 +644,8 @@ function placesGeoJSON(places: Place[]): GeoJSON.FeatureCollection {
 
 /** Маршрут и метки — поверх тумана, под подписями. */
 function addOverlayLayers(map: MLMap, beforeId?: string) {
+  map.addSource("route-alt", { type: "geojson", data: EMPTY });
+  map.addLayer({ id: "route-alt", type: "line", source: "route-alt", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#A4B4BF", "line-width": 3, "line-opacity": 0.7, "line-dasharray": [1.5, 1.5] } }, beforeId);
   map.addSource("route", { type: "geojson", data: EMPTY });
   map.addLayer({ id: "route-casing", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#0F1720", "line-width": 8 } }, beforeId);
   map.addLayer({ id: "route", type: "line", source: "route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#F5B83D", "line-width": 4 } }, beforeId);

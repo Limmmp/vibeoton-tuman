@@ -39,7 +39,8 @@ export type Command =
   | { id?: string; type: "follow"; on: boolean }
   | { id?: string; type: "flyTo"; lat: number; lon: number; zoom?: number }
   | { id?: string; type: "showPlaces"; places: Place[] }
-  | { id?: string; type: "route"; to: LatLon; from?: LatLon } // ответ: RouteResult (без path — он уже на карте)
+  | { id?: string; type: "route"; to: LatLon; from?: LatLon; options?: boolean } // ответ: RouteResult без path; с options: RouteChoice
+  | { id?: string; type: "chooseRoute"; which: "short" | "gentle" } // переключить вариант; ответ: RouteChoice
   | { id?: string; type: "clearRoute" }
   | { id?: string; type: "elevation"; lat: number; lon: number } // ответ: { h: number | null }
   | { id?: string; type: "revealAt"; lat: number; lon: number; radius?: number }
@@ -71,6 +72,10 @@ export type Command =
   | { id?: string; type: "checkIn"; placeId: string } // ответ: { ok, distance, first?, reward? } — место должно быть в showPlaces, игрок ближе 60 м
   | { id?: string; type: "getDistricts" } // ответ: DistrictStat[]
   | { id?: string; type: "getState" }; // ответ: State
+
+export type RouteSummary = { distance: number; climb: number; descent: number; minutes: number; steep: number; maxGrade: number; profile: { d: number; h: number }[] };
+/** Короткий и пологий маршруты: выбранный нарисован яркой линией, второй — пунктиром. gentle = null, если пологого нет. */
+export type RouteChoice = { chosen: "short" | "gentle"; short: RouteSummary; gentle: RouteSummary | null };
 
 export type State = {
   engineVersion: string;

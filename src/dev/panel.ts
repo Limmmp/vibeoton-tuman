@@ -51,6 +51,7 @@ export function mountDevPanel(engine: Engine) {
     <div class="dev-hint">WASD / стрелки — идти (Shift — бегом), клик — идти к точке, правый клик или долгое нажатие — маршрут с высотами.</div>
     <div class="dev-route" hidden>
       <div data-out="route"></div>
+      <div class="dev-route-choice" hidden></div>
       <canvas width="260" height="70"></canvas>
     </div>
     <div class="dev-error" hidden></div>`;
@@ -192,16 +193,34 @@ export function mountDevPanel(engine: Engine) {
     }
   });
 
+  type Summary = { distance: number; climb: number; descent: number; minutes: number; profile: { d: number; h: number }[] };
+  type Choice = { chosen: "short" | "gentle"; short: Summary; gentle: Summary | null };
+  const line = (r: Summary) => `${formatDistance(r.distance)} · ↑ ${r.climb} м · ↓ ${r.descent} м · ≈ ${r.minutes} мин`;
+
+  function showChoice(c: Choice) {
+    const box = $(".dev-route");
+    const chosen = c.chosen === "gentle" && c.gentle ? c.gentle : c.short;
+    out("route", line(chosen));
+    drawProfile(box.querySelector("canvas")!, chosen.profile);
+    const choice = $(".dev-route-choice");
+    choice.hidden = !c.gentle;
+    choice.replaceChildren();
+    if (!c.gentle) return;
+    for (const [which, r, label] of [["short", c.short, "Короткий"], ["gentle", c.gentle, "Пологий"]] as const) {
+      const b = document.createElement("button");
+      b.textContent = `${label} · ${r.minutes} мин · ↑${r.climb} м`;
+      b.classList.toggle("on", c.chosen === which);
+      b.onclick = async () => showChoice((await engine.exec({ type: "chooseRoute", which })) as Choice);
+      choice.appendChild(b);
+    }
+  }
+
   async function buildRoute(lat: number, lon: number) {
     const box = $(".dev-route");
     box.hidden = false;
     out("route", "Строю маршрут…");
     try {
-      const r = (await engine.exec({ type: "route", to: { lat, lon } })) as {
-        distance: number; climb: number; descent: number; minutes: number; profile: { d: number; h: number }[];
-      };
-      out("route", `${formatDistance(r.distance)} · ↑ ${r.climb} м · ↓ ${r.descent} м · ≈ ${r.minutes} мин`);
-      drawProfile(box.querySelector("canvas")!, r.profile);
+      showChoice((await engine.exec({ type: "route", to: { lat, lon }, options: true })) as Choice);
     } catch (e) {
       out("route", "Не получилось построить маршрут");
       showError(e);
