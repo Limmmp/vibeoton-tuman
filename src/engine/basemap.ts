@@ -1,11 +1,13 @@
-// Базовая карта: тёмный стиль OpenFreeMap, рельеф, отмывка склонов, 3D-дома, небо с дымкой.
+// Базовая карта: цветной стиль OpenFreeMap, рельеф, отмывка склонов, 3D-дома, небо с дымкой.
 
 import { addBuildingLayers, setBuildingsVisible } from "./buildings";
 import maplibregl, { type Map as MLMap, type StyleSpecification } from "maplibre-gl";
+import { prepareMapStyle } from "./map-style";
+import { rasterStyle } from "./basemap-fallback";
 import { TERRARIUM_URL } from "./dem";
 import type { RenderProfile } from "./performance";
 
-export const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
+export const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 export const VLADIVOSTOK = { lat: 43.1155, lon: 131.8855 }; // Центральная площадь
 
 export type ViewMode = "2d" | "3d";
@@ -23,16 +25,20 @@ const demSource = {
 
 /** Подписи на русском, где они есть в OSM. Шильды дорог (ref) не трогаем. */
 function russianLabels(style: StyleSpecification): StyleSpecification {
-  for (const layer of style.layers) {
-    if (layer.type !== "symbol" || !layer.layout?.["text-field"]) continue;
-    const tf = JSON.stringify(layer.layout["text-field"]);
-    if (tf.includes("name")) (layer.layout as Record<string, unknown>)["text-field"] = ["coalesce", ["get", "name:ru"], ["get", "name"]];
-  }
-  return style;
+  return prepareMapStyle(style);
 }
 
 export async function createBaseMap(container: HTMLElement | string, center = VLADIVOSTOK, profile?: RenderProfile): Promise<MLMap> {
-  const style = russianLabels(await (await fetch(STYLE_URL)).json());
+  let style: StyleSpecification;
+  try {
+    const response = await fetch(STYLE_URL, { signal: AbortSignal.timeout(10000) });
+    if (!response.ok) throw new Error(`Не удалось загрузить стиль карты: HTTP ${response.status}`);
+    style = russianLabels(await response.json());
+    if (!style.sources?.openmaptiles || !style.layers?.length) throw new Error("Некорректный стиль карты");
+  } catch (error) {
+    console.warn("[basemap] Резервная подложка:", error);
+    style = rasterStyle();
+  }
   return new maplibregl.Map({
     container,
     style,
@@ -49,12 +55,13 @@ export async function createBaseMap(container: HTMLElement | string, center = VL
  * Отмывка склонов поверх тумана: сопки читаются даже там, где ты ещё не был.
  * Рельеф — не секрет, а главная особенность города; секретом остаются улицы и места.
  */
-export function addHillshadeOverFog(map: MLMap, beforeId?: string) {
+export function addHillshadeOverFog(map: MLMap, beforeId?: string, profile?: RenderProfile) {
   map.addLayer(
     {
       id: "hillshade-over-fog",
       type: "hillshade",
       source: "dem-hillshade",
+      layout: { visibility: profile?.hillshade === false ? "none" : "visible" },
       paint: {
         "hillshade-exaggeration": 0.55,
         "hillshade-shadow-color": "rgba(10,16,24,0.85)",
@@ -103,7 +110,7 @@ export function addTerrainLayers(map: MLMap): string | undefined {
 
 export function setViewMode(map: MLMap, mode: ViewMode, profile?: RenderProfile) {
   if (mode === "3d") {
-    map.setTerrain({ source: "dem-terrain", exaggeration: TERRAIN_EXAGGERATION });
+    map.setTerrain(profile?.terrain === false ? null : { source: "dem-terrain", exaggeration: TERRAIN_EXAGGERATION });
     setBuildingsVisible(map, profile?.show3dBuildings !== false);
     map.easeTo({ pitch: profile?.pitch3d ?? PITCH_3D, duration: profile?.mobile ? 350 : 900 });
   } else {

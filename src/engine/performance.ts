@@ -12,6 +12,8 @@ export type RenderProfile = {
   fogIntervalMs: number;
   buildingLimit: number;
   show3dBuildings: boolean;
+  terrain: boolean;
+  hillshade: boolean;
   pitch3d: number;
 };
 
@@ -26,6 +28,8 @@ export function profileFor(quality: RenderQuality, mobile: boolean, devicePixelR
         fogIntervalMs: 330,
         buildingLimit: 0,
         show3dBuildings: false,
+        terrain: false,
+        hillshade: false,
         pitch3d: 40,
       };
     case "balanced":
@@ -37,6 +41,8 @@ export function profileFor(quality: RenderQuality, mobile: boolean, devicePixelR
         fogIntervalMs: mobile ? 220 : 160,
         buildingLimit: mobile ? 3000 : 5000,
         show3dBuildings: true,
+        terrain: true,
+        hillshade: true,
         pitch3d: mobile ? 50 : 55,
       };
     case "high":
@@ -48,6 +54,8 @@ export function profileFor(quality: RenderQuality, mobile: boolean, devicePixelR
         fogIntervalMs: 120,
         buildingLimit: 8000,
         show3dBuildings: true,
+        terrain: true,
+        hillshade: true,
         pitch3d: 60,
       };
   }

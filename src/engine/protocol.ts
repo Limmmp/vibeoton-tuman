@@ -11,6 +11,7 @@ import type { AvatarAppearance, AvatarSlot, ProgressEvent, ProgressState } from 
 import type { RenderProfile, RenderQuality } from "./performance";
 import type { MapLayer } from "./layers";
 import type { OtherPlayer, SocialMode } from "./players";
+import type { BasemapStatus } from "./basemap-fallback";
 
 export type LatLon = { lat: number; lon: number };
 
@@ -23,6 +24,8 @@ export type Place = {
 };
 
 export type Command =
+  | { id?: string; type: "setRenderActivity"; active: boolean }
+  | { id?: string; type: "setFogEffects"; enabled: boolean }
   | { id?: string; type: "setRenderQuality"; quality: RenderQuality }
   | { id?: string; type: "setViewMode"; mode: "2d" | "3d" }
   | { id?: string; type: "setPlayerMode"; mode: "sim" | "external" | "gps" }
@@ -66,6 +69,8 @@ export type Command =
   | { id?: string; type: "getState" }; // ответ: State
 
 export type State = {
+  engineVersion: string;
+  basemap: BasemapStatus;
   player: LatLon & { heading: number; mode: "sim" | "external" | "gps"; follow: boolean };
   viewMode: "2d" | "3d";
   fog: { cells: number; km2: number };
@@ -73,10 +78,13 @@ export type State = {
   progress: ProgressState;
   avatar: AvatarAppearance;
   renderProfile: RenderProfile;
+  fogEffects: boolean;
   layers: MapLayer[]; // видимые категории меток
 };
 
 export type EngineEvent =
+  | { type: "basemapChanged"; status: BasemapStatus }
+  | { type: "mapError"; message: string }
   | { type: "ready"; state: State }
   | { type: "playerMoved"; lat: number; lon: number; heading: number }
   | { type: "fogChanged"; cells: number; km2: number; fresh: number }
@@ -104,3 +112,4 @@ export type { RenderProfile, RenderQuality } from "./performance";
 export type { DistrictStat } from "../progress/districts";
 export type { MapLayer } from "./layers";
 export type { OtherPlayer, Relation, SocialMode } from "./players";
+export type { BasemapStatus } from "./basemap-fallback";

@@ -29,6 +29,7 @@ export class Player {
   private gpsWatch: number | null = null;
   private marker: maplibregl.Marker;
   private markerEl: HTMLElement;
+  private renderingActive = true;
   private persist = debounced(() => save("player", this.pos), 1000);
 
   constructor(private map: MLMap) {
@@ -134,11 +135,21 @@ export class Player {
     const prev = this.pos;
     this.pos = { lat: p.lat, lon: p.lon };
     if (heading != null) this.heading = heading;
-    this.marker.setLngLat([p.lon, p.lat]);
-    this.markerEl.style.setProperty("--heading", `${this.heading}deg`);
-    if (this.follow) this.map.jumpTo({ center: [p.lon, p.lat] });
+    if (this.renderingActive) this.syncMarker();
     this.persist();
     this.listeners.forEach((fn) => fn(this.pos, prev, jump));
+  }
+
+  setRenderingActive(active: boolean) {
+    if (this.renderingActive === active) return;
+    this.renderingActive = active;
+    if (active) this.syncMarker();
+  }
+
+  private syncMarker() {
+    this.marker.setLngLat([this.pos.lon, this.pos.lat]);
+    this.markerEl.style.setProperty("--heading", `${this.heading}deg`);
+    if (this.follow) this.map.jumpTo({ center: [this.pos.lon, this.pos.lat] });
   }
 
   async setMode(mode: PlayerMode): Promise<PlayerMode> {
