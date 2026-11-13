@@ -13,8 +13,12 @@ const UNCHECKED = "Из OSM, человеком не проверено: час�
 type Rule = { kind: Kind[]; tags: Tag[]; price?: number; priceLevel?: PriceLevel; note?: string };
 
 /** Категория OSM → наш тип места. Порядок важен: первое совпадение побеждает. */
+// Объекты, которые в OSM размечены как смотровые и т.п., но местами для людей не являются (найдено аудитом).
+const NOT_A_PLACE = /створный знак/i;
+
 function classify(t: Record<string, string>): Rule | null {
   const name = (t["name:ru"] ?? t.name ?? "").toLowerCase();
+  if (NOT_A_PLACE.test(name)) return null;
   if (t.amenity === "library")
     return { kind: ["study", "culture"], tags: ["quiet", "indoor"], price: 0, priceLevel: "free", note: "Бесплатный вход — допущение для публичных библиотек, проверить." };
   if (t.amenity === "coworking_space" || t.office === "coworking") return { kind: ["study"], tags: ["wifi", "laptop-ok", "indoor"] };

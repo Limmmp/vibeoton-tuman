@@ -4428,50 +4428,6 @@
     "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
   },
   {
-    "id": "osm-n5278912421",
-    "name": "Створный знак",
-    "lat": 42.945769,
-    "lon": 131.8734,
-    "kind": [
-      "outdoor"
-    ],
-    "price": 0,
-    "priceLevel": "free",
-    "tags": [
-      "outdoor",
-      "view"
-    ],
-    "hours": null,
-    "photo": null,
-    "source": "https://www.openstreetmap.org/node/5278912421",
-    "osm": "node/5278912421",
-    "checkedAt": null,
-    "verified": false,
-    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
-  },
-  {
-    "id": "osm-n5278912422",
-    "name": "Створный знак",
-    "lat": 42.956951,
-    "lon": 131.87703,
-    "kind": [
-      "outdoor"
-    ],
-    "price": 0,
-    "priceLevel": "free",
-    "tags": [
-      "outdoor",
-      "view"
-    ],
-    "hours": null,
-    "photo": null,
-    "source": "https://www.openstreetmap.org/node/5278912422",
-    "osm": "node/5278912422",
-    "checkedAt": null,
-    "verified": false,
-    "notes": "Из OSM, человеком не проверено: часы, цена, Wi-Fi/розетки. Бесплатно — допущение для смотровых, проверить."
-  },
-  {
     "id": "osm-w27420195",
     "name": "Театральный сквер",
     "lat": 43.114951,

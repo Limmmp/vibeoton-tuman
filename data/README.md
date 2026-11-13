@@ -3,6 +3,7 @@
 | Файл | Что это |
 | --- | --- |
 | `places.json` | каталог мест: учёба, творчество, культура, досуг, еда, прогулки. Формат — тип `Place` в [`src/data/place.ts`](../src/data/place.ts) |
+| `audit.md`, `audit.json` | автоматический аудит: что убрать и что проверить руками (`npm run data:audit`) |
 | `raw/osm-places.json` | сырые кандидаты из OpenStreetMap, из них собирается `places.json` |
 
 ## Как обновлять
@@ -11,6 +12,7 @@
 npm run data:fetch   # скачать свежих кандидатов из OSM (Overpass)
 npm run data:build   # пересобрать places.json; проверенные и ручные записи не трогаются
 npm run data:check   # проверить схему и уникальность id
+npm run data:audit   # свежесть в OSM, живые ли сайты, подозрительные записи → audit.md
 ```
 
 ## Правила
