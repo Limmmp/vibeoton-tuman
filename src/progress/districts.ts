@@ -24,7 +24,21 @@ type Entry = DistrictData & { buf: Uint8Array; revealed: number };
 
 function decodeBase64(s: string): Uint8Array {
   if (typeof atob === "function") return Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
-  return new Uint8Array(Buffer.from(s, "base64"));
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  const clean = s.replace(/\s/g, "").replace(/=+$/, "");
+  const out = new Uint8Array(Math.floor((clean.length * 6) / 8));
+  let bits = 0, value = 0, at = 0;
+  for (const char of clean) {
+    const n = alphabet.indexOf(char);
+    if (n < 0) throw new Error("districts.json: неверный base64");
+    value = (value << 6) | n;
+    bits += 6;
+    if (bits >= 8) {
+      bits -= 8;
+      out[at++] = (value >> bits) & 255;
+    }
+  }
+  return out;
 }
 
 export class DistrictTracker {

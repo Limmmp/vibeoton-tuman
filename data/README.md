@@ -3,7 +3,7 @@
 | Файл | Что это |
 | --- | --- |
 | `places.json` | каталог мест: учёба, творчество, культура, досуг, еда, прогулки. Формат — тип `Place` в [`src/data/place.ts`](../src/data/place.ts) |
-| `facts.json` | исторические факты для «Истории» и квестов. Формат — тип `Fact` в [`src/data/fact.ts`](../src/data/fact.ts). Пока пусто |
+| `facts.json` | 27 исторических фактов-черновиков для «Истории» и квестов. Формат — тип `Fact` в [`src/data/fact.ts`](../src/data/fact.ts). Все пока `verified: false` |
 | `bridges.json` | оси мостов для поправки высот в маршрутах (`npm run data:bridges`) |
 | `districts.json` | уличные ячейки районов (`npm run data:districts`) |
 | `audit.md`, `audit.json` | автоматический аудит: что убрать и что проверить руками (`npm run data:audit`) |

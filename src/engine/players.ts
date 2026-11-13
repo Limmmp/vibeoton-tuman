@@ -36,7 +36,16 @@ export function validatePlayer(p: OtherPlayer): string | null {
   return null;
 }
 
-export function playersGeoJSON(players: OtherPlayer[]): GeoJSON.FeatureCollection {
+type PlayerFeatureCollection = {
+  type: "FeatureCollection";
+  features: Array<{
+    type: "Feature";
+    properties: Record<string, string | number>;
+    geometry: { type: "Point"; coordinates: [number, number] };
+  }>;
+};
+
+export function playersGeoJSON(players: OtherPlayer[]): PlayerFeatureCollection {
   return {
     type: "FeatureCollection",
     features: players.map((p) => ({

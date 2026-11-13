@@ -1,6 +1,6 @@
-import { resolveQuest } from "./schema";
-import type { Quest } from "./types";
-import { STORY_QUESTS, QUEST_REQUIRES } from "./story";
+import { resolveQuest } from "./schema.ts";
+import type { Quest } from "./types.ts";
+import { STORY_QUESTS, QUEST_REQUIRES } from "./story.ts";
 
 export { QUEST_REQUIRES };
 
