@@ -366,10 +366,14 @@ export function createApp({ db, places = [], devLogin = false, seedDemo = false,
     q("INSERT INTO meetings (id, party_id, owner_id, title, starts_at, ends_at, budget_mode, fixed_budget, indoor_only, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
       .run(id, partyId, owner, str(b.title ?? "Встреча", "Название", 1, 60), startsAt, endsAt, mode, fixed, b.indoorOnly ? 1 : 0, now());
     const ownerBudget = b.myBudget !== undefined ? int(b.myBudget, "Ваш бюджет", 0, 100000) : fixed ?? 0;
+    // Демо-друзья (SEED_DEMO) отвечают сразу — «иду» со своим бюджетом, чтобы на защите было что подбирать.
+    const demoBudget = new Map(seedDemo ? (q(`SELECT id, handle FROM users WHERE handle IN (${DEMO.map(() => "?").join(",")})`).all(...DEMO.map((d) => d[1])) as Row[])
+      .map((r) => [r.id as string, DEMO.find((d) => d[1] === r.handle)![3] as number]) : []);
     for (const u of memberIds) {
       const prefs = q("SELECT interests FROM users WHERE id = ?").get(u) as Row;
+      const demo = demoBudget.get(u);
       q("INSERT INTO meeting_members (meeting_id, user_id, rsvp, budget, interests) VALUES (?, ?, ?, ?, ?)")
-        .run(id, u, u === owner ? "going" : "invited", u === owner ? ownerBudget : fixed ?? 0, String(prefs?.interests ?? "[]"));
+        .run(id, u, u === owner || demo !== undefined ? "going" : "invited", u === owner ? ownerBudget : demo ?? fixed ?? 0, String(prefs?.interests ?? "[]"));
     }
     return c.json(meetingView(id, owner), 201);
   });
