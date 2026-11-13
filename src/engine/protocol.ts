@@ -7,6 +7,8 @@
 // Команда с полем id получает ответ { type: "result", id, ok, data | error }.
 
 import type { ActiveStep, Quest } from "../quests/types";
+import type { AvatarAppearance, AvatarSlot, ProgressEvent, ProgressState } from "../progress/types";
+import type { RenderProfile } from "./performance";
 
 export type LatLon = { lat: number; lon: number };
 
@@ -40,6 +42,12 @@ export type Command =
   | { id?: string; type: "completeListen" }
   | { id?: string; type: "confirmLook" }
   | { id?: string; type: "getQuestState" } // ответ: ActiveStep | null
+  | { id?: string; type: "getProgress" } // ответ: ProgressState
+  | { id?: string; type: "setSelfAvatar"; appearance: AvatarAppearance }
+  | { id?: string; type: "listAvatarItems" } // ответ: AvatarItem[]
+  | { id?: string; type: "equipAvatarItem"; itemId: string }
+  | { id?: string; type: "unequipAvatarSlot"; slot: AvatarSlot }
+  | { id?: string; type: "resetProgress" }
   | { id?: string; type: "getState" }; // ответ: State
 
 export type State = {
@@ -47,6 +55,9 @@ export type State = {
   viewMode: "2d" | "3d";
   fog: { cells: number; km2: number };
   quest: ActiveStep | null;
+  progress: ProgressState;
+  avatar: AvatarAppearance;
+  renderProfile: RenderProfile;
 };
 
 export type EngineEvent =
@@ -59,9 +70,12 @@ export type EngineEvent =
   | { type: "questTargetTap"; id: string }
   | { type: "activeStep"; active: ActiveStep }
   | { type: "stepDone"; questId: string; stepId: string; stepIndex: number }
-  | { type: "questDone"; questId: string; reward: Quest["reward"] }
+  | { type: "questDone"; questId: string; questTitle: string; reward: Quest["reward"]; trusted: boolean }
   | { type: "questFailed"; questId: string; reason: string }
   | { type: "questStopped"; questId: string }
+  | ProgressEvent
   | { type: "result"; id: string; ok: boolean; data?: unknown; error?: string };
 
 export type { ActiveStep, Quest, QuestSummary } from "../quests/types";
+export type { AvatarAppearance, AvatarItem, AvatarSlot, ProgressState, Reward, RewardResult } from "../progress/types";
+export type { RenderProfile } from "./performance";

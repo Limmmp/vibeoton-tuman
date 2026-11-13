@@ -38,6 +38,7 @@ export function mountDevPanel(engine: Engine) {
       <div>Открыто: <b data-out="area">—</b></div>
       <div>Высота под курсором: <b data-out="h">—</b></div>
       <div>Режим: <b data-out="mode">симуляция</b></div>
+      <div>Прогресс: <b data-out="progress">—</b></div>
     </div>
     <div class="dev-hint">WASD / стрелки — идти (Shift — бегом), клик — идти к точке, правый клик или долгое нажатие — маршрут с высотами.</div>
     <div class="dev-route" hidden>
@@ -60,7 +61,12 @@ export function mountDevPanel(engine: Engine) {
     const s = engine.state();
     out("area", `${s.fog.km2.toFixed(3)} км² (${s.fog.cells} ячеек)`);
   };
+  const updateProgress = () => {
+    const p = engine.state().progress;
+    out("progress", `${p.level} ур. · ${p.xp} XP · ${p.cash} монет · ${Object.keys(p.inventory).length} предметов`);
+  };
   updateArea();
+  updateProgress();
   const placeBox = $(".dev-place");
   const questBox = $(".dev-quest");
   const renderQuest = (active: ActiveStep | null) => {
@@ -83,6 +89,7 @@ export function mountDevPanel(engine: Engine) {
   renderQuest(engine.state().quest);
   engine.on((e) => {
     if (e.type === "fogChanged") updateArea();
+    if (e.type === "progressChanged" || e.type === "inventoryChanged") updateProgress();
     if (e.type === "mapLongPress") buildRoute(e.lat, e.lon);
     if (e.type === "activeStep") renderQuest(e.active);
     if (e.type === "questDone" || e.type === "questFailed" || e.type === "questStopped") renderQuest(null);

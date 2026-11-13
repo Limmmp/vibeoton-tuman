@@ -7,6 +7,7 @@
 import maplibregl, { type Map as MLMap, type CanvasSource, type GeoJSONSource } from "maplibre-gl";
 import { CELL, cellsInRadius, cellCenter, cellOf, cellKey, cellRowHeightDeg, cellColWidthDeg, distance, lerp, type LatLon } from "./geo";
 import { load, save, debounced } from "./storage";
+import type { RenderProfile } from "./performance";
 
 export const REVEAL_RADIUS = 45; // м вокруг игрока
 
@@ -17,7 +18,7 @@ const FOG_ALPHA = 0.9;
 // Если вид шире этого (м), холст покрывает весь город целиком, а не окно вокруг вида.
 const MAX_WINDOW_SPAN = 9000;
 const CITY_BBOX = { w: 131.72, s: 42.93, e: 132.18, n: 43.32 }; // Владивосток с Русским островом
-const MAX_CANVAS = 2048;
+const DEFAULT_MAX_CANVAS = 2048;
 
 type Listener = (fresh: number) => void;
 
@@ -87,7 +88,7 @@ export class FogLayer {
   private lastDraw = 0;
   private timer: ReturnType<typeof setTimeout> | undefined;
 
-  constructor(private map: MLMap, private fog: FogOfWar, beforeId?: string) {
+  constructor(private map: MLMap, private fog: FogOfWar, beforeId?: string, private profile?: RenderProfile) {
     this.canvas.width = this.canvas.height = 2;
     const coords = toCoords(CITY_BBOX);
     map.addSource("fog-canvas", { type: "canvas", canvas: this.canvas, coordinates: coords, animate: false });
@@ -105,7 +106,7 @@ export class FogLayer {
   /** Не чаще ~8 раз в секунду: при следовании камеры за игроком moveend идёт каждый кадр. */
   schedule() {
     if (this.timer) return;
-    const wait = Math.max(0, 120 - (performance.now() - this.lastDraw));
+    const wait = Math.max(0, (this.profile?.fogIntervalMs ?? 120) - (performance.now() - this.lastDraw));
     this.timer = setTimeout(() => {
       this.timer = undefined;
       this.lastDraw = performance.now();
@@ -135,8 +136,8 @@ export class FogLayer {
     const mw = m1.x - m0.x, mh = m1.y - m0.y;
 
     // Размер холста: по экрану с запасом, но не больше MAX_CANVAS, с сохранением пропорций.
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const target = Math.min(MAX_CANVAS, Math.max(this.map.getCanvas().clientWidth, this.map.getCanvas().clientHeight) * dpr * 1.6);
+    const dpr = this.profile?.pixelRatio ?? Math.min(window.devicePixelRatio || 1, 2);
+    const target = Math.min(this.profile?.fogMaxCanvas ?? DEFAULT_MAX_CANVAS, Math.max(this.map.getCanvas().clientWidth, this.map.getCanvas().clientHeight) * dpr * (this.profile?.fogScale ?? 1.6));
     const W = Math.max(2, Math.round(mw >= mh ? target : (target * mw) / mh));
     const H = Math.max(2, Math.round(mh > mw ? target : (target * mh) / mw));
 

@@ -1,4 +1,5 @@
 import type { LatLon } from "../engine/geo";
+import type { Reward } from "../progress/types";
 
 export const QUEST_STEP_TYPES = ["goto", "hold", "tail", "collect", "explore", "listen", "quiz", "look", "visit"] as const;
 export type QuestStepType = (typeof QUEST_STEP_TYPES)[number];
@@ -88,7 +89,7 @@ export type Quest = {
   giver: string;
   intro: string;
   outro: string[];
-  reward: { cash: number; rep: number };
+  reward: Reward;
   start: QuestPoint;
   steps: QuestStep[];
 };
@@ -125,6 +126,7 @@ export type QuestSnapshot = {
   quest: Quest;
   stepIndex: number;
   runtime: StepRuntime;
+  trusted: boolean;
 };
 
 export type ActiveStep = {
@@ -142,6 +144,6 @@ export type ActiveStep = {
 export type QuestRunnerEvent =
   | { type: "activeStep"; active: ActiveStep }
   | { type: "stepDone"; questId: string; stepId: string; stepIndex: number }
-  | { type: "questDone"; questId: string; reward: Quest["reward"] }
+  | { type: "questDone"; questId: string; questTitle: string; reward: Quest["reward"]; trusted: boolean }
   | { type: "questFailed"; questId: string; reason: string }
   | { type: "questStopped"; questId: string };

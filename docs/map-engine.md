@@ -87,7 +87,7 @@ Location.watchPositionAsync(
 
 ## Протокол
 
-Контракт команд и событий — в [`src/engine/protocol.ts`](../src/engine/protocol.ts), типы квестов — в [`src/quests/types.ts`](../src/quests/types.ts). В RN-проект нужно копировать оба файла.
+Контракт команд и событий — в [`src/engine/protocol.ts`](../src/engine/protocol.ts), типы квестов — в [`src/quests/types.ts`](../src/quests/types.ts), профиль и награды — в [`src/progress/types.ts`](../src/progress/types.ts). В RN-проект нужно копировать эти три файла.
 
 **Команды (приложение → карта).** Если у команды есть `id`, карта отвечает событием `result` с тем же `id`.
 
@@ -114,9 +114,15 @@ Location.watchPositionAsync(
 | `completeListen` | сообщает, что аудио дослушано | — |
 | `confirmLook` | подтверждает выполнение `look` | — |
 | `getQuestState` | возвращает активный шаг | `ActiveStep | null` |
-| `getState` | позиция, режимы, статистика тумана и активный квест | `State` |
+| `getProgress` | опыт, уровень, валюта, репутация, инвентарь, экипировка и история квестов | `ProgressState` |
+| `setSelfAvatar { appearance }` | меняет заглушку аватара; `modelUrl` зарезервирован для 3D | `AvatarAppearance` |
+| `listAvatarItems` | каталог косметических предметов | `AvatarItem[]` |
+| `equipAvatarItem { itemId }` | экипирует полученный предмет в его слот | `ProgressState` |
+| `unequipAvatarSlot { slot }` | снимает предмет из слота | `ProgressState` |
+| `resetProgress` | сбрасывает локальный профиль; только для отладки | `ProgressState` |
+| `getState` | позиция, режимы, туман, квест и профиль | `State` |
 
-**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `result`.
+**События (карта → приложение):** `ready`, `playerMoved`, `fogChanged`, `mapTap`, `mapLongPress`, `placeTap`, `questTargetTap`, `activeStep`, `stepDone`, `questDone`, `questFailed`, `questStopped`, `progressChanged`, `rewardGranted`, `inventoryChanged`, `result`.
 
 Квестовый движок не рисует интерфейс React Native. Приложение получает `activeStep`, показывает текст, аудио и варианты ответа, затем отправляет команду подтверждения. Шаги `goto`, `hold`, `tail`, `collect`, `explore` и `visit` отслеживает движок. Для `listen` и `look` сначала нужен геотриггер у точки; готовность приходит в `activeStep.runtime`.
 
@@ -125,6 +131,31 @@ Location.watchPositionAsync(
 Встроенный технический квест `engine-demo-center` лежит в [`src/quests/catalog.ts`](../src/quests/catalog.ts). Он использует реальные координаты мест из OSM, но не содержит исторических утверждений. В браузерной отладочной панели кнопка «Тест-квест» переносит игрока к старту. Нажатие по целевой метке запускает движение в режиме `sim`.
 
 Активный квест сохраняется в `localStorage` WebView и восстанавливается при запуске. Типы квеста экспортируются из [`src/engine/protocol.ts`](../src/engine/protocol.ts); исходная логика лежит в `src/quests/`.
+
+## Прогресс и награды
+
+Встроенный квест может выдать `xp`, `cash`, `rep` и косметические `items`. Награда выдаётся один раз на `questId`. Повторное прохождение возвращает `rewardGranted` с `granted: false` и `reason: "already-completed"`. Внешний `startQuest` проходит механику, но не выдаёт награду: событие содержит `reason: "untrusted-quest"`. Это не позволяет приложению подставить квест с произвольной валютой.
+
+Профиль хранится локально в WebView. `completedQuests` содержит историю завершений и полученные награды. `inventory` хранит количество предметов, `equipped` — выбранный предмет по слоту. Сейчас в каталоге есть тестовая `admiral-cap`, которую выдаёт `engine-demo-center`.
+
+## Аватар игрока
+
+Карта рисует лёгкую SVG-заглушку вместо прежней стрелки. Стрелка курса остаётся отдельным элементом над персонажем. Экипировка из `ProgressState.equipped` применяется без перезагрузки; `admiral-cap` уже видна на маркере. `AvatarAppearance.modelUrl` зарезервирован под модель Макса: контракт менять не потребуется, когда заглушку заменим на 3D.
+
+React Native управляет редактором и вызывает `equipAvatarItem` либо `setSelfAvatar`. Карта отвечает событием `avatarChanged`.
+
+## Мобильный профиль производительности
+
+Движок автоматически включает мобильный профиль при узком экране, coarse pointer или памяти устройства до 4 ГБ. Он не меняет геометрию домов и дорог, но снижает стоимость рендера:
+
+- pixel ratio MapLibre ограничен до 1,5;
+- canvas тумана ограничен 1280 px вместо 2048 px;
+- туман перерисовывается примерно 4,5 раза в секунду вместо 8;
+- лимит открытых 3D-домов снижен с 8000 до 3000;
+- 3D-наклон снижен с 60° до 50°;
+- отключён fade тайлов и сокращены анимации камеры.
+
+Активные параметры доступны в `getState().renderProfile`. Это позволяет сравнивать FPS на телефонах и позднее добавить ручные профили качества.
 
 Минимальный сценарий приложения:
 

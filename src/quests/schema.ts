@@ -23,8 +23,10 @@ export function resolveQuest(input: unknown, resolvePoint?: PointResolver, sourc
     intro: text(raw.intro),
     outro: lines(raw.outro),
     reward: {
-      cash: clamp(Math.round(number(objectOrEmpty(raw.reward).cash) || 300), 0, 50_000),
-      rep: clamp(Math.round(number(objectOrEmpty(raw.reward).rep) || 1), 0, 10),
+      xp: clamp(Math.round(number(objectOrEmpty(raw.reward).xp) || 0), 0, 1_000_000),
+      cash: clamp(Math.round(number(objectOrEmpty(raw.reward).cash) || 0), 0, 1_000_000),
+      rep: clamp(Math.round(number(objectOrEmpty(raw.reward).rep) || 0), 0, 100_000),
+      items: stringList(objectOrEmpty(raw.reward).items),
     },
     start,
     steps,
@@ -112,6 +114,7 @@ function object(value: unknown, message: string): Raw {
 const objectOrEmpty = (value: unknown): Raw => value && typeof value === "object" && !Array.isArray(value) ? value as Raw : {};
 const text = (value: unknown) => value == null ? "" : String(value).trim();
 const lines = (value: unknown) => (Array.isArray(value) ? value : value ? [value] : []).map(text).filter(Boolean);
+const stringList = (value: unknown) => [...new Set((Array.isArray(value) ? value : []).map(text).filter(Boolean))];
 const number = (value: unknown) => value === "" || value == null ? Number.NaN : Number(value);
 const positive = (value: unknown, fallback: number) => number(value) > 0 ? number(value) : fallback;
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
