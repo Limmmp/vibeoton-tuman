@@ -1,0 +1,62 @@
+[
+  {
+    "id": "s56",
+    "name": "Подлодка С-56",
+    "model": "s56.glb",
+    "kind": "submarine",
+    "lat": 43.113375,
+    "lon": 131.891218,
+    "mapSizeMeters": 70,
+    "rotationDegrees": 0,
+    "altitudeMeters": 0,
+    "source": "https://www.openstreetmap.org/way/30281940",
+    "verified": false,
+    "notes": "Координаты из data/places.json. Поворот и масштаб модели требуют калибровки.",
+    "buildingClearanceMeters": 25
+  },
+  {
+    "id": "lighthouse",
+    "name": "Токаревский маяк",
+    "model": "lighthouse.glb",
+    "kind": "lighthouse",
+    "lat": 43.073056,
+    "lon": 131.843056,
+    "mapSizeMeters": 20,
+    "rotationDegrees": 0,
+    "altitudeMeters": 0,
+    "source": "https://rgo.ru/activity/project-list/mayak-tokarevskogo/",
+    "verified": false,
+    "notes": "Координаты из карточки РГО, округлены. Позиция и масштаб для демонстрации требуют калибровки.",
+    "buildingClearanceMeters": 22
+  },
+  {
+    "id": "bridge",
+    "name": "Золотой мост",
+    "model": "bridge.glb",
+    "kind": "bridge",
+    "lat": 43.111323,
+    "lon": 131.896292,
+    "mapSizeMeters": 160,
+    "rotationDegrees": 0,
+    "altitudeMeters": 5,
+    "source": "https://www.openstreetmap.org/way/186711507",
+    "verified": false,
+    "notes": "Точка из линии моста в data/bridges.json. На карте размещается демонстрационная фигурка, не инженерная модель в натуральную величину.",
+    "buildingClearanceMeters": 15
+  },
+  {
+    "id": "funicular",
+    "name": "Фуникулёр",
+    "model": "funicular.glb",
+    "kind": "funicular",
+    "lat": 43.115812,
+    "lon": 131.900883,
+    "mapSizeMeters": 20,
+    "rotationDegrees": 0,
+    "altitudeMeters": 0,
+    "source": "https://rutube.ru/video/18eb6a6b94e8338c1f9ca092df4234e9/",
+    "verified": false,
+    "notes": "Ориентировочная точка нижней станции по описанию видео. Нужна визуальная проверка положения модели.",
+    "buildingClearanceMeters": 12
+  }
+]

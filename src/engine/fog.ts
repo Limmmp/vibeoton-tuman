@@ -5,7 +5,8 @@
 // Всё, что за окном, закрывает однотонная заливка «мир минус окно» того же цвета.
 
 import maplibregl, { type Map as MLMap, type CanvasSource, type GeoJSONSource } from "maplibre-gl";
-import { CELL, cellsInRadius, cellCenter, cellOf, cellKey, cellRowHeightDeg, cellColWidthDeg, distance, lerp, type LatLon } from "./geo";
+import { CELL, cellsInRadius, cellCenter, cellOf, cellKey, distance, lerp, type LatLon } from "./geo";
+import { FogCellIndex } from "./fog-index";
 import { load, save, debounced } from "./storage";
 import type { RenderProfile } from "./performance";
 
@@ -23,11 +24,13 @@ type Listener = (fresh: number, keys: string[]) => void;
 
 export class FogOfWar {
   readonly cells: Set<string>;
+  readonly index = new FogCellIndex();
   private listeners: Listener[] = [];
   private persist = debounced(() => save("fog", [...this.cells]), 2000);
 
   constructor() {
     this.cells = new Set(load<string[]>("fog", []));
+    for (const key of this.cells) this.index.add(key);
   }
 
   onChange(fn: Listener) {
@@ -45,6 +48,7 @@ export class FogOfWar {
     for (const k of cellsInRadius(p, radius)) {
       if (!this.cells.has(k)) {
         this.cells.add(k);
+        this.index.add(k);
         keys.push(k);
       }
     }
@@ -71,6 +75,7 @@ export class FogOfWar {
 
   reset() {
     this.cells.clear();
+    this.index.clear();
     save("fog", []);
     this.listeners.forEach((fn) => fn(0, []));
   }
@@ -84,7 +89,9 @@ export class FogLayer {
   private canvas = document.createElement("canvas");
   private mask = document.createElement("canvas");
   private pattern = makePattern();
-  private billows = makeBillows();
+  private billows: HTMLCanvasElement | undefined;
+  private effects = true;
+  private suspended = false;
   private cut = document.createElement("canvas"); // размытая маска открытых ячеек — готова к вычитанию
   private win: Win = CITY_BBOX;
   private lastDraw = 0;
@@ -118,7 +125,14 @@ export class FogLayer {
 
     map.on("moveend", () => this.schedule());
     map.on("resize", () => this.schedule());
-    fog.onChange(() => this.schedule());
+    fog.onChange((_fresh, keys) => {
+      if (!keys.length || keys.some(key => {
+        const [row, col] = key.split(":").map(Number);
+        const point = cellCenter(row, col);
+        const pad = CELL * 3 / 111320;
+        return point.lat >= this.win.s - pad && point.lat <= this.win.n + pad && point.lon >= this.win.w - pad * 2 && point.lon <= this.win.e + pad * 2;
+      })) this.schedule();
+    });
     this.schedule();
     this.startBreathing();
   }
@@ -127,16 +141,30 @@ export class FogLayer {
   private startBreathing() {
     clearInterval(this.breathTimer);
     this.breathTimer = undefined;
-    const on = this.profile.quality !== "low";
+    const on = this.effects && this.profile.quality !== "low";
     if (this.map.getLayer("fog-puffs")) this.map.setLayoutProperty("fog-puffs", "visibility", on ? "visible" : "none");
-    if (!on) return;
+    if (!on || this.suspended) return;
     this.breathTimer = setInterval(() => {
-      if (document.hidden) return;
+      if (document.hidden || this.map.isMoving() || performance.now() - this.lastDraw < this.profile.fogIntervalMs) return;
       this.composite();
       // Облачка чуть колышутся.
       const t = (performance.now() - this.t0) / 1000;
       this.map.setPaintProperty("fog-puffs", "icon-translate", [Math.sin(t * 0.6) * 3, Math.cos(t * 0.45) * 2]);
-    }, Math.max(110, this.profile.fogIntervalMs));
+    }, Math.max(250, this.profile.fogIntervalMs));
+  }
+
+  setEffects(enabled: boolean) {
+    this.effects = enabled;
+    this.startBreathing();
+    this.schedule();
+  }
+
+  setSuspended(suspended: boolean) {
+    this.suspended = suspended;
+    clearTimeout(this.timer);
+    this.timer = undefined;
+    this.startBreathing();
+    if (!suspended) this.schedule();
   }
 
   setProfile(profile: RenderProfile) {
@@ -150,7 +178,7 @@ export class FogLayer {
 
   /** Частота зависит от профиля качества. */
   schedule() {
-    if (this.timer) return;
+    if (this.timer || this.suspended) return;
     const wait = Math.max(0, this.profile.fogIntervalMs - (performance.now() - this.lastDraw));
     this.timer = setTimeout(() => {
       this.timer = undefined;
@@ -199,28 +227,12 @@ export class FogLayer {
     const g = mask.getContext("2d")!;
     g.fillStyle = "#000";
     g.beginPath();
-    const rh = cellRowHeightDeg();
-    const rowMin = Math.floor(win.s / rh) - 1, rowMax = Math.floor(win.n / rh) + 1;
     const add = (row: number, col: number) => {
       const pt = toPx(cellCenter(row, col));
       g.moveTo(pt.x + r, pt.y);
       g.arc(pt.x, pt.y, r, 0, Math.PI * 2);
     };
-    const estCells = (rowMax - rowMin) * ((win.e - win.w) / cellColWidthDeg(rowMin));
-    if (estCells < this.fog.cells.size) {
-      for (let row = rowMin; row <= rowMax; row++) {
-        const cw = cellColWidthDeg(row);
-        for (let col = Math.floor(win.w / cw) - 1; col <= Math.floor(win.e / cw) + 1; col++) {
-          if (this.fog.cells.has(`${row}:${col}`)) add(row, col);
-        }
-      }
-    } else {
-      for (const k of this.fog.cells) {
-        const i = k.indexOf(":");
-        const row = +k.slice(0, i);
-        if (row >= rowMin && row <= rowMax) add(row, +k.slice(i + 1));
-      }
-    }
+    for (const [row, col] of this.fog.index.inWindow(win)) add(row, col);
     g.fill();
 
     // --- размытая маска: считается только здесь, «дыхание» её переиспользует ---
@@ -233,7 +245,7 @@ export class FogLayer {
     this.win = win;
     this.composite();
     (this.map.getSource("fog-outer") as GeoJSONSource | undefined)?.setData(outerPolygon(win));
-    if (this.profile.quality !== "low") this.updatePuffs(win, rowMin, rowMax);
+    if (this.effects && this.profile.quality !== "low") this.updatePuffs(win);
   }
 
   /** Туман = шум (со сдвигом во времени) + крупные клубы − размытая маска. Дёшево: без пересчёта маски. */
@@ -244,7 +256,7 @@ export class FogLayer {
     if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
     const ctx = cv.getContext("2d")!;
     const t = (performance.now() - this.t0) / 1000;
-    const breathing = this.profile.quality !== "low";
+    const breathing = this.effects && this.profile.quality !== "low";
     const pat = ctx.createPattern(this.pattern, "repeat")!;
     if (breathing) pat.setTransform(new DOMMatrix().translate((t * 6) % 256, (Math.sin(t * 0.3) * 12) % 256));
     ctx.globalCompositeOperation = "source-over";
@@ -253,7 +265,7 @@ export class FogLayer {
     ctx.fillRect(0, 0, W, H);
     if (breathing) {
       // Крупные мягкие клубы медленно плывут в другую сторону — туман «дышит» неравномерно.
-      const bp = ctx.createPattern(this.billows, "repeat")!;
+      const bp = ctx.createPattern(this.billows ??= makeBillows(), "repeat")!;
       bp.setTransform(new DOMMatrix().translate((-t * 9) % 512, (t * 4) % 512));
       ctx.globalAlpha = 0.5;
       ctx.fillStyle = bp;
@@ -274,14 +286,11 @@ export class FogLayer {
   }
 
   /** Облачка: центры закрытых ячеек, соседних с открытыми, в окне вида; не больше MAX_PUFFS. */
-  private updatePuffs(win: Win, rowMin: number, rowMax: number) {
+  private updatePuffs(win: Win) {
     const cells = this.fog.cells;
     const pts: [number, number][] = [];
     const seen = new Set<string>();
-    for (const k of cells) {
-      const i = k.indexOf(":");
-      const row = +k.slice(0, i), col = +k.slice(i + 1);
-      if (row < rowMin || row > rowMax) continue;
+    for (const [row, col] of this.fog.index.inWindow(win, 2)) {
       for (const [dr, dc] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
         const nk = `${row + dr}:${col + dc}`;
         if (cells.has(nk) || seen.has(nk)) continue;

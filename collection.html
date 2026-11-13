@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f1720" />
+    <title>Коллекция · Туман Владивостока</title>
+  </head>
+  <body>
+    <main>
+      <header><a id="back" href="./">‹ На карту</a><span>ТУМАН ВЛАДИВОСТОКА</span></header>
+      <p class="eyebrow">ЧЕТЫРЕ МЕСТА · ЧЕТЫРЕ ФИГУРКИ</p>
+      <h1>Мой Владивосток</h1>
+      <p class="intro">Демонстрационная коллекция. Все четыре превью доступны для просмотра.</p>
+      <div id="cards" aria-label="Достопримечательности"></div>
+      <section id="preview" aria-labelledby="model-name">
+        <div class="preview-head"><div><p class="eyebrow">ФИГУРКА ГОРОДА</p><h2 id="model-name">Подлодка С-56</h2></div><span id="status" role="status">Загрузка…</span></div>
+        <div id="canvas" role="img" aria-label="Интерактивная 3D-модель"></div>
+        <p class="hint">Поворачивай одним пальцем. Приближай двумя пальцами или колёсиком мыши.</p>
+        <div class="actions"><button id="reset">Сбросить ракурс</button><a id="on-map" href="./">На карте</a></div>
+        <p id="model-note" class="hint">Пока показана геометрическая заглушка.</p>
+      </section>
+    </main>
+    <script type="module" src="/src/collection/page.ts"></script>
+  </body>
+</html>

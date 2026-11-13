@@ -9,14 +9,19 @@ test("low отключает 3D-дома и снижает стоимость т
   assert.equal(low.fogIntervalMs, 330);
   assert.equal(low.buildingLimit, 0);
   assert.equal(low.show3dBuildings, false);
+  assert.equal(low.terrain, false);
+  assert.equal(low.hillshade, false);
   assert.equal(low.pitch3d, 40);
 });
 
 test("balanced на телефоне ограничивает рендер, но оставляет дома", () => {
   const balanced = profileFor("balanced", true, 3);
-  assert.equal(balanced.pixelRatio, 1.5);
-  assert.equal(balanced.buildingLimit, 3000);
+  assert.equal(balanced.pixelRatio, 1.25);
+  assert.equal(balanced.buildingLimit, 1200);
   assert.equal(balanced.show3dBuildings, true);
+  assert.equal(balanced.terrain, true);
+  assert.equal(balanced.hillshade, false);
+  assert.equal(balanced.pitch3d, 45);
 });
 
 test("high сохраняет полный профиль", () => {

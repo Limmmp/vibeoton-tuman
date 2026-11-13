@@ -12,11 +12,14 @@ export function Field({ label, value, onChangeText, numeric = false }: { label: 
   return <View style={u.stack}><Text style={u.muted}>{label}</Text><TextInput accessibilityLabel={label} value={value} onChangeText={onChangeText} keyboardType={numeric ? 'numeric' : 'default'} autoCapitalize="none" style={u.input} /></View>;
 }
 export function Card({ children }: { children: ReactNode }) { return <View style={u.card}>{children}</View>; }
-export function Bar({ value }: { value: number }) { return <View accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: 100, now: Math.round(value * 100) }} style={u.track}><View style={[u.fill, { width: `${Math.max(0, Math.min(1, value)) * 100}%` }]} /></View>; }
+export function Bar({ value }: { value: number }) {
+  const percent = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) * 100 : 0;
+  return <View accessibilityRole="progressbar" accessibilityLabel="Опыт до следующего уровня" accessibilityValue={{ min: 0, max: 100, now: Math.round(percent) }} style={u.track}><View style={[u.fill, { width: `${percent}%` }]} /></View>;
+}
 export const u = StyleSheet.create({
   text: { color: colors.text, fontFamily: 'Manrope_400Regular', fontSize: 14, lineHeight: 21 }, muted: { color: colors.muted, fontFamily: 'Manrope_400Regular', fontSize: 12, lineHeight: 19 }, title: { color: colors.text, fontSize: 25, fontFamily: 'RussoOne_400Regular' }, heading: { color: colors.text, fontSize: 19, fontFamily: 'Manrope_600SemiBold' }, eyebrow: { color: colors.amber, fontFamily: 'Manrope_600SemiBold', fontSize: 10, letterSpacing: 1.8 },
   row: { flexDirection: 'row', gap: 8, alignItems: 'center', flexWrap: 'wrap' }, stack: { gap: 8 }, card: { backgroundColor: colors.panel, borderRadius: 18, padding: 16, gap: 10, borderWidth: 1, borderColor: colors.line },
   button: { minHeight: 44, paddingHorizontal: 15, paddingVertical: 12, backgroundColor: '#283C4B', borderRadius: 12, alignItems: 'center', justifyContent: 'center' }, buttonText: { color: colors.text, fontSize: 13, fontWeight: '600' }, primary: { backgroundColor: colors.amber },
   chip: { minHeight: 44, padding: 11, borderRadius: 12, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.panel }, input: { color: colors.text, padding: 12, borderRadius: 12, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.bg },
-  track: { height: 5, backgroundColor: colors.line, borderRadius: 3, overflow: 'hidden' }, fill: { height: 5, backgroundColor: colors.amber },
+  track: { width: '100%', height: 6, flexShrink: 0, backgroundColor: colors.line, borderRadius: 3, overflow: 'hidden' }, fill: { height: '100%', backgroundColor: colors.amber },
 });

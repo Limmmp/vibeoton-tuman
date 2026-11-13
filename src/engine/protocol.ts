@@ -11,6 +11,7 @@ import type { AvatarAppearance, AvatarSlot, ProgressEvent, ProgressState } from 
 import type { RenderProfile, RenderQuality } from "./performance";
 import type { MapLayer } from "./layers";
 import type { OtherPlayer, SocialMode } from "./players";
+import type { BasemapStatus } from "./basemap-fallback";
 
 export type LatLon = { lat: number; lon: number };
 
@@ -23,8 +24,14 @@ export type Place = {
 };
 
 export type Command =
+  | { id?: string; type: "setSimSpeed"; multiplier: number }
+  | { id?: string; type: "setDemoTapMode"; mode: "walk" | "teleport" }
+  | { id?: string; type: "setRenderActivity"; active: boolean }
+  | { id?: string; type: "setFogEffects"; enabled: boolean }
   | { id?: string; type: "setRenderQuality"; quality: RenderQuality }
   | { id?: string; type: "setViewMode"; mode: "2d" | "3d" }
+  | { id?: string; type: "set2dTilt"; enabled: boolean }
+  | { id?: string; type: "setMapControlsInset"; top: number }
   | { id?: string; type: "setPlayerMode"; mode: "sim" | "external" | "gps" }
   | { id?: string; type: "gpsFix"; lat: number; lon: number; accuracy?: number; heading?: number }
   | { id?: string; type: "teleport"; lat: number; lon: number }
@@ -66,21 +73,31 @@ export type Command =
   | { id?: string; type: "getState" }; // ответ: State
 
 export type State = {
-  player: LatLon & { heading: number; mode: "sim" | "external" | "gps"; follow: boolean };
+  engineVersion: string;
+  basemap: BasemapStatus;
+  player: LatLon & { heading: number; mode: "sim" | "external" | "gps"; follow: boolean; simSpeed: number };
+  demoTapMode: "walk" | "teleport";
   viewMode: "2d" | "3d";
+  tilted2d: boolean;
   fog: { cells: number; km2: number };
   quest: ActiveStep | null;
   progress: ProgressState;
   avatar: AvatarAppearance;
   renderProfile: RenderProfile;
+  fogEffects: boolean;
   layers: MapLayer[]; // видимые категории меток
 };
 
 export type EngineEvent =
+  | { type: "viewChanged"; mode: "2d" | "3d"; tilted2d: boolean }
+  | { type: "landmarkTap"; id: string }
+  | { type: "demoChanged"; speed: number; tapMode: "walk" | "teleport" }
+  | { type: "basemapChanged"; status: BasemapStatus }
+  | { type: "mapError"; message: string }
   | { type: "ready"; state: State }
   | { type: "playerMoved"; lat: number; lon: number; heading: number }
   | { type: "fogChanged"; cells: number; km2: number; fresh: number }
-  | { type: "mapTap"; lat: number; lon: number; action: "walk" | "select" }
+  | { type: "mapTap"; lat: number; lon: number; action: "walk" | "teleport" | "select" }
   | { type: "mapLongPress"; lat: number; lon: number }
   | { type: "placeTap"; id: string }
   | { type: "questTargetTap"; id: string }
@@ -104,3 +121,4 @@ export type { RenderProfile, RenderQuality } from "./performance";
 export type { DistrictStat } from "../progress/districts";
 export type { MapLayer } from "./layers";
 export type { OtherPlayer, Relation, SocialMode } from "./players";
+export type { BasemapStatus } from "./basemap-fallback";

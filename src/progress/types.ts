@@ -13,6 +13,8 @@ export type AvatarAppearance = {
   accentColor: string;
   equipped: Partial<Record<AvatarSlot, string>>;
   modelUrl?: string;
+  imageUrl?: string;
+  movingImageUrl?: string;
 };
 
 export type AvatarItem = {

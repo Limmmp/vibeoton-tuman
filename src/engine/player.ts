@@ -9,12 +9,12 @@ import { load, save, debounced } from "./storage";
 import { VLADIVOSTOK } from "./basemap";
 import type { AvatarAppearance } from "../progress/types";
 import { DEFAULT_AVATAR } from "../progress/avatar";
+import avatarConfig from "../../public/avatar/config.json";
+import { DEFAULT_SIM_SPEED, demoPoint, movementStep, simSpeed } from "./simulation";
 
 export type PlayerMode = "sim" | "external" | "gps";
-type MoveListener = (pos: LatLon, prev: LatLon, jump: boolean) => void;
+type MoveListener = (pos: LatLon, prev: LatLon, jump: boolean, gps: boolean) => void;
 
-const WALK = 1.5; // м/с
-const RUN_MULT = 4; // Shift
 export const SIM_SPEEDUP = 8;
 const GPS_MAX_ACCURACY = 60; // м — хуже игнорируем
 
@@ -23,23 +23,31 @@ export class Player {
   heading = 0;
   mode: PlayerMode = "sim";
   follow = true;
+  simSpeed = DEFAULT_SIM_SPEED;
   private keys = new Set<string>();
   private walkTarget: LatLon | null = null;
   private listeners: MoveListener[] = [];
   private gpsWatch: number | null = null;
   private marker: maplibregl.Marker;
   private markerEl: HTMLElement;
+  private renderingActive = true;
+  private avatarImage!: HTMLImageElement;
+  private idleImage = "";
+  private movingImage: string | undefined;
+  private movingTimer: ReturnType<typeof setTimeout> | undefined;
   private persist = debounced(() => save("player", this.pos), 1000);
 
   constructor(private map: MLMap) {
     this.pos = load<LatLon>("player", VLADIVOSTOK);
     this.markerEl = document.createElement("div");
     this.markerEl.className = "tuman-player";
-    this.marker = new maplibregl.Marker({ element: this.markerEl, rotationAlignment: "viewport", pitchAlignment: "viewport", anchor: "bottom" })
+    this.markerEl.style.zIndex = "3";
+    this.marker = new maplibregl.Marker({ element: this.markerEl, rotationAlignment: "viewport", pitchAlignment: "viewport", anchor: "bottom", opacity: 1, opacityWhenCovered: 1 })
       .setLngLat([this.pos.lon, this.pos.lat])
       .addTo(map);
     this.setAvatar(DEFAULT_AVATAR);
     this.bindKeys();
+    map.on("rotate", () => this.markerEl.style.setProperty("--heading", `${this.heading - map.getBearing()}deg`));
     // Пользователь сам потащил карту — перестаём следовать за игроком.
     map.on("dragstart", () => (this.follow = false));
   }
@@ -53,27 +61,40 @@ export class Player {
   }
 
   setAvatar(appearance: AvatarAppearance) {
-    const hat = appearance.equipped.head === "admiral-cap" ? `<path d="M9 9h18l-2 5H11z" fill="#F5B83D"/><path d="M13 6h10l2 3H11z" fill="#F4F6F8" stroke="#0F1720" stroke-width="1.5"/>` : "";
-    this.markerEl.dataset.modelUrl = appearance.modelUrl ?? "";
-    this.markerEl.innerHTML = `<div class="tuman-avatar" aria-label="Игрок">
-      <svg class="tuman-avatar__body" viewBox="0 0 36 50" aria-hidden="true">
-        <ellipse cx="18" cy="46" rx="12" ry="3" fill="rgba(15,23,32,.35)"/>
-        <circle cx="18" cy="14" r="8" fill="#F0C7A5" stroke="#0F1720" stroke-width="2"/>
-        <path d="M8 46v-18c0-7 4-10 10-10s10 3 10 10v18z" fill="${escColor(appearance.bodyColor)}" stroke="#0F1720" stroke-width="2"/>
-        <path d="M13 45V31M23 45V31" stroke="#0F1720" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="15" cy="13" r="1" fill="#0F1720"/><circle cx="21" cy="13" r="1" fill="#0F1720"/>
-        ${hat}
-      </svg>
-      <svg class="tuman-avatar__heading" viewBox="0 0 20 20" aria-hidden="true">
-        <path d="M10 1 16 15 10 12 4 15z" fill="${escColor(appearance.accentColor)}" stroke="#0F1720" stroke-width="1.5"/>
-      </svg>
-    </div>`;
+    const base = new URL(import.meta.env.BASE_URL + "avatar/", location.href);
+    const imageUrl = (path: string) => {
+      const url = new URL(path, base);
+      if (!["http:", "https:"].includes(url.protocol)) throw new Error("Аватар должен быть HTTP/HTTPS-картинкой");
+      const version = new URLSearchParams(location.search).get("v"); if (version) url.searchParams.set("v", version);
+      return url.href;
+    };
+    this.idleImage = imageUrl(appearance.imageUrl || avatarConfig.idle);
+    const moving = appearance.movingImageUrl || avatarConfig.moving;
+    this.movingImage = moving ? imageUrl(moving) : undefined;
+    clearTimeout(this.movingTimer);
+    if (!this.avatarImage) {
+      this.markerEl.innerHTML = `<div class="tuman-avatar"><img class="tuman-avatar__image" alt="Игрок" draggable="false"/><svg class="tuman-avatar__cursor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="#172633" stroke="#fff" stroke-width="2"/><path class="tuman-avatar__heading" d="M12 1 20 19 12 15 4 19Z" stroke="#172633" stroke-width="1.5"/></svg></div>`;
+      this.avatarImage = this.markerEl.querySelector<HTMLImageElement>("img")!;
+      this.avatarImage.onerror = () => {
+        const fallback = new URL("placeholder.svg", base).href;
+        if (this.avatarImage.src !== fallback) this.avatarImage.src = fallback;
+      };
+    }
+    this.markerEl.style.setProperty("--accent", escColor(appearance.accentColor));
+    this.showAvatarFrame(false);
+  }
+
+  private showAvatarFrame(moving: boolean) {
+    const src = moving && this.movingImage ? this.movingImage : this.idleImage;
+    if (this.avatarImage.src !== src) this.avatarImage.src = src;
   }
 
   /** Идти к точке (только в симуляции). */
   walkTo(p: LatLon) {
-    if (this.mode === "sim") this.walkTarget = p;
+    if (this.mode === "sim") this.walkTarget = demoPoint(p);
   }
+
+  setSimSpeed(multiplier: number) { this.simSpeed = simSpeed(multiplier); return this.simSpeed; }
 
   private bindKeys() {
     const codes: Record<string, string> = {
@@ -96,7 +117,7 @@ export class Player {
   /** Игровой цикл. dt — секунды. */
   tick(dt: number) {
     if (this.mode !== "sim") return;
-    const step = WALK * (this.keys.has("run") ? RUN_MULT : 1) * dt * SIM_SPEEDUP;
+    const step = movementStep(dt, this.simSpeed, this.keys.has("run"));
     let dx = 0, dy = 0;
     if (this.keys.has("up")) dy += 1;
     if (this.keys.has("down")) dy -= 1;
@@ -119,26 +140,45 @@ export class Player {
   }
 
   teleport(p: LatLon) {
-    this.setPos(p, this.heading, true);
+    const point = demoPoint(p);
+    this.walkTarget = null;
+    this.keys.clear();
+    this.setPos(point, this.heading, true);
   }
 
   /** Фикс от приложения (режим external). */
   externalFix(p: LatLon & { accuracy?: number; heading?: number }) {
-    if (this.mode !== "external") this.setMode("external");
+    if (this.mode !== "external") return;
     if (p.accuracy != null && p.accuracy > GPS_MAX_ACCURACY) return;
     const h = Number.isFinite(p.heading) ? (p.heading as number) : bearing(this.pos, p);
-    this.setPos(p, h, distance(this.pos, p) > 2000);
+    this.setPos(p, h, distance(this.pos, p) > 2000, true);
   }
 
-  private setPos(p: LatLon, heading?: number, jump = false) {
+  private setPos(p: LatLon, heading?: number, jump = false, gps = false) {
     const prev = this.pos;
     this.pos = { lat: p.lat, lon: p.lon };
     if (heading != null) this.heading = heading;
-    this.marker.setLngLat([p.lon, p.lat]);
-    this.markerEl.style.setProperty("--heading", `${this.heading}deg`);
-    if (this.follow) this.map.jumpTo({ center: [p.lon, p.lat] });
+    if (this.renderingActive) this.syncMarker();
+    if (this.movingImage && this.renderingActive) {
+      clearTimeout(this.movingTimer);
+      this.showAvatarFrame(!jump && distance(prev, this.pos) > 0.01);
+      this.movingTimer = setTimeout(() => this.showAvatarFrame(false), 250);
+    }
     this.persist();
-    this.listeners.forEach((fn) => fn(this.pos, prev, jump));
+    this.listeners.forEach((fn) => fn(this.pos, prev, jump, gps));
+  }
+
+  setRenderingActive(active: boolean) {
+    if (this.renderingActive === active) return;
+    this.renderingActive = active;
+    if (!active) { clearTimeout(this.movingTimer); this.showAvatarFrame(false); }
+    if (active) this.syncMarker();
+  }
+
+  private syncMarker() {
+    this.marker.setLngLat([this.pos.lon, this.pos.lat]);
+    this.markerEl.style.setProperty("--heading", `${this.heading - this.map.getBearing()}deg`);
+    if (this.follow) this.map.jumpTo({ center: [this.pos.lon, this.pos.lat] });
   }
 
   async setMode(mode: PlayerMode): Promise<PlayerMode> {
@@ -154,7 +194,7 @@ export class Player {
           (g) => {
             const { latitude: lat, longitude: lon, accuracy, heading } = g.coords;
             if (accuracy > GPS_MAX_ACCURACY && !first) return;
-            this.setPos({ lat, lon }, Number.isFinite(heading) ? (heading as number) : bearing(this.pos, { lat, lon }), first);
+            this.setPos({ lat, lon }, Number.isFinite(heading) ? (heading as number) : bearing(this.pos, { lat, lon }), first, accuracy <= GPS_MAX_ACCURACY);
             if (first) { first = false; resolve(); }
           },
           (err) => first && reject(new Error(err.code === 1 ? "Доступ к геолокации запрещён" : "Не удалось получить позицию")),
