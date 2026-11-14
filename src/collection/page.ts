@@ -1,4 +1,3 @@
-import "./style.css";
 import { LANDMARKS, type Landmark } from "../models/catalog";
 
 const params = new URLSearchParams(location.search);

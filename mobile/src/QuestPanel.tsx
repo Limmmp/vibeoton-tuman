@@ -1,11 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Linking, Modal, ScrollView, Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Linking, Modal, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import type { ActiveStep, Command, LatLon, QuestSummary, RewardResult } from '../../src/engine/protocol';
-import { Bar, Button, Card, Chip, u } from './ui';
+import { Entrance } from './motion';
+import { Bar, Button, Card, Chip, colors, u } from './ui';
 
 export type Execute = (command: Command) => Promise<unknown>;
+
+export function ActiveQuestNotice({ active, open }: { active: ActiveStep | null; open: () => void }) {
+  // Справа оставляем место кнопке обзора WebView, включая карту с прежним фиксированным отступом.
+  return <View pointerEvents="box-none" style={{ marginLeft: 12, marginRight: 144, marginTop: 6 }}><Entrance key={active?.questId ?? 'none'}>
+    <Pressable accessibilityRole="button" accessibilityLabel={active ? `Идёт задание: ${active.questTitle}. Шаг ${active.stepIndex + 1} из ${active.stepCount}. ${active.step.text}` : 'Выбрать задание'} accessibilityHint="Открыть список и шаги задания" onPress={open}
+      style={({ pressed }) => ({ minHeight: 44, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 12, backgroundColor: colors.panel, borderWidth: 1, borderColor: colors.line, opacity: pressed ? 0.8 : 1, flexDirection: 'row', alignItems: 'center', gap: 6 })}>
+      <Text numberOfLines={1} ellipsizeMode="tail" style={[u.label, { flex: 1, fontSize: 13, color: active ? colors.amber : colors.text }]}>{active?.questTitle ?? 'Выбрать задание'}</Text>
+      {active && <Text style={[u.label, { fontSize: 12, color: colors.muted }]}>{active.stepIndex + 1}/{active.stepCount}</Text>}
+    </Pressable>
+  </Entrance></View>;
+}
+
 export function ActiveQuest({ active, execute, developer = false, teleport, locate, busy }: { active: ActiveStep; execute: Execute; developer?: boolean; teleport: (point: LatLon) => void; locate: (point: LatLon) => void; busy: boolean }) {
   const { step, runtime, progress } = active;
   const point = active.targets.find(target => !target.done);
@@ -52,11 +65,19 @@ function Listen({ audio, ready, developer, execute, busy }: { audio: string; rea
 }
 
 export function QuestList({ quests, completed, active, execute, locate, busy }: { quests: QuestSummary[]; completed: string[]; active: ActiveStep | null; execute: Execute; locate: (point: LatLon) => void; busy: boolean }) {
+  const [starting, setStarting] = useState<string | null>(null);
+  const startingRef = useRef(false);
+  const start = async (questId: string) => {
+    if (startingRef.current || busy || active) return;
+    startingRef.current = true; setStarting(questId);
+    try { await execute({ type: 'startQuestById', questId }); }
+    finally { startingRef.current = false; setStarting(null); }
+  };
   const [filter, setFilter] = useState('Доступные');
   const filtered = quests.filter(quest => filter === 'Активное' ? quest.id === active?.questId : filter === 'Пройденные' ? completed.includes(quest.id) : !completed.includes(quest.id));
   return <View style={u.stack}><View style={u.row}>{['Доступные', 'Активное', 'Пройденные'].map(label => <Chip key={label} label={label} active={filter === label} onPress={() => setFilter(label)} />)}</View>
     {!filtered.length && <Text style={u.muted}>Заданий здесь пока нет. Обнови список или выбери другую вкладку.</Text>}
-    {filtered.map(quest => <Card key={quest.id}><Text style={u.heading}>{quest.title}</Text><Text style={u.eyebrow}>{quest.giver} · {quest.stepCount} шагов</Text><Text style={u.text}>{quest.intro}</Text><Text style={u.muted}>Награда: {quest.reward.xp} опыта · {quest.reward.cash} монет · {quest.reward.rep} уважения</Text><Text style={u.muted}>В симуляции награда не выдаётся.</Text><View style={u.row}><Button label="Точка старта" onPress={() => locate(quest.start)} /><Button label="Запустить квест" primary disabled={busy || !!active} onPress={() => void execute({ type: 'startQuestById', questId: quest.id })} /></View><Button label="Источник" onPress={() => { if (/^https?:\/\//.test(quest.source)) void Linking.openURL(quest.source).catch(() => {}); }} /></Card>)}
+    {filtered.map(quest => <Card key={quest.id}><Text style={u.heading}>{quest.title}</Text><Text style={u.eyebrow}>{quest.giver} · {quest.stepCount} шагов</Text><Text style={u.text}>{quest.intro}</Text><Text style={u.muted}>Награда: {quest.reward.xp} опыта · {quest.reward.cash} монет · {quest.reward.rep} уважения</Text><Text style={u.muted}>В симуляции награда не выдаётся.</Text><View style={u.row}><Button label="Точка старта" onPress={() => locate(quest.start)} /><Button label={starting === quest.id ? 'Начинаем…' : active?.questId === quest.id ? 'Задание идёт' : 'Начать задание'} loading={starting === quest.id} primary disabled={busy || !!active || !!starting} onPress={() => void start(quest.id)} /></View><Button label="Источник" onPress={() => { if (/^https?:\/\//.test(quest.source)) void Linking.openURL(quest.source).catch(() => {}); }} /></Card>)}
   </View>;
 }
 

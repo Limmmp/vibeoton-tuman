@@ -2,11 +2,9 @@ import { AVATAR_SLOTS, type AvatarSlot, type ProgressEvent, type ProgressState, 
 import { avatarItemById } from "./catalog.ts";
 import { SHOP_PRICE, bannerById, pull, type PullResult } from "./shop.ts";
 import { levelProgress } from "./level.ts";
-import { CELL } from "../engine/geo.ts";
 
 // Журнал хранится вместе с XP, но не пересылается в WebView-событиях и HUD.
 export type ProgressSave = ProgressState & { exploration?: { seen: string[]; cells: number } };
-const CELLS_PER_EXPLORATION_REWARD = 10000 / (CELL * CELL);
 
 export const EMPTY_PROGRESS: ProgressState = {
   version: 1,
@@ -51,8 +49,8 @@ export class ProgressManager {
     return structuredClone(this.value);
   }
 
-  /** 10 XP за 25 новых ячеек (0,01 км²), открытых настоящим GPS-фиксом. */
-  recordExploration(keys: Iterable<string>, gps: boolean): number {
+  /** 1 XP за новую ячейку, включая исследование в симуляции. Старые открытия не награждаются повторно. */
+  recordExploration(keys: Iterable<string>, _gps?: boolean): number {
     let fresh = 0;
     for (const key of keys) {
       if (this.exploredCells.has(key)) continue;
@@ -60,12 +58,11 @@ export class ProgressManager {
       fresh++;
     }
     if (!fresh) return 0;
-    const before = Math.floor(this.explorationCells / CELLS_PER_EXPLORATION_REWARD);
-    if (gps) this.explorationCells += fresh;
-    const xp = (Math.floor(this.explorationCells / CELLS_PER_EXPLORATION_REWARD) - before) * 10;
+    this.explorationCells += fresh;
+    const xp = fresh;
     this.value.xp += xp;
     this.value.level = levelForXp(this.value.xp);
-    // Даже демо-ячейки помним: сброс тумана не превращает их в новые GPS-открытия.
+    // Все открытые ячейки помним: сброс тумана не превращает их в новые открытия.
     this.persist(xp > 0);
     return xp;
   }

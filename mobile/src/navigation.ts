@@ -1,4 +1,4 @@
-export type Tab = 'Карта' | 'Компания' | 'Места' | 'История' | 'Профиль';
+export type Tab = 'Карта' | 'Компания' | 'Места' | 'История' | 'Награды' | 'Профиль';
 export type Overlay = 'quests' | 'settings' | 'developer' | 'inbox' | 'filters' | 'districts' | 'preview' | 'demo' | 'collection' | null;
 export type Route = { tab: Tab; overlay: Overlay; selectedId: string | null; sheet: number; layer: string };
 export type Navigation = { current: Route; history: Route[] };
