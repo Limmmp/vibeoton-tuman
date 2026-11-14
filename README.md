@@ -11,11 +11,11 @@
 
 [Карта онлайн](https://limmmp.github.io/vibeoton-tuman/) · [Диз-док](docs/design-doc.md) · [Мобильное приложение](mobile/README.md)
 
-![React Native](https://img.shields.io/badge/React_Native-Expo_58-0A1016?style=flat-square&logo=expo&logoColor=F5B83D)
-![MapLibre](https://img.shields.io/badge/MapLibre_GL-5-0A1016?style=flat-square&logo=maplibre&logoColor=4CC2B5)
-![TypeScript](https://img.shields.io/badge/TypeScript-Node_24-0A1016?style=flat-square&logo=typescript&logoColor=4CC2B5)
-![Хакатон](https://img.shields.io/badge/Вайбатон-ноябрь_2026-0A1016?style=flat-square&labelColor=F5B83D)
-[![Проверки](https://github.com/Limmmp/vibeoton-tuman/actions/workflows/check.yml/badge.svg)](https://github.com/Limmmp/vibeoton-tuman/actions/workflows/check.yml)
+![React Native](https://img.shields.io/badge/React_Native-Expo_58-F5B83D?style=for-the-badge&labelColor=131C25&color=F5B83D&logo=expo&logoColor=white)
+![MapLibre](https://img.shields.io/badge/MapLibre_GL-5-F5B83D?style=for-the-badge&labelColor=131C25&color=F5B83D&logo=maplibre&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-Node_24-F5B83D?style=for-the-badge&labelColor=131C25&color=F5B83D&logo=typescript&logoColor=white)
+![Вайбатон](https://img.shields.io/badge/Вайбатон-ноябрь_2026-F5B83D?style=for-the-badge&labelColor=131C25&color=F5B83D)
+[![Проверки](https://img.shields.io/github/actions/workflow/status/Limmmp/vibeoton-tuman/check.yml?branch=main&label=%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B8&style=for-the-badge&labelColor=131C25&color=F5B83D&logo=githubactions&logoColor=white)](https://github.com/Limmmp/vibeoton-tuman/actions/workflows/check.yml)
 
 </div>
 
