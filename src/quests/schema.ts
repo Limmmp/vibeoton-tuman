@@ -25,7 +25,6 @@ export function resolveQuest(input: unknown, resolvePoint?: PointResolver, sourc
     reward: {
       xp: clamp(Math.round(number(objectOrEmpty(raw.reward).xp) || 0), 0, 1_000_000),
       cash: clamp(Math.round(number(objectOrEmpty(raw.reward).cash) || 0), 0, 1_000_000),
-      rep: clamp(Math.round(number(objectOrEmpty(raw.reward).rep) || 0), 0, 100_000),
       items: stringList(objectOrEmpty(raw.reward).items),
     },
     start,

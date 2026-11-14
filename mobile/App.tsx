@@ -26,7 +26,6 @@ import { useNavigation } from './src/useNavigation';
 import { DistrictPanel } from './src/DistrictPanel';
 import { Glyph } from './src/glyphs';
 import { StylePreview } from './src/StylePreview';
-import { diagnosticQuest } from './src/diagnostic';
 import { DemoPanel } from './src/DemoPanel';
 import { LanPanel, useLan } from './src/LanPanel';
 import { CollectionPanel } from './src/CollectionPanel';
@@ -201,8 +200,8 @@ function Application() {
     if (routePending.current) return;
     routePending.current = true; setRouting(true); setRoute(null);
     const routeStart = positionRef.current;
-    const result = await execute({ type: 'route', to }) as RouteInfo | undefined;
-    if (result && Number.isFinite(result.distance) && Number.isFinite(result.climb)) { setRoute(result); if (placeId && distance(routeStart, positionRef.current) <= 50) setClimbs(previous => ({ ...previous, [placeId]: result.climb })); }
+    const result = await execute({ type: 'route', to }) as (RouteInfo & { arrived?: boolean }) | undefined;
+    if (result && !result.arrived && Number.isFinite(result.distance) && Number.isFinite(result.climb)) { setRoute(result); if (placeId && distance(routeStart, positionRef.current) <= 50) setClimbs(previous => ({ ...previous, [placeId]: result.climb })); }
     routePending.current = false; setRouting(false);
   };
   const checkIn = async (place: Place) => {
@@ -246,6 +245,7 @@ function Application() {
         setListPosition(previous => distance(previous, event) >= 15 ? event : previous);
         break;
       case 'mapError': setError(event.message); break;
+      case 'routeCleared': setRoute(null); if (event.arrived) notify('Ты на месте. Маршрут завершён.'); break;
       case 'fogChanged': setArea(event.km2); break;
       case 'activeStep': setActive(event.active); break;
       case 'questTargetTap': setTab('Карта'); setSheet(1); notify('Цель задания: ' + (active?.step.text || event.id)); break;
@@ -295,12 +295,6 @@ function Application() {
   useEffect(() => { if (ready) send({ type: 'showPlaces', places: mapMarkers }); }, [ready, markerKey]);
   const changeTab = (next: Tab) => { if (next === tab) return; dispatch({ type: 'push', patch: { tab: next, overlay: null, selectedId: null, sheet: next === 'Карта' || next === 'Профиль' ? 0 : 2, layer: next === 'Места' ? 'Учёба' : layer } }); };
   const switchView = () => { const next = mode === '2d' ? '3d' : '2d'; void bridge.request({ type: 'setViewMode', mode: next }).then(() => { setMode(next); update({ view: next }); }).catch(problem => setError(problem.message)); };
-  const testQuest = () => {
-    const place = catalog.find(item => item.id === 'osm-w27532893') || catalog[0];
-    const point = { id: place.id, lat: place.lat, lon: place.lon, name: place.name };
-    const quest = diagnosticQuest(point, place.source);
-    stopGps(); void execute({ type: 'setPlayerMode', mode: 'sim' }).then(() => execute({ type: 'startQuest', quest }));
-  };
   const questContent = (developer = false) => <View style={u.stack}>
     <QuestList quests={quests} completed={Object.keys(progress?.completedQuests || {})} active={active} execute={execute} locate={locate} busy={!ready || busy > 0} />
     <Button label="Обновить список квестов" disabled={!ready} onPress={() => void execute({ type: 'listQuests' })} />
@@ -309,7 +303,7 @@ function Application() {
   </View>;
   const panelContent = () => {
     if (tab === 'Места') return <PlacesPanel places={filtered} selected={selected} select={selectPlace} position={selected ? position : listPosition} scrollEnabled={sheet !== 0} search={search} setSearch={setSearch} selectedFilters={placeFilters} setFilters={setPlaceFilters} route={route} checkIn={place => void checkIn(place)} buildRoute={(point, id) => void buildRoute(point, id)} routing={routing || !ready} collapse={() => setSheet(0)} />;
-    if (tab === 'Компания') return <LanPanel lan={lan} />;
+    if (tab === 'Компания') return <LanPanel lan={lan} buildRoute={(point, id) => { void buildRoute(point, id); changeTab('Карта'); }} />;
     if (tab === 'Профиль') return <ProfilePanel progress={progress} items={items} area={area} execute={execute} districts={() => setOverlay('districts')} collection={() => { setCollectionId(undefined); setOverlay('collection'); }} settings={() => setOverlay('settings')} developer={() => setOverlay('developer')} busy={!ready || busy > 0} />;
     if (tab === 'История') return <View style={u.stack}><Text style={u.heading}>История города</Text><Card><Text style={u.text}>«Золотой туман» готовится</Text><Text style={u.muted}>Маршрут, озвучка и факты с источниками ещё не добавлены в каталог. Технический квест доступен в заданиях.</Text><Button label="Открыть задания" onPress={() => setOverlay('quests')} /></Card><Text style={u.muted}>Исторические места из каталога — на карте. Их данные требуют проверки.</Text>{markerPlaces.slice(0, 10).map(place => <Card key={place.id}><Text style={u.heading}>{place.name}</Text><Button label="Карточка места и источник" onPress={() => { dispatch({ type: 'push', patch: { selectedId: place.id, tab: 'Места', layer: 'История', sheet: 2, overlay: null } }); }} /></Card>)}</View>;
     return <View style={u.stack}><Text style={u.eyebrow}>ТВОЯ ЭКСПЕДИЦИЯ</Text>{active ? <ActiveQuest active={active} execute={execute} teleport={point => void teleport(point)} locate={locate} busy={busy > 0} /> : <Card><Text style={u.heading}>Исследуй город</Text><Text style={u.muted}>{gps ? 'Иди к цели задания, туман будет открываться по GPS.' : 'Нажми на карту, чтобы идти. Новые ячейки дают опыт; награды квестов требуют GPS.'}</Text><Button label="Задания" primary onPress={() => setOverlay('quests')} /></Card>}{failure && <Button label="Квест провален: открыть задания" onPress={() => setOverlay('quests')} />}{route && <><RouteSummary route={route} /><Button label="Убрать маршрут" onPress={() => { send({ type: 'clearRoute' }); setRoute(null); }} /></>}</View>;
@@ -322,7 +316,7 @@ function Application() {
       <Text style={u.eyebrow}>ЧТО ПОКАЗЫВАТЬ</Text><View style={u.row}>{layers.filter(value => value !== 'События').map(value => <Chip key={value} label={value} active={layer === value} onPress={() => { setLayer(value); setOverlay(value === 'Задания' ? 'quests' : null); }} />)}</View>
       <Card><Button kind="quiet" label="Уведомления" onPress={() => setOverlay('inbox')} /><Button kind="quiet" label="Настройки" onPress={() => setOverlay('settings')} /></Card><Text style={u.muted}>{weather.text}</Text></View>;
     if (overlay === 'quests') return questContent();
-    if (overlay === 'developer') return <View style={u.stack}><Text style={u.eyebrow}>ПАНЕЛЬ РАЗРАБОТЧИКА</Text><Button label="Демо-перемещение" primary disabled={!ready} onPress={() => setOverlay('demo')} /><Button label="Награды" onPress={() => { setCollectionId(undefined); setOverlay('collection'); }} /><Text style={u.muted}>{ready ? 'Мост подключён' : 'Нет подключения'} · {gps ? 'GPS' : 'Симуляция'} · {position.lat.toFixed(5)}, {position.lon.toFixed(5)}</Text><Button label="Короткий тест: аудио → quiz → осмотр" primary disabled={!ready || !!active || busy > 0} onPress={testQuest} />{questContent(true)}<RewardStatus result={reward} /><Button label="Обновить активный шаг" disabled={!ready} onPress={() => void execute({ type: 'getQuestState' })} /><Text style={u.heading}>Последние события</Text>{events.slice(0, 12).map((event, index) => <Text key={index} style={u.muted}>{event}</Text>)}</View>;
+    if (overlay === 'developer') return <View style={u.stack}><Text style={u.eyebrow}>ПАНЕЛЬ РАЗРАБОТЧИКА</Text><Button label="Демо-перемещение" primary disabled={!ready} onPress={() => setOverlay('demo')} /><Button label="Награды" onPress={() => { setCollectionId(undefined); setOverlay('collection'); }} /><Text style={u.muted}>{ready ? 'Мост подключён' : 'Нет подключения'} · {gps ? 'GPS' : 'Симуляция'} · {position.lat.toFixed(5)}, {position.lon.toFixed(5)}</Text>{questContent(true)}<RewardStatus result={reward} /><Button label="Обновить активный шаг" disabled={!ready} onPress={() => void execute({ type: 'getQuestState' })} /><Text style={u.heading}>Последние события</Text>{events.slice(0, 12).map((event, index) => <Text key={index} style={u.muted}>{event}</Text>)}</View>;
     if (overlay === 'settings') return <View style={u.stack}><Field label="Адрес движка карты" value={address} onChangeText={setAddress} /><Button label="Подключить" primary onPress={() => connect()} /><Button label="Опубликованная карта" onPress={() => connect(hostedMap)} /><Button label="Локальная карта" onPress={() => connect(localMapUrl)} /><Text style={u.muted}>Движок: {engineVersion || 'прежняя версия'} · Подложка: {basemap ? `${basemap.provider === 'vector' ? 'векторная' : 'резервная'}${basemap.ready ? '' : ' · загрузка'}` : 'нет диагностики'}</Text><Text style={u.muted}>Для локального сервера нужны общая Wi-Fi сеть и адрес компьютера. При смене адреса прогресс WebView может отличаться.</Text><Button label={gpsBusy ? 'Подключение GPS…' : gps ? 'Выключить GPS' : 'Включить GPS'} disabled={!ready || gpsBusy} onPress={() => { if (gps) { stopGps(); send({ type: 'setPlayerMode', mode: 'sim' }); } else askGps(); }} /><Button label={`Переключить ${mode === '2d' ? 'в 3D' : 'в 2D'}`} disabled={!ready} onPress={switchView} /><Button label="Сбросить туман" disabled={!ready} onPress={() => Alert.alert('Сбросить туман?', 'Открытые ячейки карты будут удалены.', [{ text: 'Отмена', style: 'cancel' }, { text: 'Сбросить', style: 'destructive', onPress: () => void execute({ type: 'resetFog' }) }])} /><Button label="Сбросить награды и прогресс" disabled={!ready} onPress={() => Alert.alert('Сбросить прогресс?', 'Опыт, монеты, инвентарь и завершённые квесты будут удалены.', [{ text: 'Отмена', style: 'cancel' }, { text: 'Сбросить', style: 'destructive', onPress: () => void execute({ type: 'resetProgress' }) }])} /><Button label="Повторить онбординг" onPress={() => { update({ onboarded: false }); setOverlay(null); }} /><Button label={`Анимация тумана: ${fogEffects ? 'включена' : 'выключена'}`} disabled={!ready} onPress={() => { void bridge.request({ type: 'setFogEffects', enabled: !fogEffects }).then(() => setFogEffects(!fogEffects)).catch(problem => setError(problem.message)); }} /><Text style={u.heading}>Качество карты: {renderProfile?.quality || 'авто'}</Text><View style={u.row}>{(['low', 'balanced', 'high'] as const).map(quality => <Chip key={quality} label={({ low: 'Экономно', balanced: 'Баланс', high: 'Высокое' })[quality]} active={renderProfile?.quality === quality} onPress={() => void execute({ type: 'setRenderQuality', quality })} />)}</View><Text style={u.muted}>Качество применяется сразу. Экономный режим отключает рельеф, отмывку и объёмные дома.</Text><Text style={u.muted}>Игроки общей сети доступны во вкладке «Компания». Фоновый GPS не включён.</Text><Text style={u.muted}>Карта: OpenFreeMap · © участники OpenStreetMap · Mapzen/Terrarium. Погода: Open-Meteo. Интернет требуется для тайлов и маршрутов.</Text><Button label="Сравнить стили и темы" onPress={() => setOverlay('preview')} /><Button label="Для разработчиков" onPress={() => setOverlay('developer')} /></View>;
     if (overlay === 'inbox') return <View style={u.stack}><Text style={u.heading}>События этой сессии</Text>{!events.length && <Text style={u.muted}>Пока тихо. Начни первое задание.</Text>}{events.map((event, index) => <Card key={index}><Text style={u.text}>{event}</Text></Card>)}</View>;
     return null;

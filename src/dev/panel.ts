@@ -6,7 +6,7 @@ import { formatDistance } from "../engine/geo";
 import type { Place } from "../data/place";
 import type { MapLayer } from "../engine/layers";
 import placesJson from "../../data/places.json";
-import { ENGINE_DEMO_QUEST } from "../quests/catalog";
+import { LANDMARK_QUEST } from "../quests/catalog";
 import type { ActiveStep } from "../quests/types";
 import "./panel.css";
 
@@ -149,8 +149,8 @@ export function mountDevPanel(engine: Engine) {
           await engine.exec({ type: "resetFog" });
           break;
         case "quest":
-          await engine.exec({ type: "teleport", ...ENGINE_DEMO_QUEST.start });
-          await engine.exec({ type: "startQuestById", questId: ENGINE_DEMO_QUEST.id });
+          await engine.exec({ type: "teleport", ...LANDMARK_QUEST.start });
+          await engine.exec({ type: "startQuestById", questId: LANDMARK_QUEST.id });
           break;
         case "quest-stop":
           await engine.exec({ type: "stopQuest" });

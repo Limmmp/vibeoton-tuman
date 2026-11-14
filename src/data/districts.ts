@@ -52,10 +52,10 @@ export const DISTRICT_MAX_R = 1800;
 export const DISTRICT_HALF = 92;
 
 export const DISTRICT_MILESTONES = [
-  { pct: 25, xp: 100, cash: 50, rep: 0 },
-  { pct: 50, xp: 250, cash: 150, rep: 1 },
-  { pct: 75, xp: 500, cash: 300, rep: 1 },
-  { pct: 90, xp: 1000, cash: 600, rep: 2 },
+  { pct: 25, xp: 100, cash: 50 },
+  { pct: 50, xp: 250, cash: 150 },
+  { pct: 75, xp: 500, cash: 300 },
+  { pct: 90, xp: 1000, cash: 600 },
 ] as const;
 
 /** Запись data/districts.json. */

@@ -12,7 +12,7 @@ import type { ActiveStep } from "../quests/types";
 import { QuestRunner } from "../quests/runner";
 import { resolveQuest } from "../quests/schema";
 import { loadQuestSnapshot, saveQuestSnapshot } from "../quests/storage";
-import { QUEST_CATALOG, QUEST_REQUIRES, questById } from "../quests/catalog";
+import { QUEST_CATALOG, QUEST_REQUIRES, questById, currentQuestSnapshot } from "../quests/catalog";
 import { ProgressManager } from "../progress/progress";
 import { loadProgress, saveProgress } from "../progress/storage";
 import { AVATAR_ITEMS } from "../progress/catalog";
@@ -24,6 +24,7 @@ import { DistrictTracker } from "../progress/districts";
 import type { DistrictData } from "../data/districts";
 import districtsJson from "../../data/districts.json";
 import { distance } from "./geo";
+import { RouteArrival } from "./route-arrival";
 import { MAP_LAYERS, normalizeLayers, visiblePlaces, type MapLayer } from "./layers";
 import { applyLighting, setBuildingsVisible, type LightingMode } from "./buildings";
 import { playersGeoJSON, validatePlayer, visiblePlayers, type OtherPlayer, type SocialMode } from "./players";
@@ -34,7 +35,7 @@ import { LANDMARKS } from "../models/catalog";
 
 // Чекин: игрок должен быть не дальше этого от места; первая отметка в месте даёт награду.
 const CHECKIN_RADIUS = 60;
-const CHECKIN_REWARD = { xp: 30, cash: 10, rep: 0, items: [] as string[] };
+const CHECKIN_REWARD = { xp: 30, cash: 10, items: [] as string[] };
 
 type Handler = (e: EngineEvent) => void;
 
@@ -49,6 +50,7 @@ const KIND_COLORS: Record<string, string> = {
 };
 
 export class Engine {
+  private routeArrival = new RouteArrival();
   viewMode: ViewMode = "2d";
   private tilted2d = false;
   private handlers: Handler[] = [];
@@ -121,7 +123,9 @@ export class Engine {
     map.jumpTo({ center: [player.pos.lon, player.pos.lat] });
     engine.wire();
     void engine.ensureLandmarkLayer();
-    const savedQuest = loadQuestSnapshot();
+    const previousQuest = loadQuestSnapshot();
+    const savedQuest = previousQuest ? currentQuestSnapshot(previousQuest) : null;
+    if (previousQuest && !savedQuest) saveQuestSnapshot(null);
     if (savedQuest) {
       try {
         engine.quests.restore(savedQuest, { position: player.pos, fogCells: fog.cells.size });
@@ -139,6 +143,12 @@ export class Engine {
 
   private emit(e: EngineEvent) {
     this.handlers.forEach((fn) => fn(e));
+  }
+
+  private clearRoute(arrived = false) {
+    this.routeArrival.cancel();
+    (this.map.getSource("route") as GeoJSONSource).setData(EMPTY);
+    this.emit({ type: "routeCleared", arrived });
   }
 
   private applyAvatar(appearance: AvatarAppearance) {
@@ -199,7 +209,7 @@ export class Engine {
     });
   }
 
-  private claimMilestone(hit: { districtId: string; name: string; pct: number; reward: { xp: number; cash: number; rep: number; items: string[] } }) {
+  private claimMilestone(hit: { districtId: string; name: string; pct: number; reward: { xp: number; cash: number; items: string[] } }) {
     const key = `district:${hit.districtId}:${hit.pct}`;
     if (this.progress.isClaimed(key)) return;
     this.emit({ type: "districtMilestone", id: hit.districtId, name: hit.name, pct: hit.pct });
@@ -290,6 +300,7 @@ export class Engine {
         if (jump) fog.reveal(pos); else fog.revealPath(prev, pos);
       } finally { gpsExploration = false; }
       this.quests.updatePosition(pos);
+      if (this.routeArrival.reached(pos)) this.clearRoute(true);
       const remaining = 250 - (performance.now() - lastMoveEvent);
       if (jump || remaining <= 0) publishPosition();
       else if (!moveTimer) moveTimer = setTimeout(publishPosition, remaining);
@@ -526,16 +537,21 @@ export class Engine {
       case "getDistricts":
         return this.districts.stats();
       case "route": {
+        const token = this.routeArrival.begin();
+        (map.getSource("route") as GeoJSONSource).setData(EMPTY);
         const r = await routeWithElevation(cmd.from ?? player.pos, cmd.to);
+        if (!this.routeArrival.install(token, cmd.to)) return;
         (map.getSource("route") as GeoJSONSource).setData({
           type: "Feature", properties: {},
           geometry: { type: "LineString", coordinates: r.path.map((p) => [p.lon, p.lat]) },
         });
         const { path: _path, ...rest } = r;
-        return rest;
+        const arrived = this.routeArrival.reached(player.pos);
+        if (arrived) this.clearRoute(true);
+        return { ...rest, arrived };
       }
       case "clearRoute":
-        (map.getSource("route") as GeoJSONSource).setData(EMPTY);
+        this.clearRoute();
         return;
       case "elevation":
         return { h: await elevationAt(cmd) };

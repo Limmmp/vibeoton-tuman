@@ -96,6 +96,7 @@ export type EngineEvent =
   | { type: "mapError"; message: string }
   | { type: "ready"; state: State }
   | { type: "playerMoved"; lat: number; lon: number; heading: number }
+  | { type: "routeCleared"; arrived: boolean }
   | { type: "fogChanged"; cells: number; km2: number; fresh: number }
   | { type: "mapTap"; lat: number; lon: number; action: "walk" | "teleport" | "select" }
   | { type: "mapLongPress"; lat: number; lon: number }

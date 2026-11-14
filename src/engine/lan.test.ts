@@ -21,7 +21,8 @@ test('LAN session shares positions and supports group creation, joining and leav
   assert.equal(second.group, first.group);
   assert.equal(second.players[0].relation, 'party');
   const state = await request({ token: first.token });
-  assert.equal(state.players[0].id, second.token);
+  assert.equal(state.players[0].id, second.id);
+  assert.notEqual(second.id, second.token);
   assert.equal(state.players[0].lat, 43);
   const left = await request({ token: second.token, action: 'leave' });
   assert.equal(left.group, '');

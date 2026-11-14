@@ -4,7 +4,6 @@ export type AvatarSlot = (typeof AVATAR_SLOTS)[number];
 export type Reward = {
   xp: number;
   cash: number;
-  rep: number;
   items: string[];
 };
 
@@ -47,7 +46,6 @@ export type ProgressState = {
   xp: number;
   level: number;
   cash: number;
-  rep: number;
   inventory: Record<string, number>;
   equipped: Partial<Record<AvatarSlot, string>>;
   completedQuests: Record<string, QuestCompletion>;
