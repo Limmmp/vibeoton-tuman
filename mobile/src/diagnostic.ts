@@ -2,7 +2,7 @@ import type { Quest } from '../../src/engine/protocol';
 
 export function diagnosticQuest(point: Quest['start'], source: string): Quest {
   return {
-    id: 'mobile-controls-test', source, title: 'Тест кнопок интерфейса', giver: 'Кот Адмирал',
+    id: 'mobile-controls-test', source, title: 'Тест кнопок интерфейса', giver: 'Исследователь',
     intro: 'Технический тест без исторических утверждений.', outro: ['Тест завершён.'], start: point,
     reward: { xp: 10, cash: 0, rep: 0, items: [] },
     steps: [

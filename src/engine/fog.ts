@@ -14,7 +14,7 @@ export const REVEAL_RADIUS = 45; // м вокруг игрока
 
 // Цвет тумана: молочно-серый, почти непрозрачный — рельеф угадывается по форме, улицы не читаются.
 const FOG_RGB = [176, 186, 198];
-const FOG_ALPHA = 0.9;
+const FOG_ALPHA = 1;
 
 // Если вид шире этого (м), холст покрывает весь город целиком, а не окно вокруг вида.
 const MAX_WINDOW_SPAN = 9000;
@@ -377,7 +377,7 @@ function makePattern(): HTMLCanvasElement {
     img.data[i * 4] = FOG_RGB[0] + n;
     img.data[i * 4 + 1] = FOG_RGB[1] + n;
     img.data[i * 4 + 2] = FOG_RGB[2] + n;
-    img.data[i * 4 + 3] = Math.round(255 * (FOG_ALPHA + (Math.random() - 0.5) * 0.04));
+    img.data[i * 4 + 3] = 255;
   }
   g.putImageData(img, 0, 0);
   return c;
