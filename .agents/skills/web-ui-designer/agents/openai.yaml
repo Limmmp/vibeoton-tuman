@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web UI Designer"
+  short_description: "Generate scenario-aware Web/UI design briefs."
+  default_prompt: "Use $web-ui-designer to create an implementation-ready Web/UI design brief for this product goal."

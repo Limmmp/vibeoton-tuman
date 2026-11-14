@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import type { LatLon } from '../../src/engine/protocol';
 import { DEMO_SPEEDS, demoPoint } from '../../src/engine/simulation';
 import landmarks from '../../public/models/landmarks/manifest.json';
-import { Button, Card, Chip, Field, u } from './ui';
+import { Button, Card, Chip, Field, u } from './shared/ui/primitives';
 
 export function DemoPanel({ position, speed, tapMode, busy, teleport, setSpeed, setTapMode, close }: {
   position: LatLon; speed: number; tapMode: 'walk' | 'teleport'; busy: boolean;

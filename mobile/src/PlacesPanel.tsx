@@ -3,7 +3,8 @@ import { FlatList, Image, Linking, Pressable, Text, View } from 'react-native';
 import type { Place } from '../../src/data/place';
 import type { LatLon } from '../../src/engine/protocol';
 import { distance } from '../../src/engine/geo';
-import { Button, Card, Chip, Field, colors, u } from './ui';
+import { Button, Card, Chip, Field, u } from './shared/ui/primitives';
+import { colors } from './shared/theme/tokens';
 import { filters, priceLabel } from './catalog';
 
 const tagLabels: Record<string, string> = { wifi: 'Wi-Fi', sockets: 'Розетки', quiet: 'Тихо', 'noise-ok': 'Можно шуметь', 'laptop-ok': 'Можно с ноутбуком', indoor: 'В помещении', outdoor: 'На улице', view: 'Красивый вид', sea: 'У моря', coffee: 'Кофе', food: 'Еда', 'board-games': 'Настолки', music: 'Музыка', art: 'Искусство', workshop: 'Мастер-классы', sport: 'Спорт', cinema: 'Кино', wheelchair: 'Доступно для колясок' };

@@ -4,7 +4,7 @@ import { Share, Text, View } from 'react-native';
 import { INTERESTS, matchGroup, type Interest, type Member, type MatchOutput } from '../../src/match/matchGroup';
 import type { Place } from '../../src/data/place';
 import type { LatLon } from '../../src/engine/protocol';
-import { Button, Card, Chip, Field, u } from './ui';
+import { Button, Card, Chip, Field, u } from './shared/ui/primitives';
 import { catalog } from './catalog';
 
 export function CompanyPanel({ initialInterests, members, setMembers, buildRoute, climbs, weatherBad }: { initialInterests: Interest[]; members: Member[]; setMembers: (members: Member[]) => void; buildRoute: (point: LatLon, id?: string) => void; climbs: Record<string, number>; weatherBad: boolean | null }) {

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web UI Reverse Engineer"
+  short_description: "Extract evidence-backed Web/UI systems."
+  default_prompt: "Use $web-ui-reverse-engineer to extract the components, design system, responsive behavior, and technical clues from this interface."

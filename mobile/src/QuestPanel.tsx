@@ -4,7 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import type { ActiveStep, Command, LatLon, QuestSummary, RewardResult } from '../../src/engine/protocol';
 import { Entrance } from './motion';
-import { Bar, Button, Card, Chip, colors, u } from './ui';
+import { Bar, Button, Card, Chip, u } from './shared/ui/primitives';
+import { colors } from './shared/theme/tokens';
 
 export type Execute = (command: Command) => Promise<unknown>;
 

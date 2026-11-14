@@ -4,7 +4,8 @@ import Animated, { Easing, FadeInDown, FadeInUp, FadeOutUp, Keyframe, ReduceMoti
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { scheduleOnRN } from 'react-native-worklets';
 import * as Haptics from 'expo-haptics';
-import { colors, u } from './ui';
+import { u } from './shared/ui/primitives';
+import { colors } from './shared/theme/tokens';
 
 // Движение «Тумана» (animate-expo, apple-design): только transform и opacity, жесты — на UI-потоке,
 // пружины без перелёта по умолчанию, перелёт — только когда жест нёс инерцию. Снижение движения — системное.

@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import type { LatLon, OtherPlayer } from '../../src/engine/protocol';
 import { MapBridge } from './bridge';
 import { localMapUrl } from './connection';
-import { Button, Field, u } from './ui';
+import { Button, Field, u } from './shared/ui/primitives';
 import type { MeetingView } from '../../src/social/meeting';
 import { LanMeetingPanel, MeetingPreferencesForm } from './LanMeetingPanel';
 

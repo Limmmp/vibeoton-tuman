@@ -3,7 +3,8 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useReducedMotion } from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
 import { collectionUrl } from './collection-url';
-import { Button, colors, u } from './ui';
+import { Button, u } from './shared/ui/primitives';
+import { colors } from './shared/theme/tokens';
 
 export function CollectionPanel({ address, model, locate }: { address: string; model?: string; locate: (id: string) => void }) {
   const [error, setError] = useState(''), [generation, setGeneration] = useState(0);

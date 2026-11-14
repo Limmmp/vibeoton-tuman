@@ -6,7 +6,7 @@ import { validatePreferences } from '../../src/social/meeting';
 import type { BudgetMode } from '../../src/social/budget';
 import type { useLan } from './LanPanel';
 import { catalog } from './catalog';
-import { Button, Card, Chip, Field, u } from './ui';
+import { Button, Card, Chip, Field, u } from './shared/ui/primitives';
 
 type Lan = ReturnType<typeof useLan>;
 const dateAt = (day: number) => new Date(Date.now() + 10 * 3600000 + day * 86400000).toISOString().slice(0, 10);
