@@ -4,6 +4,7 @@
 import type { Map as MLMap, GeoJSONSource } from "maplibre-gl";
 import { createBaseMap, addTerrainLayers, addHillshadeOverFog, setViewMode, type ViewMode } from "./basemap";
 import { FogOfWar, FogLayer } from "./fog";
+import { coverGeographyWithFog, revealedGeography } from "./fog-visibility";
 import { Player } from "./player";
 import { routeWithElevation } from "./route";
 import { elevationAt } from "./dem";
@@ -12,7 +13,7 @@ import type { ActiveStep } from "../quests/types";
 import { QuestRunner } from "../quests/runner";
 import { resolveQuest } from "../quests/schema";
 import { loadQuestSnapshot, saveQuestSnapshot } from "../quests/storage";
-import { QUEST_CATALOG, QUEST_REQUIRES, questById } from "../quests/catalog";
+import { QUEST_CATALOG, QUEST_REQUIRES, questById, currentQuestSnapshot } from "../quests/catalog";
 import { ProgressManager } from "../progress/progress";
 import { loadProgress, saveProgress } from "../progress/storage";
 import { AVATAR_ITEMS } from "../progress/catalog";
@@ -24,6 +25,7 @@ import { DistrictTracker } from "../progress/districts";
 import type { DistrictData } from "../data/districts";
 import districtsJson from "../../data/districts.json";
 import { distance } from "./geo";
+import { RouteArrival } from "./route-arrival";
 import { MAP_LAYERS, normalizeLayers, visiblePlaces, type MapLayer } from "./layers";
 import { applyLighting, setBuildingsVisible, type LightingMode } from "./buildings";
 import { playersGeoJSON, validatePlayer, visiblePlayers, type OtherPlayer, type SocialMode } from "./players";
@@ -34,7 +36,7 @@ import { LANDMARKS } from "../models/catalog";
 
 // Чекин: игрок должен быть не дальше этого от места; первая отметка в месте даёт награду.
 const CHECKIN_RADIUS = 60;
-const CHECKIN_REWARD = { xp: 30, cash: 10, rep: 0, items: [] as string[] };
+const CHECKIN_REWARD = { xp: 30, cash: 10, items: [] as string[] };
 
 type Handler = (e: EngineEvent) => void;
 
@@ -49,6 +51,7 @@ const KIND_COLORS: Record<string, string> = {
 };
 
 export class Engine {
+  private routeArrival = new RouteArrival();
   viewMode: ViewMode = "2d";
   private tilted2d = false;
   private handlers: Handler[] = [];
@@ -68,6 +71,8 @@ export class Engine {
   private places = new Map<string, Place>(); // последние метки из showPlaces — для чекина
   private layers: MapLayer[] = [...MAP_LAYERS]; // видимые категории меток (setLayers)
   private selectedPlace: string | null = null;
+  private placesDataKey = "";
+  private landmarkMarkerKey = "";
   private others = new Map<string, OtherPlayer>(); // другие игроки (showPlayers / updatePlayers)
   private social: SocialMode = "all"; // кого из них показывать (setSocialLayer)
   private lighting: LightingMode = "auto"; // окна и свет: по времени Владивостока или принудительно
@@ -101,6 +106,7 @@ export class Engine {
       map.once("style.load", () => { clearTimeout(timer); resolve(); });
     });
     const basemap = new BasemapFallback(map);
+    const basemapSymbols = map.getStyle().layers.filter(layer => layer.type === "symbol").map(layer => layer.id);
     const beforeId = addTerrainLayers(map);
     const fog = new FogOfWar();
     const fogLayer = new FogLayer(map, fog, beforeId, renderProfile);
@@ -109,9 +115,10 @@ export class Engine {
     const player = new Player(map);
     const engine = new Engine(map, fog, player, renderProfile, basemap);
     engine.landmarkBefore = beforeId;
-    map.addSource("landmarks", { type: "geojson", data: { type: "FeatureCollection", features: LANDMARKS.map(item => ({ type: "Feature", properties: { id: item.id, name: item.name }, geometry: { type: "Point", coordinates: [item.lon, item.lat] } })) } });
+    map.addSource("landmarks", { type: "geojson", data: EMPTY });
     map.addLayer({ id: "landmark-pins", type: "circle", source: "landmarks", minzoom: 12, paint: { "circle-radius": 8, "circle-color": "#f5b83d", "circle-stroke-width": 2, "circle-stroke-color": "#172633" } });
     map.addLayer({ id: "landmark-labels", type: "symbol", source: "landmarks", minzoom: 14, layout: { "text-field": ["get", "name"], "text-size": 12, "text-offset": [0, 1.6] }, paint: { "text-color": "#172633", "text-halo-color": "#fff", "text-halo-width": 1.5 } });
+    coverGeographyWithFog(map, basemapSymbols);
     basemap.onChange(status => {
       engine.emit({ type: "basemapChanged", status });
       if (status.message) engine.emit({ type: "mapError", message: status.message });
@@ -121,7 +128,9 @@ export class Engine {
     map.jumpTo({ center: [player.pos.lon, player.pos.lat] });
     engine.wire();
     void engine.ensureLandmarkLayer();
-    const savedQuest = loadQuestSnapshot();
+    const previousQuest = loadQuestSnapshot();
+    const savedQuest = previousQuest ? currentQuestSnapshot(previousQuest) : null;
+    if (previousQuest && !savedQuest) saveQuestSnapshot(null);
     if (savedQuest) {
       try {
         engine.quests.restore(savedQuest, { position: player.pos, fogCells: fog.cells.size });
@@ -139,6 +148,12 @@ export class Engine {
 
   private emit(e: EngineEvent) {
     this.handlers.forEach((fn) => fn(e));
+  }
+
+  private clearRoute(arrived = false) {
+    this.routeArrival.cancel();
+    (this.map.getSource("route") as GeoJSONSource).setData(EMPTY);
+    this.emit({ type: "routeCleared", arrived });
   }
 
   private applyAvatar(appearance: AvatarAppearance) {
@@ -199,7 +214,7 @@ export class Engine {
     });
   }
 
-  private claimMilestone(hit: { districtId: string; name: string; pct: number; reward: { xp: number; cash: number; rep: number; items: string[] } }) {
+  private claimMilestone(hit: { districtId: string; name: string; pct: number; reward: { xp: number; cash: number; items: string[] } }) {
     const key = `district:${hit.districtId}:${hit.pct}`;
     if (this.progress.isClaimed(key)) return;
     this.emit({ type: "districtMilestone", id: hit.districtId, name: hit.name, pct: hit.pct });
@@ -208,9 +223,24 @@ export class Engine {
 
   /** Перерисовать метки: только места из включённых слоёв (до кластеризации, чтобы скрытые не попадали в счётчики). */
   private refreshPlaces() {
-    const shown = visiblePlaces([...this.places.values()], this.layers);
-    (this.map.getSource("places") as GeoJSONSource).setData(placesGeoJSON(shown));
+    const shown = revealedGeography(visiblePlaces([...this.places.values()], this.layers), point => this.fog.isRevealed(point));
+    const key = JSON.stringify(shown);
+    if (key !== this.placesDataKey) {
+      this.placesDataKey = key;
+      (this.map.getSource("places") as GeoJSONSource).setData(placesGeoJSON(shown));
+    }
     if (this.selectedPlace && !shown.some((p) => p.id === this.selectedPlace)) this.selectPlace(null);
+  }
+
+  private refreshLandmarks() {
+    const shown = revealedGeography(LANDMARKS, point => this.fog.isRevealed(point));
+    const key = shown.map(item => item.id).join("|");
+    if (key === this.landmarkMarkerKey) return;
+    this.landmarkMarkerKey = key;
+    (this.map.getSource("landmarks") as GeoJSONSource).setData({
+      type: "FeatureCollection",
+      features: shown.map(item => ({ type: "Feature", properties: { id: item.id, name: item.name }, geometry: { type: "Point", coordinates: [item.lon, item.lat] } })),
+    });
   }
 
   private refreshPlayers() {
@@ -227,7 +257,8 @@ export class Engine {
 
   /** Подпись и кольцо у выбранной метки. null — снять выбор. */
   private selectPlace(id: string | null) {
-    const place = id ? this.places.get(id) : undefined;
+    const candidate = id ? this.places.get(id) : undefined;
+    const place = candidate && this.fog.isRevealed(candidate) ? candidate : undefined;
     this.selectedPlace = place ? place.id : null;
     (this.map.getSource("place-selected") as GeoJSONSource).setData(place ? {
       type: "FeatureCollection",
@@ -270,6 +301,9 @@ export class Engine {
     const { map, fog, player } = this;
     fog.reveal(player.pos);
     this.progress.recordExploration(fog.cells, false);
+    const refreshGeography = () => { this.refreshPlaces(); this.refreshLandmarks(); };
+    refreshGeography();
+    fog.onChange(refreshGeography);
 
     // Окна и свет по времени суток во Владивостоке; в режиме auto пересматриваем раз в 10 минут.
     applyLighting(map, this.lighting);
@@ -290,6 +324,7 @@ export class Engine {
         if (jump) fog.reveal(pos); else fog.revealPath(prev, pos);
       } finally { gpsExploration = false; }
       this.quests.updatePosition(pos);
+      if (this.routeArrival.reached(pos)) this.clearRoute(true);
       const remaining = 250 - (performance.now() - lastMoveEvent);
       if (jump || remaining <= 0) publishPosition();
       else if (!moveTimer) moveTimer = setTimeout(publishPosition, remaining);
@@ -350,8 +385,9 @@ export class Engine {
     // Тап по цели квеста → questTargetTap; по кластеру → приблизить и clusterTap;
     // по метке → подпись + placeTap; по пустой карте → mapTap (в симуляции ещё и идём туда).
     map.on("click", (e) => {
+      const revealed = fog.isRevealed({ lat: e.lngLat.lat, lon: e.lngLat.lng });
       const landmark = map.queryRenderedFeatures(e.point, { layers: ["landmark-pins"] })[0];
-      if (landmark) return this.emit({ type: "landmarkTap", id: String(landmark.properties?.id) });
+      if (landmark && revealed) return this.emit({ type: "landmarkTap", id: String(landmark.properties?.id) });
       const questHit = map.queryRenderedFeatures(e.point, { layers: ["quest-targets"] })[0];
       if (questHit) return this.emit({ type: "questTargetTap", id: String(questHit.properties?.id) });
       const playerHit = map.queryRenderedFeatures(e.point, { layers: ["players"] })[0];
@@ -367,7 +403,7 @@ export class Engine {
         return this.emit({ type: "clusterTap", lat, lon, count: Number(playersCluster.properties?.point_count ?? 0), layer: "players" });
       }
       const cluster = map.queryRenderedFeatures(e.point, { layers: ["places-clusters"] })[0];
-      if (cluster && cluster.geometry.type === "Point") {
+      if (cluster && revealed && cluster.geometry.type === "Point") {
         const [lon, lat] = cluster.geometry.coordinates;
         const count = Number(cluster.properties?.point_count ?? 0);
         player.follow = false;
@@ -378,7 +414,7 @@ export class Engine {
         return this.emit({ type: "clusterTap", lat, lon, count, layer: "places" });
       }
       const hit = map.queryRenderedFeatures(e.point, { layers: ["places"] })[0];
-      if (hit) {
+      if (hit && revealed) {
         const id = String(hit.properties?.id);
         this.selectPlace(id);
         return this.emit({ type: "placeTap", id });
@@ -526,16 +562,21 @@ export class Engine {
       case "getDistricts":
         return this.districts.stats();
       case "route": {
+        const token = this.routeArrival.begin();
+        (map.getSource("route") as GeoJSONSource).setData(EMPTY);
         const r = await routeWithElevation(cmd.from ?? player.pos, cmd.to);
+        if (!this.routeArrival.install(token, cmd.to)) return;
         (map.getSource("route") as GeoJSONSource).setData({
           type: "Feature", properties: {},
           geometry: { type: "LineString", coordinates: r.path.map((p) => [p.lon, p.lat]) },
         });
         const { path: _path, ...rest } = r;
-        return rest;
+        const arrived = this.routeArrival.reached(player.pos);
+        if (arrived) this.clearRoute(true);
+        return { ...rest, arrived };
       }
       case "clearRoute":
-        (map.getSource("route") as GeoJSONSource).setData(EMPTY);
+        this.clearRoute();
         return;
       case "elevation":
         return { h: await elevationAt(cmd) };

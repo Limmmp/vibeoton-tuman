@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Acceptance Review"
+  short_description: "Audit frontend against design and requirements"
+  default_prompt: "Use $frontend-acceptance-review to verify this frontend against the supplied design, requirements, and acceptance criteria."

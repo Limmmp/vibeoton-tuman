@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Implementation"
+  short_description: "Implement and verify focused frontend work."
+  default_prompt: "Use $frontend-implementation to build or fix this frontend and verify the changed experience with risk-appropriate checks."

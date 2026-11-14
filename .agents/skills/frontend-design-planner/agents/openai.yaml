@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Design Planner"
+  short_description: "Plan scenario-aware frontend builds from supplied designs."
+  default_prompt: "Use $frontend-design-planner to turn this supplied design or concept into a concrete, implementation-ready frontend plan."

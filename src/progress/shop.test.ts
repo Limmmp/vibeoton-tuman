@@ -7,7 +7,7 @@ import { BANNERS, PITY, RATES, rollRarity } from "./shop.ts";
 import { avatarItemById } from "./catalog.ts";
 
 const seq = (...xs: number[]) => { let i = 0; return () => xs[i++ % xs.length]; };
-const rich = () => new ProgressManager({ initial: { version: 1, xp: 0, level: 1, cash: 5000, rep: 0, inventory: {}, equipped: {}, completedQuests: {}, claimed: {}, shards: 0, pity: {} } });
+const rich = () => new ProgressManager({ initial: { version: 1, xp: 0, level: 1, cash: 5000, inventory: {}, equipped: {}, completedQuests: {}, claimed: {}, shards: 0, pity: {} } });
 
 test("гача: шансы суммируются в 100 %, вещи баннеров есть в каталоге", () => {
   assert.equal(Math.round((RATES.common + RATES.rare + RATES.legendary) * 100), 100);

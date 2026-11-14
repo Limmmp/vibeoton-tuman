@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Accessibility Audit"
+  short_description: "Audit Web UI accessibility and WCAG issues"
+  default_prompt: "Use $frontend-accessibility-audit to audit this frontend for WCAG 2.2, keyboard, focus, semantics, forms, contrast, and motion issues."

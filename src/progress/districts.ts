@@ -18,7 +18,7 @@ export type DistrictStat = {
 };
 
 /** Веха пройдена: её награду должен выдать модуль прогресса (ключ district:<id>:<pct>). */
-export type MilestoneHit = { districtId: string; name: string; pct: number; reward: { xp: number; cash: number; rep: number; items: string[] } };
+export type MilestoneHit = { districtId: string; name: string; pct: number; reward: { xp: number; cash: number; items: string[] } };
 
 type Entry = DistrictData & { buf: Uint8Array; revealed: number };
 
@@ -87,7 +87,7 @@ export class DistrictTracker {
       const d = this.byId.get(id)!;
       const now = pctOf(d);
       for (const m of DISTRICT_MILESTONES) {
-        if (was < m.pct && now >= m.pct) hits.push({ districtId: id, name: d.name, pct: m.pct, reward: { xp: m.xp, cash: m.cash, rep: m.rep, items: [] } });
+        if (was < m.pct && now >= m.pct) hits.push({ districtId: id, name: d.name, pct: m.pct, reward: { xp: m.xp, cash: m.cash, items: [] } });
       }
     }
     return hits;
@@ -98,7 +98,7 @@ export class DistrictTracker {
     const out: MilestoneHit[] = [];
     for (const d of this.byId.values()) {
       const pct = pctOf(d);
-      for (const m of DISTRICT_MILESTONES) if (pct >= m.pct) out.push({ districtId: d.id, name: d.name, pct: m.pct, reward: { xp: m.xp, cash: m.cash, rep: m.rep, items: [] } });
+      for (const m of DISTRICT_MILESTONES) if (pct >= m.pct) out.push({ districtId: d.id, name: d.name, pct: m.pct, reward: { xp: m.xp, cash: m.cash, items: [] } });
     }
     return out;
   }

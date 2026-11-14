@@ -58,7 +58,7 @@ test("районы: вехи срабатывают один раз при пе�
 
 test("награды не за квест: один ключ — одна выдача, в completedQuests не попадает", () => {
   const p = new ProgressManager();
-  const reward = { xp: 100, cash: 50, rep: 0, items: [] };
+  const reward = { xp: 100, cash: 50, items: [] };
   const first = p.grantReward({ key: "district:center:25", source: "district", title: "Центр: 25 %", reward, trusted: true });
   assert.equal(first.granted, true);
   assert.equal(first.source, "district");
@@ -71,7 +71,7 @@ test("награды не за квест: один ключ — одна выд
 });
 
 test("старое сохранение без поля claimed загружается", () => {
-  const legacy = { version: 1, xp: 10, level: 1, cash: 5, rep: 0, inventory: {}, equipped: {}, completedQuests: {} } as never;
+  const legacy = { version: 1, xp: 10, level: 1, cash: 5, inventory: {}, equipped: {}, completedQuests: {} } as never;
   const p = new ProgressManager({ initial: legacy });
   assert.deepEqual(p.state.claimed, {});
 });

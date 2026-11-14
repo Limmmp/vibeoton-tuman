@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Performance Audit"
+  short_description: "Audit Web UI performance and Core Web Vitals"
+  default_prompt: "Use $frontend-performance-audit to measure this frontend and prioritize Core Web Vitals, bundle, media, font, and runtime fixes."

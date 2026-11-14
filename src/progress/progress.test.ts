@@ -4,7 +4,21 @@ import { ProgressManager, levelForXp } from "./progress.ts";
 import type { ProgressEvent, Reward } from "./types.ts";
 import { appearanceFromProgress, DEFAULT_AVATAR } from "./avatar.ts";
 
-const reward: Reward = { xp: 150, cash: 100, rep: 1, items: ["admiral-cap"] };
+const reward: Reward = { xp: 150, cash: 100, items: ["admiral-cap"] };
+
+test("старое уважение удаляется без потери опыта, монет и истории наград", () => {
+  const initial = new ProgressManager().state;
+  const oldReward = { ...reward, rep: 5 };
+  const legacy = { ...initial, xp: 300, cash: 500, rep: 9, completedQuests: {
+    old: { questId: 'old', title: 'Старый квест', completedAt: '2026-11-13', reward: oldReward },
+  } };
+  const manager = new ProgressManager({ initial: legacy });
+  assert.equal(manager.state.xp, 300);
+  assert.equal(manager.state.cash, 500);
+  assert.equal('rep' in manager.state, false);
+  assert.equal('rep' in manager.state.completedQuests.old.reward, false);
+  assert.equal(manager.state.completedQuests.old.reward.xp, 150);
+});
 
 function manager() {
   const events: ProgressEvent[] = [];
@@ -20,7 +34,7 @@ function manager() {
   };
 }
 
-test("награда квеста начисляет опыт, валюту, репутацию и предмет", () => {
+test("награда квеста начисляет опыт, валюту и предмет", () => {
   const { value, events, saves } = manager();
   const result = value.grantQuestReward({ questId: "q1", title: "Квест", reward, trusted: true });
 
@@ -29,7 +43,7 @@ test("награда квеста начисляет опыт, валюту, р�
   assert.equal(result.state.xp, 150);
   assert.equal(result.state.level, 2);
   assert.equal(result.state.cash, 100);
-  assert.equal(result.state.rep, 1);
+  assert.equal("rep" in result.state, false);
   assert.equal(result.state.inventory["admiral-cap"], 1);
   assert.equal(result.state.completedQuests.q1.completedAt, "2026-11-13T12:00:00.000Z");
   assert.equal(saves.length, 1);

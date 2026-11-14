@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend QA Orchestrator"
+  short_description: "Coordinate frontend release QA gates."
+  default_prompt: "Use $frontend-qa-orchestrator to select release QA gates, collect evidence, and produce a go/no-go recommendation."

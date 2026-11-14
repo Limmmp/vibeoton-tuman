@@ -1,0 +1,71 @@
+{
+  "version": 2,
+  "skills": {
+    "apple-design": {
+      "source": "dickwu/apple-design-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "a585f7b4611708c57e2074d436b8dcaaebdd9a0b5ac143646eb39c6fcf686c68"
+    },
+    "frontend-acceptance-review": {
+      "source": "ElVaddy-lab/frontend-codex-skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-acceptance-review/SKILL.md",
+      "computedHash": "ed69dafcea7ea1275c98b56731a0e8ee152b4678a292b7fe62c89665ef61b686"
+    },
+    "frontend-accessibility-audit": {
+      "source": "ElVaddy-lab/frontend-codex-skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-accessibility-audit/SKILL.md",
+      "computedHash": "aa7cd96b0f5d66116b7f673a450d6e8c39e599c89d426f10130561c48b8767fa"
+    },
+    "frontend-code-architecture": {
+      "source": "ElVaddy-lab/frontend-codex-skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-code-architecture/SKILL.md",
+      "computedHash": "a349461edb50c954f5fa78e747be9fef1d924fddba5b7c8e075d02bd5e446297"
+    },
+    "frontend-design-planner": {
+      "source": "ElVaddy-lab/frontend-codex-skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design-planner/SKILL.md",
+      "computedHash": "4cdc1b91c873a10d1557de4aba6942c83cc4ced00e7575d9ff9edc63373ad11b"
+    },
+    "frontend-implementation": {
+      "source": "ElVaddy-lab/frontend-codex-skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-implementation/SKILL.md",
+      "computedHash": "e7d3a1feace2bb9da54ce251a412ad62862447ee1172403d5b8dce1f869541f3"
+    },
+    "frontend-performance-audit": {
+      "source": "ElVaddy-lab/frontend-codex-skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-performance-audit/SKILL.md",
+      "computedHash": "e53b11a61826dcef74b2b99aad7446b6844795135db62150b09b1d1cf5a1adc1"
+    },
+    "frontend-qa-orchestrator": {
+      "source": "ElVaddy-lab/frontend-codex-skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-qa-orchestrator/SKILL.md",
+      "computedHash": "ac4729e2c9dd7cb78f6a74c37bdb65eaf70e1d4015cc3f6bc84c1cc7161ddb30"
+    },
+    "web-ui-designer": {
+      "source": "ElVaddy-lab/frontend-codex-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-ui-designer/SKILL.md",
+      "computedHash": "21036596873e68b69a5047d804208c72691cc2c185e445470897c817c495c448"
+    },
+    "web-ui-reverse-engineer": {
+      "source": "ElVaddy-lab/frontend-codex-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-ui-reverse-engineer/SKILL.md",
+      "computedHash": "3a7066b0a18526796b9b9ea0f3776270f458059050b3cdcff73350bf6159acb1"
+    },
+    "website-master-prompts": {
+      "source": "ElVaddy-lab/frontend-codex-skills",
+      "sourceType": "github",
+      "skillPath": "skills/website-master-prompts/SKILL.md",
+      "computedHash": "a00926f365476d4e5b0cb87a69ee9991e2390bfbbff2bd3d626f4c425f5f7646"
+    }
+  }
+}

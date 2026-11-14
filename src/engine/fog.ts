@@ -10,11 +10,11 @@ import { FogCellIndex } from "./fog-index";
 import { load, save, debounced } from "./storage";
 import type { RenderProfile } from "./performance";
 
-export const REVEAL_RADIUS = 45; // м вокруг игрока
+export const REVEAL_RADIUS = 120; // м вокруг игрока
 
 // Цвет тумана: молочно-серый, почти непрозрачный — рельеф угадывается по форме, улицы не читаются.
 const FOG_RGB = [176, 186, 198];
-const FOG_ALPHA = 0.9;
+const FOG_ALPHA = 1;
 
 // Если вид шире этого (м), холст покрывает весь город целиком, а не окно вокруг вида.
 const MAX_WINDOW_SPAN = 9000;
@@ -101,10 +101,13 @@ export class FogLayer {
 
   constructor(private map: MLMap, private fog: FogOfWar, beforeId: string | undefined, private profile: RenderProfile) {
     this.canvas.width = this.canvas.height = 2;
+    const color = `rgb(${FOG_RGB.join(",")})`;
+    const initial = this.canvas.getContext("2d")!;
+    initial.fillStyle = color;
+    initial.fillRect(0, 0, 2, 2);
     const coords = toCoords(CITY_BBOX);
     map.addSource("fog-canvas", { type: "canvas", canvas: this.canvas, coordinates: coords, animate: false });
     map.addSource("fog-outer", { type: "geojson", data: outerPolygon(CITY_BBOX) });
-    const color = `rgb(${FOG_RGB.join(",")})`;
     map.addLayer({ id: "fog-outer", type: "fill", source: "fog-outer", paint: { "fill-color": color, "fill-opacity": FOG_ALPHA, "fill-antialias": false } }, beforeId);
     map.addLayer({ id: "fog", type: "raster", source: "fog-canvas", paint: { "raster-fade-duration": 0, "raster-resampling": "linear" } }, beforeId);
 
@@ -377,7 +380,7 @@ function makePattern(): HTMLCanvasElement {
     img.data[i * 4] = FOG_RGB[0] + n;
     img.data[i * 4 + 1] = FOG_RGB[1] + n;
     img.data[i * 4 + 2] = FOG_RGB[2] + n;
-    img.data[i * 4 + 3] = Math.round(255 * (FOG_ALPHA + (Math.random() - 0.5) * 0.04));
+    img.data[i * 4 + 3] = 255;
   }
   g.putImageData(img, 0, 0);
   return c;

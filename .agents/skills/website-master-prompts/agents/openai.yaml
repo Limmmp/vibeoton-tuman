@@ -1,0 +1,4 @@
+interface:
+  display_name: "Website Master Prompts"
+  short_description: "Create copy-ready prompts for AI website generators."
+  default_prompt: "Use $website-master-prompts to create a copy-ready prompt for generating this website or frontend prototype."

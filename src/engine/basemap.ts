@@ -2,6 +2,7 @@
 
 import { addBuildingLayers, setBuildingsVisible } from "./buildings";
 import maplibregl, { type Map as MLMap, type StyleSpecification } from "maplibre-gl";
+import { darkenStyle } from "./dark-style";
 import { prepareMapStyle } from "./map-style";
 import { rasterStyle } from "./basemap-fallback";
 import { TERRARIUM_URL } from "./dem";
@@ -25,7 +26,7 @@ const demSource = {
 
 /** Подписи на русском, где они есть в OSM. Шильды дорог (ref) не трогаем. */
 function russianLabels(style: StyleSpecification): StyleSpecification {
-  return prepareMapStyle(style);
+  return darkenStyle(prepareMapStyle(style));
 }
 
 export async function createBaseMap(container: HTMLElement | string, center = VLADIVOSTOK, profile?: RenderProfile): Promise<MLMap> {

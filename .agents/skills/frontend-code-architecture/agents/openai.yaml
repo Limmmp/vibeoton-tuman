@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Code Architecture"
+  short_description: "Structure frontend code into maintainable modules."
+  default_prompt: "Use $frontend-code-architecture to review or refactor this frontend into maintainable components, modules, state, data, and styles."

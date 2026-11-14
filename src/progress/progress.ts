@@ -2,18 +2,15 @@ import { AVATAR_SLOTS, type AvatarSlot, type ProgressEvent, type ProgressState, 
 import { avatarItemById } from "./catalog.ts";
 import { SHOP_PRICE, bannerById, pull, type PullResult } from "./shop.ts";
 import { levelProgress } from "./level.ts";
-import { CELL } from "../engine/geo.ts";
 
 // Журнал хранится вместе с XP, но не пересылается в WebView-событиях и HUD.
 export type ProgressSave = ProgressState & { exploration?: { seen: string[]; cells: number } };
-const CELLS_PER_EXPLORATION_REWARD = 10000 / (CELL * CELL);
 
 export const EMPTY_PROGRESS: ProgressState = {
   version: 1,
   xp: 0,
   level: 1,
   cash: 0,
-  rep: 0,
   inventory: {},
   equipped: {},
   completedQuests: {},
@@ -51,8 +48,8 @@ export class ProgressManager {
     return structuredClone(this.value);
   }
 
-  /** 10 XP за 25 новых ячеек (0,01 км²), открытых настоящим GPS-фиксом. */
-  recordExploration(keys: Iterable<string>, gps: boolean): number {
+  /** 1 XP за новую ячейку, включая исследование в симуляции. Старые открытия не награждаются повторно. */
+  recordExploration(keys: Iterable<string>, _gps?: boolean): number {
     let fresh = 0;
     for (const key of keys) {
       if (this.exploredCells.has(key)) continue;
@@ -60,12 +57,11 @@ export class ProgressManager {
       fresh++;
     }
     if (!fresh) return 0;
-    const before = Math.floor(this.explorationCells / CELLS_PER_EXPLORATION_REWARD);
-    if (gps) this.explorationCells += fresh;
-    const xp = (Math.floor(this.explorationCells / CELLS_PER_EXPLORATION_REWARD) - before) * 10;
+    this.explorationCells += fresh;
+    const xp = fresh;
     this.value.xp += xp;
     this.value.level = levelForXp(this.value.xp);
-    // Даже демо-ячейки помним: сброс тумана не превращает их в новые GPS-открытия.
+    // Все открытые ячейки помним: сброс тумана не превращает их в новые открытия.
     this.persist(xp > 0);
     return xp;
   }
@@ -78,9 +74,7 @@ export class ProgressManager {
     const newItems = reward.items.filter((id) => !this.value.inventory[id]);
     this.value.xp += reward.xp;
     this.value.level = levelForXp(this.value.xp);
-    this.value.cash += reward.cash;
-    this.value.rep += reward.rep;
-    for (const id of reward.items) this.value.inventory[id] = (this.value.inventory[id] ?? 0) + 1;
+    this.value.cash += reward.cash;    for (const id of reward.items) this.value.inventory[id] = (this.value.inventory[id] ?? 0) + 1;
     this.value.completedQuests[input.questId] = {
       questId: input.questId,
       title: input.title,
@@ -105,9 +99,7 @@ export class ProgressManager {
     const newItems = reward.items.filter((id) => !this.value.inventory[id]);
     this.value.xp += reward.xp;
     this.value.level = levelForXp(this.value.xp);
-    this.value.cash += reward.cash;
-    this.value.rep += reward.rep;
-    for (const id of reward.items) this.value.inventory[id] = (this.value.inventory[id] ?? 0) + 1;
+    this.value.cash += reward.cash;    for (const id of reward.items) this.value.inventory[id] = (this.value.inventory[id] ?? 0) + 1;
     this.value.claimed[input.key] = { key: input.key, source: input.source, title: input.title, claimedAt: this.now().toISOString(), reward };
     this.persist();
 
@@ -207,7 +199,6 @@ function normalizeReward(reward: Reward, validateItems = true): Reward {
   return {
     xp: clampInt(reward.xp, 0, 1_000_000),
     cash: clampInt(reward.cash, 0, 1_000_000),
-    rep: clampInt(reward.rep, 0, 100_000),
     items,
   };
 }
@@ -219,11 +210,10 @@ function normalizeState(state: ProgressState): ProgressState {
     xp,
     level: levelForXp(xp),
     cash: clampInt(state.cash, 0, Number.MAX_SAFE_INTEGER),
-    rep: clampInt(state.rep, 0, Number.MAX_SAFE_INTEGER),
     inventory: { ...(state.inventory ?? {}) },
     equipped: { ...(state.equipped ?? {}) },
-    completedQuests: { ...(state.completedQuests ?? {}) },
-    claimed: { ...(state.claimed ?? {}) }, // в сохранениях до районов поля нет
+    completedQuests: Object.fromEntries(Object.entries(state.completedQuests ?? {}).map(([id, entry]) => [id, { ...entry, reward: normalizeReward(entry.reward, false) }])),
+    claimed: Object.fromEntries(Object.entries(state.claimed ?? {}).map(([id, entry]) => [id, { ...entry, reward: normalizeReward(entry.reward, false) }])), // в сохранениях до районов поля нет
     shards: clampInt(state.shards ?? 0, 0, Number.MAX_SAFE_INTEGER),
     pity: { ...(state.pity ?? {}) },
   };
